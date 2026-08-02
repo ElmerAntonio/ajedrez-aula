@@ -43,7 +43,20 @@ strong{color:var(--marfil);font-weight:800}
   padding:6px 11px;border-radius:8px;text-decoration:none;transition:background .15s,color .15s}
 .nav a.lnk:hover{background:var(--tinta3);color:var(--marfil)}
 .nav a.lnk.on{background:var(--selva);color:#fff}
-@media(max-width:640px){.brand{width:100%;margin-bottom:4px}}
+.nav a.lnk.role-hidden{display:none !important}
+/* menú hamburguesa (móvil) */
+.nav-burger{display:none;background:var(--tinta3);color:var(--marfil);border:1px solid #33473C;
+  width:38px;height:36px;border-radius:9px;font-size:17px;cursor:pointer;margin-left:6px;
+  align-items:center;justify-content:center}
+.nav-burger:focus-visible{outline:3px solid var(--cielo);outline-offset:2px}
+@media(max-width:900px){
+  .nav-burger{display:inline-flex;order:3}
+  .brand{margin-right:auto}
+  #roleChip{order:2}
+  .nav-in{gap:6px}
+  .nav-in a.lnk{display:none;flex-basis:100%;text-align:left;padding:10px 12px}
+  .nav-in.open a.lnk:not(.role-hidden){display:block;order:5}
+}
 
 /* ---------- TARJETAS ---------- */
 .card{background:var(--tinta2);border-radius:14px;padding:clamp(14px,1.8vw,22px);

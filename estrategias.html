@@ -49,7 +49,7 @@
   <div class="card warm" style="margin-bottom:38px"><p><em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Regla de oro para principiantes:</em> no saques la dama en las primeras jugadas. Parece fuerte, pero el rival la persigue con piezas pequeñas y pierdes tiempo mientras él desarrolla su ejército.</p></div>
 
   <!-- TÁCTICAS -->
-  <h2>2 · Las seis tácticas esenciales</h2>
+  <h2>2 · Las ocho tácticas esenciales</h2>
   <p class="lead" style="margin:.4em 0 20px">Una táctica es una jugada (o dos) que gana material o da mate por la fuerza. Reconocerlas es lo que más rápido sube el nivel.</p>
 
   <div class="grid" style="grid-template-columns:1fr;gap:22px;margin-bottom:40px">
@@ -82,6 +82,16 @@
       <div class="mini cb" data-fen="4k3/8/8/2N5/8/8/8/4R2K" data-mark="c5"></div>
       <div><span class="tag u">Descubierto</span><h3 style="margin:.4em 0">El jaque descubierto</h3>
         <p>Mueves una pieza y descubres el jaque de otra que estaba detrás. Como el jaque manda, tu pieza que se movió puede capturar «gratis». Aquí el caballo captura en c5 y descubre el jaque de la torre.</p></div>
+    </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="3qk3/8/5n2/6B1/4P3/8/8/6K1" data-mark="f6"></div>
+      <div><span class="tag u">Clavada ganadora</span><h3 style="margin:.4em 0">Explotar la clavada</h3>
+        <p>Una pieza clavada no puede moverse sin perder algo mayor. Entonces la atacas otra vez con algo de menos valor (a menudo un peón) y la ganas. Aquí el caballo está clavado contra la dama: <span class="mono" style="color:var(--ambar)">e5</span> lo ataca y no puede huir.</p></div>
+    </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="4k3/8/8/4N3/8/8/8/4R1K1" data-mark="e5"></div>
+      <div><span class="tag u">Doble jaque</span><h3 style="margin:.4em 0">El doble jaque</h3>
+        <p>Dos piezas dan jaque a la vez. Es tan fuerte que <strong>el rey está obligado a moverse</strong>: no vale capturar ni tapar, porque nunca se quitan dos jaques con una sola jugada. Base de muchos mates espectaculares.</p></div>
     </div>
   </div>
 
@@ -160,7 +170,9 @@ var CH=[
   {fen:'8/6k1/8/8/8/8/1r6/K3Q3 w - - 0 1', sol:[['e1','e5']],
    t:'Ataque doble', d:'Mueve la dama a una casilla desde donde des jaque al rey y ataques la torre a la vez.', h:'Busca una casilla que toque al rey por una línea y a la torre por otra.'},
   {fen:'4k3/8/8/2q5/4N3/8/8/4R2K w - - 0 1', sol:[['e4','c5']],
-   t:'Jaque descubierto', d:'Mueve el caballo capturando la dama y descubre el jaque de tu torre.', h:'El caballo se quita de en medio y captura; detrás aparece la torre dando jaque.'}
+   t:'Jaque descubierto', d:'Mueve el caballo capturando la dama y descubre el jaque de tu torre.', h:'El caballo se quita de en medio y captura; detrás aparece la torre dando jaque.'},
+  {fen:'3qk3/8/5n2/6B1/4P3/8/8/6K1 w - - 0 1', sol:[['e4','e5']],
+   t:'Explota la clavada', d:'El caballo está clavado contra la dama. Atácalo con el peón: no puede escapar.', h:'Avanza el peón para amenazar la casilla del caballo clavado.'}
 ];
 var idx=0, done={};
 var board=new ChessBoard(document.getElementById('board'),{onDrop:function(mv){return validate(mv);}});
