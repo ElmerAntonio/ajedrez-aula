@@ -210,7 +210,7 @@ function newQuiz(){
 function answerQuiz(o,btn){
   var buttons=qAnswers.querySelectorAll('button'); buttons.forEach(function(b){b.disabled=true;});
   if(o===qCur){ btn.classList.add('ok'); qStreak++; qFb.textContent='¡Muy bien! 🎉'; qFb.style.color='var(--selva-cl)';
-    if(window.celebrate) celebrate(btn); }
+    if(window.celebrate) celebrate(btn); if(window.AA) AA.award('aprende'); }
   else{ btn.classList.add('no'); qStreak=0; qFb.textContent='Es el '+qCur.nm.toLowerCase(); qFb.style.color='var(--fuego)';
     buttons.forEach(function(b){if(b.textContent===qCur.nm)b.classList.add('ok');});}
   qStreakEl.textContent=qStreak;
@@ -247,7 +247,8 @@ function flip(d){
       flipped.forEach(function(x){x.classList.add('done');x.classList.remove('up');});
       pairs++; memPairs.textContent=pairs; flipped=[]; lock=false;
       if(pairs===6){memFb.textContent='¡Ganaste! 🏆'; memFb.style.color='var(--ambar)';
-        if(window.celebrate) celebrate(document.getElementById('memGrid'));}
+        if(window.celebrate) celebrate(document.getElementById('memGrid'));
+        if(window.AA) AA.award('memoria');}
     } else {
       setTimeout(function(){flipped.forEach(function(x){x.classList.remove('up');});flipped=[];lock=false;},800);
     }
@@ -269,5 +270,6 @@ showMove(PIECES[4]); document.querySelectorAll('#moveGrid .piece-card')[4].class
 newQuiz(); buildMem();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

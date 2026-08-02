@@ -164,7 +164,7 @@ function finish(){
           : ['Sigue practicando 📚','Repasa las Reglas y vuelve a intentarlo. Arbitrar se aprende con la práctica.'];
   document.getElementById('doneTitle').textContent=msg[0]+' ('+score+'/'+CASES.length+')';
   document.getElementById('doneText').textContent=msg[1];
-  if(score>=5 && window.celebrate) setTimeout(function(){celebrate(document.getElementById('doneTitle'));},200);
+  if(score>=5){ if(window.AA) AA.award('arbitro'); if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('doneTitle'));},200); }
 }
 document.getElementById('retry').addEventListener('click',function(){
   i=0;score=0;scoreEl.textContent='0';
@@ -176,5 +176,6 @@ document.getElementById('retry').addEventListener('click',function(){
 render();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

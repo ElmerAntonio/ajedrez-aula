@@ -200,6 +200,7 @@ function answerNotation(s,btn){
     btn.style.background='var(--selva)'; btn.style.color='#fff';
     if(!solved['notacion'+Date.now()]){} // el puntaje de notación cuenta aciertos
     notaScore++; scoreEl.textContent = level==='notacion' ? notaScore : countSolved();
+    if(window.AA) AA.award('notacion');
     statusEl.textContent='✅ ¡Correcto! Se anota '+notaSAN; statusEl.className='status win';
   } else {
     btn.style.background='var(--fuego)'; btn.style.color='#fff';
@@ -224,6 +225,7 @@ function validate(mv){
     statusEl.textContent='✅ ¡Correcto! Bien jugado.';
     statusEl.className='status win';
     board.lock(true);
+    if(window.AA) AA.award('practica');
     if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('board'));},180);
     setTimeout(function(){ next(); }, 1250);
     return true; // deja que el tablero aplique la jugada para que se vea
@@ -271,5 +273,6 @@ document.getElementById('show').addEventListener('click',function(){
 load();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

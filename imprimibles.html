@@ -47,7 +47,8 @@
   /* imprime solo el material marcado */
   body.only .printable{display:none}
   body.only-tablero #m-tablero,body.only-cartas #m-cartas,
-  body.only-planilla #m-planilla,body.only-actividad #m-actividad{display:block}
+  body.only-planilla #m-planilla,body.only-actividad #m-actividad,
+  body.only-docente #m-docente{display:block}
 }
 </style>
 </head>
@@ -127,6 +128,38 @@
     </div>
   </div>
 
+  <!-- FICHA DEL DOCENTE -->
+  <div class="sheet-card">
+    <div class="head no-print">
+      <div><h2 style="font-size:26px">🧑‍🏫 Ficha del docente</h2><p class="note">Rúbrica de evaluación y lista de cotejo para observar en clase, sin exámenes escritos.</p></div>
+      <button class="btn" onclick="printOnly('docente')">🖨 Imprimir ficha</button>
+    </div>
+    <div class="printable" id="m-docente">
+      <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:6px">Evaluación de ajedrez · sin examen escrito</h3>
+      <p style="text-align:center;font-size:12px;margin-bottom:14px">Grupo: __________  Docente: __________  Fecha: ______</p>
+      <h4 style="font-family:var(--disp);margin:6px 0">Rúbrica (marca el nivel de cada estudiante)</h4>
+      <table class="psheet" style="margin-bottom:14px">
+        <tr><th style="width:34%">Estudiante</th><th>Inicial</th><th>En proceso</th><th>Logrado</th></tr>
+        <tr><td></td><td>☐</td><td>☐</td><td>☐</td></tr>
+        <tr><td></td><td>☐</td><td>☐</td><td>☐</td></tr>
+        <tr><td></td><td>☐</td><td>☐</td><td>☐</td></tr>
+        <tr><td></td><td>☐</td><td>☐</td><td>☐</td></tr>
+        <tr><td></td><td>☐</td><td>☐</td><td>☐</td></tr>
+        <tr><td></td><td>☐</td><td>☐</td><td>☐</td></tr>
+      </table>
+      <p style="font-size:11px;margin-bottom:14px"><b>Inicial:</b> reconoce las piezas y mueve al menos tres. &nbsp; <b>En proceso:</b> mueve todo bien pero olvida reglas especiales o el jaque. &nbsp; <b>Logrado:</b> juega una partida completa sin jugadas ilegales y reconoce el jaque mate.</p>
+      <h4 style="font-family:var(--disp);margin:6px 0">Lista de cotejo de actitud</h4>
+      <table class="psheet">
+        <tr><th>Observo que el estudiante…</th><th style="width:14%">Sí</th><th style="width:14%">Aún no</th></tr>
+        <tr><td>Da la mano al empezar y al terminar</td><td>☐</td><td>☐</td></tr>
+        <tr><td>Juega en silencio y respeta el turno</td><td>☐</td><td>☐</td></tr>
+        <tr><td>Acepta perder sin desarmar el tablero</td><td>☐</td><td>☐</td></tr>
+        <tr><td>Ayuda a un compañero que va empezando</td><td>☐</td><td>☐</td></tr>
+        <tr><td>Piensa antes de tocar la pieza</td><td>☐</td><td>☐</td></tr>
+      </table>
+    </div>
+  </div>
+
   <div class="disclaimer" style="margin-top:10px">
     <strong>Solo para enseñar y aprender.</strong> Material educativo abierto y gratuito. No otorga certificados ni acreditación. Publicado con GitHub Pages.
   </div>
@@ -178,5 +211,6 @@ PIECES.forEach(function(p){
   act.appendChild(row);
 });
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

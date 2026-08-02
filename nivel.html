@@ -193,6 +193,7 @@ function finish(){
   document.getElementById('levelName').textContent=name;
   document.getElementById('levelDesc').textContent=desc;
   document.getElementById('recs').innerHTML=recs;
+  if(window.AA) AA.award('nivel');
   if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('levelName'));},200);
 }
 
@@ -206,5 +207,6 @@ document.getElementById('retry').addEventListener('click',function(){
 render();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

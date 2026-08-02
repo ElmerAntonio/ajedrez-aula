@@ -153,6 +153,50 @@ select{background:var(--tinta);color:var(--marfil);border:1px solid #33473C;bord
   background:var(--tinta);border:1px solid #33473C;border-radius:10px;cursor:pointer;color:var(--marfil)}
 .promo .opts button:hover{background:var(--selva)}
 
+/* ---------- CHIP DE ROL EN LA BARRA ---------- */
+.role-chip{margin-left:8px;font-family:var(--mono);font-size:12px;letter-spacing:.03em;
+  background:var(--ambar);color:var(--tinta);border:0;padding:6px 12px;border-radius:999px;
+  cursor:pointer;font-weight:700;transition:filter .15s}
+.role-chip:hover{filter:brightness(1.08)}
+.role-chip:focus-visible{outline:3px solid var(--cielo);outline-offset:2px}
+
+/* ---------- MODAL DE ROL ---------- */
+.rm-overlay{position:fixed;inset:0;background:rgba(10,15,12,.72);backdrop-filter:blur(4px);
+  display:none;place-items:center;z-index:200;padding:18px}
+.rm-overlay.on{display:grid;animation:fadeUp .25s ease}
+.rm-box{background:var(--tinta2);border:1px solid #33473C;border-radius:18px;
+  padding:clamp(20px,4vw,34px);max-width:560px;width:100%;text-align:center}
+.rm-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+@media(max-width:560px){.rm-opts{grid-template-columns:1fr}}
+.rm-opts button{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--tinta);
+  border:2px solid #33473C;border-radius:14px;padding:16px 10px;cursor:pointer;color:var(--marfil);
+  transition:.15s;font-family:var(--body)}
+.rm-opts button:hover{border-color:var(--ambar);background:var(--tinta3)}
+.rm-opts button:focus-visible{outline:3px solid var(--cielo);outline-offset:2px}
+.rm-opts .rm-ic{font-size:36px;line-height:1}
+.rm-opts b{font-size:17px}
+.rm-opts small{color:#9DAFA2;font-size:12px}
+
+/* ---------- MEDALLAS ---------- */
+.badge-wall{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.badge{display:flex;flex-direction:column;align-items:center;gap:3px;width:82px;padding:10px 6px;
+  border-radius:12px;background:var(--tinta);border:1px solid #2E3F36;opacity:.45;filter:grayscale(1);transition:.2s}
+.badge.got{opacity:1;filter:none;border-color:var(--selva-cl);background:#20301F}
+.badge .b-ic{font-size:26px;line-height:1}
+.badge .b-lb{font-size:11px;font-family:var(--mono);text-align:center;color:#CFEBD8}
+.badge-toast{position:fixed;right:16px;bottom:16px;z-index:9998;background:var(--tinta2);
+  border:1px solid var(--selva-cl);border-radius:12px;padding:12px 16px;display:flex;gap:12px;align-items:center;
+  box-shadow:0 8px 30px rgba(0,0,0,.4);transform:translateY(24px);opacity:0;transition:transform .35s,opacity .35s;max-width:280px}
+.badge-toast.on{transform:none;opacity:1}
+.badge-toast .bt-ic{font-size:30px}
+.badge-toast b{color:var(--ambar)}
+
+/* ---------- FOCO ACCESIBLE EN EL TABLERO (WCAG 2.4.7) ---------- */
+.cb .sq:focus-visible{outline:3px solid var(--cielo);outline-offset:-3px;z-index:8}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--ambar);color:var(--tinta);
+  padding:8px 14px;border-radius:0 0 8px 0;font-weight:800;z-index:300}
+.skip-link:focus{left:0}
+
 /* ---------- CELEBRACIÓN (confeti) ---------- */
 .confetti-pc{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:9999;
   will-change:transform,opacity;animation:confBurst .9s ease-out forwards}

@@ -28,10 +28,10 @@ celular.
 | **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
 | **`reglas.html`** | Referencia completa de todas las reglas en un solo lugar, con diagramas: tablero, movimientos, enroque, al paso, coronación, jaque, mate, tablas y reglas de competencia. | Todos |
 | **`practicas.html`** | 15 ejercicios interactivos de **fácil a normal** (mover, capturar, tenedores, mate en una jugada) **más un modo de notación**. Con pistas, solución y verificación automática. | Alumnos |
-| **`estrategias.html`** | Las estrategias y tácticas que ganan partidas (centro, desarrollo, tenedor, clavada, brocheta, mate del pasillo) con una **prueba interactiva** para aplicarlas. | Alumnos y maestros |
-| **`jugar.html`** | **Juega contra una IA** integrada en tres niveles. Con pistas, deshacer, lista de jugadas, piezas capturadas y **reloj** para practicar con el tiempo. | Todos |
+| **`estrategias.html`** | Estrategias y **seis tácticas** (tenedor, clavada, brocheta, mate del pasillo, ataque doble, jaque descubierto), **nociones de final** (oposición, peón pasado) y una **prueba interactiva** de 6 retos. | Alumnos y maestros |
+| **`jugar.html`** | **Juega contra una IA** en tres niveles **o en modo 2 jugadores** en el mismo dispositivo. Con pistas, deshacer, lista de jugadas, capturas y **reloj**. | Todos |
 | **`arbitraje.html`** | Prácticas de **árbitro**: 8 casos reales de torneo escolar donde hay que decidir, con la regla FIDE que lo respalda y la adaptación para primaria. | Estudiantes de 7.º–9.º |
-| **`imprimibles.html`** | Materiales para **imprimir gratis**: tablero, fichas para recortar (cartas), planilla en blanco y hojas de actividad para niños pequeños. | Maestros |
+| **`imprimibles.html`** | Materiales para **imprimir gratis**: tablero, fichas para recortar (cartas), planilla en blanco, hoja de actividad y **ficha del docente** (rúbrica + lista de cotejo). | Maestros |
 | **`nivel.html`** | Test de 8 preguntas que **verifica tu nivel** (principiante, intermedio o avanzado) y recomienda qué practicar. | Alumnos |
 
 ---
@@ -97,15 +97,44 @@ HTML, CSS y JavaScript que se abren directamente.
 
 ---
 
-## 📱 Accesibilidad y diseño responsive
+## 👤 Personalización por rol y progreso
 
-- Se adapta a pantallas de celular, tableta y computadora.
+- Al entrar por primera vez, el sitio pregunta **si eres maestro, estudiante o
+  niño pequeño** y **reacomoda el inicio y la navegación** según la respuesta.
+  Puedes cambiar de rol cuando quieras desde el botón de la barra superior.
+- Un sistema de **medallas** (gamificación) premia cada logro: resolver un
+  ejercicio, acertar una notación, aplicar una estrategia, ganarle a la IA,
+  completar el test de nivel, aprobar las prácticas de árbitro, etc.
+- El rol y las medallas se guardan **solo en tu dispositivo** (almacenamiento
+  local del navegador). **No se envía nada a ningún servidor** y no hace falta
+  cuenta.
+
+## ♿ Accesibilidad y diseño responsive
+
+Aplicando las pautas **WCAG 2.2**:
+
+- **Operable por teclado:** los tableros se recorren con Tab y se juega con
+  Enter o la barra espaciadora; el modal de rol se cierra con Escape y atrapa
+  el foco correctamente.
+- **Foco visible** con contraste suficiente en casillas, botones y enlaces.
+- **Lectores de pantalla:** cada casilla anuncia su coordenada y la pieza que
+  contiene (por ejemplo, «e4, dama blanca») mediante etiquetas ARIA. Hay un
+  enlace «Saltar al contenido».
 - Respeta la preferencia del sistema de **reducir animaciones**.
-- Los tableros usan piezas Unicode grandes y de alto contraste.
-- Los textos están escritos en lenguaje sencillo, con analogías pensadas para
-  niñas y niños.
+- Se adapta a pantallas de celular, tableta y computadora.
+- Textos en lenguaje sencillo, con analogías pensadas para niñas y niños.
 
 ---
+
+## 🔜 Pendiente (roadmap)
+
+- **Lengua materna (ngäbere u otras):** el sitio está preparado para rotular en
+  otro idioma, pero las traducciones deben hacerse **con hablantes nativos**;
+  no se incluyen palabras inventadas. Queda pendiente para trabajarlo con la
+  comunidad.
+- **Videos:** por ahora no se incluyen (requerirían alojamiento externo). Las
+  explicaciones son con texto, diagramas y tableros animados.
+- Prácticas de mate en dos jugadas y guardado de partidas.
 
 ## 🧑‍🏫 Créditos y licencia
 

@@ -38,7 +38,18 @@ ChessBoard.prototype._build=function(){
   for(var r=0;r<8;r++)for(var c=0;c<8;c++){
     var sq=el('div','sq '+((r+c)%2===0?'lt':'dk'));
     sq.dataset.r=r; sq.dataset.c=c;
-    (function(rr,cc){ sq.addEventListener('click',function(){ self._click(rr,cc); }); })(r,c);
+    // accesibilidad: cada casilla es operable por teclado (WCAG 2.1.1)
+    if(this.interactive){
+      sq.setAttribute('role','button');
+      sq.setAttribute('tabindex','0');
+      sq.setAttribute('aria-label', Chess.rcToSq(r,c));
+    }
+    (function(rr,cc){
+      sq.addEventListener('click',function(){ self._click(rr,cc); });
+      sq.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); self._click(rr,cc); }
+      });
+    })(r,c);
     this.cells[r+'-'+c]=sq;
     g.appendChild(sq);
   }
@@ -105,6 +116,20 @@ ChessBoard.prototype.render=function(){
       cell.classList.add('hint');
       if(m.capture||m.ep) cell.classList.add('cap');
     });
+  }
+  // etiquetas accesibles con el contenido de cada casilla
+  if(this.interactive) this._aria();
+};
+
+var PNAME={p:'peón',n:'caballo',b:'alfil',r:'torre',q:'dama',k:'rey'};
+ChessBoard.prototype._aria=function(){
+  var b=this.state.board;
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var cell=this.cells[r+'-'+c]; if(!cell) continue;
+    var sq=Chess.rcToSq(r,c), code=b[r][c];
+    cell.setAttribute('aria-label', code
+      ? (sq+', '+(Chess.isWhite(code)?'blanca':'negra')+' '+PNAME[code.toLowerCase()])
+      : (sq+', vacía'));
   }
 };
 

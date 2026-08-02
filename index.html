@@ -41,7 +41,7 @@
   <div class="wrap" style="padding-top:0">
     <div class="eyebrow anim-in">Plataforma educativa libre · Edición 2026</div>
     <h1 class="anim-in d1">Ajedrez<br>en el Aula</h1>
-    <p class="lead anim-in d2" style="margin:.7em 0 0">Enseñar y aprender ajedrez desde cero: para el <strong>maestro</strong> que nunca ha dado una clase de ajedrez y para el <strong>alumno</strong> que mueve su primera pieza. Todo funciona en el navegador — sin cuenta, sin costo y, una vez abierto, sin internet.</p>
+    <p id="heroLead" class="lead anim-in d2" style="margin:.7em 0 0">Enseñar y aprender ajedrez desde cero: para el <strong>maestro</strong> que nunca ha dado una clase de ajedrez y para el <strong>alumno</strong> que mueve su primera pieza. Todo funciona en el navegador — sin cuenta, sin costo y, una vez abierto, sin internet.</p>
     <div class="for anim-in d3">
       <span>👩‍🏫 Para maestros</span>
       <span>🧒 Para alumnos</span>
@@ -113,6 +113,16 @@
     </div>
   </div>
 
+  <!-- MEDALLAS -->
+  <div class="card" style="margin-top:40px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <h3 style="margin:0">🏅 Tus logros</h3>
+      <span class="note mono">Medallas: <span id="badgeCount">0 / 8</span></span>
+    </div>
+    <p class="note" style="margin:.4em 0 0">Gana medallas mientras practicas, juegas y aprendes. Se guardan en este dispositivo (no se envía nada a ningún servidor).</p>
+    <div class="badge-wall" id="badgeWall"></div>
+  </div>
+
   <!-- MAESTROS Y ALUMNOS -->
   <div class="grid g2" style="margin-top:40px">
     <div class="card cool">
@@ -152,5 +162,6 @@
   Ajedrez en el Aula · material educativo libre · sin fines de acreditación<br>
   Código abierto alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a>
 </div>
+<script src="assets/app.js"></script>
 </body>
 </html>
