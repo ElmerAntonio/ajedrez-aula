@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prácticas de árbitro · Ajedrez en el Aula</title>
+<meta name="description" content="Aprende a arbitrar: casos reales de torneo escolar donde debes decidir qué hacer, con la regla FIDE que lo respalda y la adaptación para primaria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+.case{max-width:760px;margin:0 auto}
+.opt{display:block;width:100%;text-align:left;background:var(--tinta2);color:var(--marfil);
+  border:1px solid #33473C;border-radius:12px;padding:14px 18px;margin-bottom:10px;cursor:pointer;
+  font-family:var(--body);font-size:15.5px;transition:.15s}
+.opt:hover{background:var(--tinta3)}
+.opt.correct{background:#26402C;border-color:var(--selva-cl)}
+.opt.wrong{background:#3A211C;border-color:var(--fuego)}
+.opt:disabled{cursor:default}
+.explain{display:none;margin-top:12px;border-left:3px solid var(--ambar);padding:.4em 0 .4em .9em;color:#E4D8BE;font-size:15px}
+.explain.on{display:block}
+.explain .art{font-family:var(--mono);font-size:12px;color:var(--cielo);display:block;margin-top:.4em}
+.bar{height:8px;background:var(--tinta3);border-radius:99px;overflow:hidden;margin-bottom:20px}
+.bar>i{display:block;height:100%;background:var(--ambar);width:0;transition:width .3s}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
+  <a class="lnk" href="practicas.html">Prácticas</a>
+  <a class="lnk" href="estrategias.html">Estrategias</a>
+  <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk on" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
+</div></nav>
+
+<div class="wrap case">
+  <div class="eyebrow">Prácticas de árbitro · casos de torneo</div>
+  <h1>¿Qué haría un árbitro?</h1>
+  <p class="lead" style="margin:.6em 0 1.4em">En un torneo escolar surgen situaciones que hay que resolver con criterio. Lee cada caso y decide. Te decimos la regla FIDE que lo respalda y cómo adaptarla en primaria. Ideal para estudiantes de 7.° a 9.° que serán jueces auxiliares.</p>
+
+  <div class="bar"><i id="prog"></i></div>
+  <div class="card" style="padding:clamp(18px,3vw,28px)">
+    <div class="note mono" id="cnum">Caso 1 de 8</div>
+    <h3 id="ctitle" style="margin:.4em 0 .3em;font-size:clamp(18px,2.4vw,26px)">—</h3>
+    <p id="cscene" style="margin-bottom:16px"></p>
+    <div id="opts"></div>
+    <div class="explain" id="explain"></div>
+    <div style="text-align:right;margin-top:12px">
+      <button class="btn" id="next" disabled>Siguiente →</button>
+    </div>
+  </div>
+  <p class="note" style="text-align:center;margin-top:14px">Decisiones correctas: <span id="score" class="mono" style="color:var(--ambar)">0</span> / 8</p>
+
+  <div id="done" style="display:none;text-align:center;margin-top:20px">
+    <div class="card" style="padding:clamp(22px,4vw,36px)">
+      <h2 id="doneTitle">—</h2>
+      <p class="lead" id="doneText" style="margin:.4em auto"></p>
+      <button class="btn" id="retry" style="margin-top:14px">↻ Repasar los casos</button>
+    </div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:26px">
+    <strong>Solo para enseñar y aprender.</strong> Basado en las Leyes FIDE, con fines educativos. No otorga certificación de árbitro ni acreditación oficial. Publicado con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
+
+<script src="assets/board.js"></script>
+<script>
+(function(){
+'use strict';
+var CASES=[
+ {t:'Una jugada ilegal',
+  s:'En plena partida, un niño mueve su alfil en línea recta, como si fuera torre, y aprieta el reloj. El rival levanta la mano. ¿Qué haces?',
+  opts:['Dejar la jugada: ya apretó el reloj','Restaurar la posición anterior, aplicar pieza tocada y dar 2 minutos al rival','Declarar perdedor al que hizo la jugada ilegal','Reiniciar toda la partida'],
+  correct:1,
+  ex:'Se restaura la posición justo antes de la jugada ilegal y se aplica la regla de pieza tocada (debe mover ese alfil de forma legal). El rival recibe 2 minutos extra. Solo la <strong>segunda</strong> jugada ilegal del mismo jugador pierde la partida.',
+  art:'FIDE, Art. 7.5'},
+ {t:'Pieza tocada',
+  s:'Un jugador toca su caballo, lo piensa mejor y quiere mover la dama. ¿Se lo permites?',
+  opts:['Sí, mientras no lo haya soltado en otra casilla','No: si el caballo tiene una jugada legal, debe mover el caballo','Solo si avisa «compongo»','Sí, porque aún no apretó el reloj'],
+  correct:1,
+  ex:'Tocar una pieza propia obliga a moverla si tiene alguna jugada legal. «Compongo» (<span class="mono">j\'adoube</span>) solo sirve si se dice <strong>antes</strong> de tocar, y únicamente para acomodar.',
+  art:'FIDE, Art. 4.3'},
+ {t:'El rey en jaque',
+  s:'Un jugador está en jaque, pero hace una jugada que no resuelve el jaque (deja a su rey atacado) y aprieta el reloj. ¿Es válido?',
+  opts:['Sí, es su decisión','No: es jugada ilegal, se restaura la posición','Sí, pero pierde un turno','Se le captura el rey y gana el rival'],
+  correct:1,
+  ex:'Dejar al propio rey en jaque es una jugada ilegal. Se restaura la posición y debe hacer una jugada que resuelva el jaque. El rey <strong>nunca se captura</strong>: la partida termina con el mate.',
+  art:'FIDE, Art. 3.9 y 7.5'},
+ {t:'Cae la bandera',
+  s:'A un jugador se le acaba el tiempo (cae la bandera). Pero al rival solo le queda un rey solo, sin más piezas. ¿Quién gana?',
+  opts:['Gana por tiempo el que aún tiene piezas','Es tablas: el rival no tiene material para dar mate','Pierde el del rey solo','Se reanuda con más tiempo'],
+  correct:1,
+  ex:'Quien se queda sin tiempo normalmente pierde, PERO si el rival <strong>no tiene material suficiente para dar mate</strong> (aquí, un rey solo), la partida es <strong>tablas</strong>. Además, la caída de bandera debe reclamarse.',
+  art:'FIDE, Art. 6.9'},
+ {t:'Enroque dudoso',
+  s:'Un jugador quiere enrocar. Su torre de enroque está atacada por un alfil enemigo, y el rey no pasa por ninguna casilla atacada. ¿Puede enrocar?',
+  opts:['No, porque la torre está atacada','Sí: la restricción de casillas atacadas es solo para el rey','No, nunca se enroca bajo ataque','Solo si captura antes el alfil'],
+  correct:1,
+  ex:'Se permite enrocar aunque la <strong>torre</strong> esté atacada o pase por una casilla atacada. Lo que no se permite es que el <strong>rey</strong> esté en jaque, pase por, o llegue a una casilla atacada.',
+  art:'FIDE, Art. 3.8'},
+ {t:'Suena un celular',
+  s:'Durante la partida, suena el teléfono de un jugador dentro de la sala. En un torneo con reglamento FIDE estricto, ¿qué corresponde?',
+  opts:['Una advertencia y sigue jugando','Puede perder la partida','Solo apagar el teléfono','Cambiar de sala'],
+  correct:1,
+  ex:'La FIDE es muy estricta: si un dispositivo suena en la sala, el jugador <strong>puede perder la partida</strong>. En un torneo escolar, anúncialo con claridad antes de empezar y decide la sanción por adelantado.',
+  art:'FIDE, Art. 11.3'},
+ {t:'Reclamo de triple repetición',
+  s:'Un jugador dice que la misma posición se ha repetido tres veces y reclama tablas. ¿Qué haces primero?',
+  opts:['Declaras tablas de inmediato','Verificas con las planillas antes de decidir','Ignoras el reclamo','Le das la razón al que va ganando'],
+  correct:1,
+  ex:'La triple repetición <strong>no es automática</strong>: el jugador debe reclamarla y tú debes verificarla, normalmente con las <strong>planillas</strong>. Por eso anotar bien la partida es importante. A la quíntuple repetición, el árbitro declara tablas por sí mismo.',
+  art:'FIDE, Art. 9.2'},
+ {t:'Cómo se reclama',
+  s:'Un jugador quiere hacer un reclamo al árbitro en medio de la partida. ¿Cuál es el procedimiento correcto?',
+  opts:['Gritar para llamar al árbitro','Detener el reloj, levantar la mano y esperar en silencio','Discutir con el rival hasta acordar','Seguir jugando y reclamar al final'],
+  correct:1,
+  ex:'El protocolo: detener el reloj, levantar la mano y esperar al árbitro sin discutir con el rival. Luego explicar el hecho y acatar la decisión. Enseña este protocolo el mismo día que enseñas el reloj.',
+  art:'Procedimiento de reclamo'}
+];
+
+var i=0, score=0, answered=false;
+var cnum=document.getElementById('cnum'), ctitle=document.getElementById('ctitle'), cscene=document.getElementById('cscene'),
+    optsEl=document.getElementById('opts'), explain=document.getElementById('explain'), nextBtn=document.getElementById('next'),
+    prog=document.getElementById('prog'), scoreEl=document.getElementById('score');
+
+function render(){
+  answered=false; nextBtn.disabled=true; explain.className='explain'; optsEl.innerHTML='';
+  prog.style.width=(i/CASES.length*100)+'%';
+  var c=CASES[i];
+  cnum.textContent='Caso '+(i+1)+' de '+CASES.length;
+  ctitle.textContent=c.t; cscene.textContent=c.s;
+  c.opts.forEach(function(text,idx){
+    var b=document.createElement('button'); b.className='opt'; b.type='button'; b.textContent=text;
+    b.addEventListener('click',function(){answer(c,idx,b);});
+    optsEl.appendChild(b);
+  });
+}
+function answer(c,idx,btn){
+  if(answered)return; answered=true;
+  var buttons=optsEl.querySelectorAll('.opt'); buttons.forEach(function(b){b.disabled=true;});
+  if(idx===c.correct){ btn.classList.add('correct'); score++; }
+  else { btn.classList.add('wrong'); buttons[c.correct].classList.add('correct'); }
+  scoreEl.textContent=score;
+  explain.innerHTML=c.ex+'<span class="art">📖 '+c.art+'</span>';
+  explain.classList.add('on');
+  nextBtn.disabled=false;
+}
+nextBtn.addEventListener('click',function(){ i++; if(i>=CASES.length) finish(); else render(); });
+function finish(){
+  document.querySelector('.card').style.display='none';
+  document.querySelector('.bar').style.display='none';
+  var d=document.getElementById('done'); d.style.display='block';
+  var msg = score>=7 ? ['¡Árbitro estrella! 🏅','Dominas las decisiones. Estás listo para arbitrar las mesas de primaria.']
+          : score>=5 ? ['¡Buen juez! 👍','Ya decides bien. Repasa los casos que fallaste en la sección de Reglas.']
+          : ['Sigue practicando 📚','Repasa las Reglas y vuelve a intentarlo. Arbitrar se aprende con la práctica.'];
+  document.getElementById('doneTitle').textContent=msg[0]+' ('+score+'/'+CASES.length+')';
+  document.getElementById('doneText').textContent=msg[1];
+  if(score>=5 && window.celebrate) setTimeout(function(){celebrate(document.getElementById('doneTitle'));},200);
+}
+document.getElementById('retry').addEventListener('click',function(){
+  i=0;score=0;scoreEl.textContent='0';
+  document.getElementById('done').style.display='none';
+  document.querySelector('.card').style.display='';
+  document.querySelector('.bar').style.display='';
+  render();
+});
+render();
+})();
+</script>
+</body>
+</html>

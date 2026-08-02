@@ -13,11 +13,15 @@
 <body>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
   <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk" href="estrategias.html">Estrategias</a>
   <a class="lnk on" href="jugar.html">Jugar</a>
-  <a class="lnk" href="nivel.html">Mi nivel</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
 </div></nav>
 
 <div class="wrap">
@@ -52,6 +56,25 @@
           <button data-v="1">Fácil</button>
           <button data-v="2" class="on">Medio</button>
           <button data-v="3">Normal</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Reloj (practica con el tiempo)</label>
+        <div class="seg" id="clockSel">
+          <button data-v="0" class="on">Sin reloj</button>
+          <button data-v="5">5 min</button>
+          <button data-v="10">10 min</button>
+          <button data-v="15">15+5</button>
+        </div>
+        <div id="clocks" style="display:none;gap:10px;margin-top:8px">
+          <div class="card" style="flex:1;text-align:center;padding:10px">
+            <div class="note mono">TÚ</div>
+            <div id="clkHuman" class="mono" style="font-size:26px;font-weight:700;color:var(--marfil)">5:00</div>
+          </div>
+          <div class="card" style="flex:1;text-align:center;padding:10px">
+            <div class="note mono">IA</div>
+            <div id="clkAI" class="mono" style="font-size:26px;font-weight:700;color:var(--marfil)">5:00</div>
+          </div>
         </div>
       </div>
       <div class="field">
@@ -93,7 +116,43 @@ var captured={w:[],b:[]}; // piezas que capturó cada bando
 var humanSide='w';
 var level=2;
 var thinking=false;
+var gameOver=false;
 var GLYPH={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟',K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙'};
+
+/* ---------- reloj ---------- */
+var clockBase=0, clockInc=0, clocks={human:0,ai:0}, clockTimer=null, lastTick=0;
+var clkHuman=document.getElementById('clkHuman'), clkAI=document.getElementById('clkAI'),
+    clocksBox=document.getElementById('clocks');
+function fmt(s){ s=Math.max(0,Math.ceil(s)); var m=Math.floor(s/60); var ss=s%60; return m+':'+(ss<10?'0':'')+ss; }
+function drawClocks(){
+  clkHuman.textContent=fmt(clocks.human); clkAI.textContent=fmt(clocks.ai);
+  var active = board.state.turn===humanSide ? 'human':'ai';
+  clkHuman.style.color = (!gameOver && clockBase>0 && active==='human') ? 'var(--ambar)' : 'var(--marfil)';
+  clkAI.style.color = (!gameOver && clockBase>0 && active==='ai') ? 'var(--ambar)' : 'var(--marfil)';
+}
+function stopClocks(){ if(clockTimer){ clearInterval(clockTimer); clockTimer=null; } }
+function startClocks(){
+  stopClocks();
+  if(clockBase<=0){ clocksBox.style.display='none'; return; }
+  clocksBox.style.display='flex';
+  clocks={human:clockBase, ai:clockBase}; drawClocks();
+  lastTick=Date.now();
+  clockTimer=setInterval(function(){
+    if(gameOver){ return; }
+    var now=Date.now(), dt=(now-lastTick)/1000; lastTick=now;
+    var active = board.state.turn===humanSide ? 'human':'ai';
+    clocks[active]-=dt;
+    if(clocks[active]<=0){ clocks[active]=0; drawClocks(); flagFall(active); return; }
+    drawClocks();
+  },250);
+}
+function addIncrement(who){ if(clockBase>0 && clockInc>0){ clocks[who]+=clockInc; drawClocks(); } }
+function flagFall(who){
+  stopClocks(); gameOver=true; board.lock(true);
+  if(who==='human'){ statusEl.textContent='⏱ Se te acabó el tiempo. Ganó la IA.'; statusEl.className='status lose'; }
+  else { statusEl.textContent='⏱ ¡A la IA se le acabó el tiempo! Ganaste 🏆'; statusEl.className='status win';
+    if(window.celebrate) celebrate(document.getElementById('board')); }
+}
 
 var statusEl=document.getElementById('status');
 var movesEl=document.getElementById('moves');
@@ -131,11 +190,13 @@ function humanTurn(){ return board.state.turn===humanSide; }
 function afterHumanMove(mv,san){
   recordCapture(mv);
   sanList.push(san);
+  addIncrement('human');
   renderSide();
   checkEnd(function(){ setTimeout(aiMove, 260); });
 }
 
 function aiMove(){
+  if(gameOver) return;
   var st=Chess.status(board.state);
   if(st.over) return;
   thinking=true;
@@ -144,16 +205,18 @@ function aiMove(){
   board.lock(true);
   setTimeout(function(){
     var mv=Chess.bestMove(board.state, level);
-    if(mv){
-      var san=Chess.toSAN(board.state,mv);
-      recordCapture(mv);
-      board.applyMove(mv);
+    if(!mv){ thinking=false; board.lock(false); return; }
+    var san=Chess.toSAN(board.state,mv);
+    recordCapture(mv);
+    // el post-procesamiento ocurre cuando la jugada animada ya se confirmó
+    board.applyMove(mv, function(){
       sanList.push(san);
+      addIncrement('ai');
       renderSide();
-    }
-    thinking=false;
-    board.lock(false);
-    checkEnd(function(){ updateTurnStatus(); });
+      thinking=false;
+      board.lock(false);
+      checkEnd(function(){ updateTurnStatus(); });
+    });
   },30);
 }
 
@@ -173,11 +236,13 @@ function updateTurnStatus(){
 function checkEnd(cont){
   var st=Chess.status(board.state);
   if(!st.over){ if(cont) cont(); return; }
+  gameOver=true; stopClocks(); drawClocks();
   board.lock(true);
   if(st.result==='checkmate'){
     var humanWon = st.winner===humanSide;
     statusEl.textContent = humanWon ? '¡Jaque mate! Ganaste 🏆' : 'Jaque mate. Ganó la IA.';
     statusEl.className = 'status '+(humanWon?'win':'lose');
+    if(humanWon && window.celebrate) celebrate(document.getElementById('board'));
   } else if(st.result==='stalemate'){
     statusEl.textContent='Rey ahogado: tablas (empate).';
     statusEl.className='status check';
@@ -210,6 +275,13 @@ document.getElementById('level').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
   setSeg(this,b); level=+b.dataset.v;
 });
+document.getElementById('clockSel').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  setSeg(this,b);
+  clockBase = (+b.dataset.v)*60;
+  clockInc = (+b.dataset.v===15) ? 5 : 0;
+  newGame();
+});
 function setSeg(group,btn){
   Array.prototype.slice.call(group.children).forEach(function(x){x.classList.remove('on');});
   btn.classList.add('on');
@@ -222,6 +294,8 @@ function newGame(){
   board.setFlip(humanSide==='b');
   board.lock(false);
   history=[]; sanList=[]; captured={w:[],b:[]};
+  gameOver=false;
+  startClocks();
   renderSide();
   statusEl.className='status';
   statusEl.textContent = humanSide==='w' ? 'Tú juegas con blancas. Te toca mover.'
@@ -236,6 +310,7 @@ document.getElementById('undo').addEventListener('click',function(){
   if(!target) return;
   board.setState(target.fen);
   board.allowedSide=humanSide;
+  gameOver=false; board.lock(false);
   sanList=target.san; captured=target.capW!=null?{w:target.capW,b:target.capB}:{w:[],b:[]};
   board.lastMove=target.last||null;
   board.render();

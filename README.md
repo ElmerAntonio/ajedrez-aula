@@ -24,10 +24,14 @@ celular.
 | Página | Para qué sirve | Dirigido a |
 |---|---|---|
 | **`index.html`** | Portal de inicio que reúne todo. | Todos |
-| **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo con palabras que los niños entienden. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
-| **`practicas.html`** | 15 ejercicios interactivos de **fácil a normal**: mover piezas, capturar, tenedores y mate en una jugada. Con pistas, solución y verificación automática. | Alumnos |
+| **`aprende.html`** | Para los más pequeños que aún no saben jugar: conocer las piezas, ver cómo se mueven, y juegos de adivinar la ficha y de memoria (cartas). Colorido y con celebraciones. | Niños pequeños |
+| **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
+| **`reglas.html`** | Referencia completa de todas las reglas en un solo lugar, con diagramas: tablero, movimientos, enroque, al paso, coronación, jaque, mate, tablas y reglas de competencia. | Todos |
+| **`practicas.html`** | 15 ejercicios interactivos de **fácil a normal** (mover, capturar, tenedores, mate en una jugada) **más un modo de notación**. Con pistas, solución y verificación automática. | Alumnos |
 | **`estrategias.html`** | Las estrategias y tácticas que ganan partidas (centro, desarrollo, tenedor, clavada, brocheta, mate del pasillo) con una **prueba interactiva** para aplicarlas. | Alumnos y maestros |
-| **`jugar.html`** | **Juega contra una IA** integrada en tres niveles (fácil, medio, normal). Con pistas, deshacer, lista de jugadas y piezas capturadas. | Todos |
+| **`jugar.html`** | **Juega contra una IA** integrada en tres niveles. Con pistas, deshacer, lista de jugadas, piezas capturadas y **reloj** para practicar con el tiempo. | Todos |
+| **`arbitraje.html`** | Prácticas de **árbitro**: 8 casos reales de torneo escolar donde hay que decidir, con la regla FIDE que lo respalda y la adaptación para primaria. | Estudiantes de 7.º–9.º |
+| **`imprimibles.html`** | Materiales para **imprimir gratis**: tablero, fichas para recortar (cartas), planilla en blanco y hojas de actividad para niños pequeños. | Maestros |
 | **`nivel.html`** | Test de 8 preguntas que **verifica tu nivel** (principiante, intermedio o avanzado) y recomienda qué practicar. | Alumnos |
 
 ---
@@ -61,15 +65,19 @@ es la forma habitual de comprobar que la generación de movimientos es correcta.
 ```
 ajedrez-aula/
 ├── index.html          Portal de inicio
+├── aprende.html        Aprende jugando (niños pequeños)
 ├── guia.html           Guía docente (presentación de 40 láminas)
-├── practicas.html      Ejercicios interactivos (fácil → normal)
+├── reglas.html         Reglamento completo (referencia)
+├── practicas.html      Ejercicios interactivos + notación
 ├── estrategias.html    Estrategias + prueba interactiva
-├── jugar.html          Jugar contra la IA
+├── jugar.html          Jugar contra la IA (con reloj)
+├── arbitraje.html      Prácticas de árbitro
+├── imprimibles.html    Materiales para imprimir
 ├── nivel.html          Test de nivel
 ├── assets/
-│   ├── theme.css       Tema visual compartido
+│   ├── theme.css       Tema visual compartido + animaciones
 │   ├── chess.js        Motor de ajedrez + IA (sin dependencias)
-│   └── board.js        Tablero interactivo reutilizable
+│   └── board.js        Tablero interactivo + confeti
 └── README.md
 ```
 

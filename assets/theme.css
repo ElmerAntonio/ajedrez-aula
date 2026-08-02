@@ -108,7 +108,11 @@ strong{color:var(--marfil);font-weight:800}
 .cb .sq.hint.cap::before{width:82%;height:82%;background:transparent;
   border:5px solid rgba(200,80,60,.6);border-radius:50%}
 .cb .pc{position:absolute;width:12.5%;height:12.5%;display:grid;place-items:center;
-  z-index:4;transition:left .18s,top .18s;pointer-events:none}
+  z-index:4;transition:left .19s cubic-bezier(.4,0,.2,1),top .19s cubic-bezier(.4,0,.2,1),opacity .18s;
+  pointer-events:none}
+.cb .pc.capd{opacity:0}
+.cb .pc.pop{animation:pcpop .28s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pcpop{from{transform:scale(.5)}to{transform:scale(1)}}
 .cb .pc span{position:absolute;font-size:min(9vh,7vw);line-height:1;
   font-family:'DejaVu Sans','Segoe UI Symbol','Noto Sans Symbols 2',sans-serif}
 .cb .pc .f{color:#fff} .cb .pc .o{color:#111C17}
@@ -149,5 +153,32 @@ select{background:var(--tinta);color:var(--marfil);border:1px solid #33473C;bord
   background:var(--tinta);border:1px solid #33473C;border-radius:10px;cursor:pointer;color:var(--marfil)}
 .promo .opts button:hover{background:var(--selva)}
 
+/* ---------- CELEBRACIÓN (confeti) ---------- */
+.confetti-pc{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:9999;
+  will-change:transform,opacity;animation:confBurst .9s ease-out forwards}
+@keyframes confBurst{
+  0%{transform:translate(0,0) rotate(0);opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+
+/* ---------- ENTRADAS SUAVES ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.anim-in{animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both}
+.anim-in.d1{animation-delay:.06s}.anim-in.d2{animation-delay:.12s}
+.anim-in.d3{animation-delay:.18s}.anim-in.d4{animation-delay:.24s}
+.anim-in.d5{animation-delay:.3s}.anim-in.d6{animation-delay:.36s}
+.section-cards a.card,.section-cards .card{animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both}
+.section-cards>:nth-child(1){animation-delay:.03s}.section-cards>:nth-child(2){animation-delay:.08s}
+.section-cards>:nth-child(3){animation-delay:.13s}.section-cards>:nth-child(4){animation-delay:.18s}
+.section-cards>:nth-child(5){animation-delay:.23s}.section-cards>:nth-child(6){animation-delay:.28s}
+.section-cards>:nth-child(7){animation-delay:.33s}.section-cards>:nth-child(8){animation-delay:.38s}
+
+/* pulso de estado al ganar/acertar */
+@keyframes statusPop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+.status.win,.status.lose{animation:statusPop .45s ease}
+
 /* Accesibilidad: reduce animaciones */
-@media (prefers-reduced-motion:reduce){.cb .pc{transition:none}}
+@media (prefers-reduced-motion:reduce){
+  .cb .pc{transition:none}
+  .anim-in,.section-cards a.card,.section-cards .card,.status.win,.status.lose{animation:none}
+  .confetti-pc{display:none}
+}

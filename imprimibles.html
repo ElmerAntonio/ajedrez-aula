@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imprimibles · Ajedrez en el Aula</title>
+<meta name="description" content="Materiales para imprimir gratis: tablero de ajedrez, fichas para recortar (cartas), planilla en blanco y hojas de actividad para niños pequeños. Listos para el aula sin presupuesto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+.sheet-card{background:var(--tinta2);border:1px solid #2E3F36;border-radius:16px;padding:20px;margin-bottom:22px}
+.sheet-card .head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+/* --- material imprimible: fondo blanco para ahorrar tinta y verse en papel --- */
+.printable{background:#fff;color:#111;border-radius:10px;padding:20px}
+.printable h3,.printable p,.printable td,.printable th,.printable div{color:#111}
+/* tablero */
+.pboard{width:min(100%,420px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);
+  grid-template-rows:repeat(8,1fr);margin:0 auto;border:2px solid #111}
+.pboard div{display:grid;place-items:center;font-size:11px;color:#555}
+.pboard .d{background:#bfbfbf}
+/* fichas/cartas para recortar */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:640px;margin:0 auto}
+@media(max-width:560px){.cards{grid-template-columns:repeat(3,1fr)}}
+.pcard{border:2px dashed #999;border-radius:10px;padding:8px 4px;text-align:center;background:#fff}
+.pcard .g{font-size:38px;line-height:1;font-family:'DejaVu Sans','Segoe UI Symbol',sans-serif;color:#111}
+.pcard .g.w{color:#111;-webkit-text-stroke:1px #111}
+.pcard .n{font-family:var(--body);font-weight:800;font-size:13px}
+.pcard .v{font-size:10px;color:#666}
+/* planilla */
+.psheet{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px}
+.psheet th,.psheet td{border:1px solid #999;padding:6px 8px;text-align:left;height:26px}
+.psheet th{background:#eee}
+.psheet .meta td{height:30px}
+/* actividad */
+.act-row{display:flex;align-items:center;gap:16px;padding:10px 0;border-bottom:1px dashed #bbb}
+.act-row .g{font-size:34px;font-family:'DejaVu Sans','Segoe UI Symbol',sans-serif;width:50px;text-align:center}
+.act-row .line{flex:1;border-bottom:1.5px solid #333;height:22px}
+@media print{
+  body{background:#fff}
+  .nav,.foot,.no-print,.eyebrow,.disclaimer,.intro{display:none !important}
+  .sheet-card{border:none;padding:0;margin:0;background:#fff}
+  .sheet-card .head{display:none}
+  .printable{page-break-after:always;padding:0}
+  .wrap{padding:0;max-width:none}
+  /* imprime solo el material marcado */
+  body.only .printable{display:none}
+  body.only-tablero #m-tablero,body.only-cartas #m-cartas,
+  body.only-planilla #m-planilla,body.only-actividad #m-actividad{display:block}
+}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
+  <a class="lnk" href="practicas.html">Prácticas</a>
+  <a class="lnk" href="estrategias.html">Estrategias</a>
+  <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk on" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Imprimibles · para el aula sin presupuesto</div>
+  <h1>Materiales para imprimir</h1>
+  <p class="lead intro" style="margin:.6em 0 1.6em">Todo lo que necesitas en papel: un tablero, fichas para recortar (que sirven de cartas para reconocer las piezas), una planilla en blanco y hojas de actividad para los más pequeños. Usa el botón <strong>Imprimir</strong> de cada material. Consejo: plastifícalos con cinta y duran todo el año.</p>
+
+  <!-- TABLERO -->
+  <div class="sheet-card">
+    <div class="head no-print">
+      <div><h2 style="font-size:26px">🏁 Tablero de ajedrez</h2><p class="note">8 × 8 con coordenadas. Recórtalo y pégalo en cartulina.</p></div>
+      <button class="btn" onclick="printOnly('tablero')">🖨 Imprimir tablero</button>
+    </div>
+    <div class="printable" id="m-tablero">
+      <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:12px">Tablero de ajedrez · Ajedrez en el Aula</h3>
+      <div class="pboard" id="pboard"></div>
+      <p style="text-align:center;font-size:12px;margin-top:10px">Recuerda: la casilla clara siempre queda a tu derecha.</p>
+    </div>
+  </div>
+
+  <!-- FICHAS / CARTAS -->
+  <div class="sheet-card">
+    <div class="head no-print">
+      <div><h2 style="font-size:26px">🃏 Fichas para recortar (cartas)</h2><p class="note">Sirven como piezas de repuesto y como cartas para el juego de «reconocer la ficha».</p></div>
+      <button class="btn" onclick="printOnly('cartas')">🖨 Imprimir fichas</button>
+    </div>
+    <div class="printable" id="m-cartas">
+      <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:6px">Fichas de ajedrez para recortar</h3>
+      <p style="text-align:center;font-size:12px;margin-bottom:14px">Recorta por la línea punteada. Juego de cartas: reparte, y cada quien dice el nombre y cómo se mueve la pieza que le tocó.</p>
+      <div class="cards" id="pcards"></div>
+    </div>
+  </div>
+
+  <!-- PLANILLA -->
+  <div class="sheet-card">
+    <div class="head no-print">
+      <div><h2 style="font-size:26px">📝 Planilla en blanco</h2><p class="note">Para anotar la partida jugada por jugada. Practica la notación en papel.</p></div>
+      <button class="btn" onclick="printOnly('planilla')">🖨 Imprimir planilla</button>
+    </div>
+    <div class="printable" id="m-planilla">
+      <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:12px">Planilla de partida</h3>
+      <table class="psheet" style="margin-bottom:12px">
+        <tr class="meta"><td>Blancas: _______________</td><td>Negras: _______________</td></tr>
+        <tr class="meta"><td>Torneo: _______________</td><td>Fecha: ______  Mesa: ____</td></tr>
+      </table>
+      <table class="psheet" id="planilla"></table>
+      <p style="margin-top:10px;font-size:13px;font-family:var(--mono)">Resultado: 1–0 &nbsp; ½–½ &nbsp; 0–1 &nbsp;&nbsp;&nbsp; Firma blancas: ________ &nbsp; Firma negras: ________</p>
+    </div>
+  </div>
+
+  <!-- ACTIVIDAD NIÑOS -->
+  <div class="sheet-card">
+    <div class="head no-print">
+      <div><h2 style="font-size:26px">✏️ Hoja de actividad (niños pequeños)</h2><p class="note">Escribe el nombre de cada pieza. Colorea y aprende.</p></div>
+      <button class="btn" onclick="printOnly('actividad')">🖨 Imprimir actividad</button>
+    </div>
+    <div class="printable" id="m-actividad">
+      <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:6px">¿Cómo se llama cada pieza?</h3>
+      <p style="text-align:center;font-size:12px;margin-bottom:14px">Nombre: ________________________  Grado: ______</p>
+      <div id="activity"></div>
+      <p style="margin-top:14px;font-size:12px">Pinta las piezas de tu color favorito. ¡Buen trabajo! ⭐</p>
+    </div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:10px">
+    <strong>Solo para enseñar y aprender.</strong> Material educativo abierto y gratuito. No otorga certificados ni acreditación. Publicado con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
+
+<script>
+'use strict';
+function printOnly(name){
+  document.body.className='only only-'+name;
+  window.print();
+  setTimeout(function(){document.body.className='';},300);
+}
+// tablero
+var pb=document.getElementById('pboard');
+for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+  var d=document.createElement('div');
+  if((r+c)%2===1)d.className='d';
+  if(c===0)d.textContent=(8-r);
+  if(r===7)d.textContent=(d.textContent||'')+' '+'abcdefgh'[c];
+  pb.appendChild(d);
+}
+// fichas
+var PIECES=[['♔','♚','Rey','—'],['♕','♛','Dama','9'],['♖','♜','Torre','5'],
+            ['♗','♝','Alfil','3'],['♘','♞','Caballo','3'],['♙','♟','Peón','1']];
+var pc=document.getElementById('pcards');
+// dos juegos: blancas y negras
+[['w',0],['b',1]].forEach(function(side){
+  PIECES.forEach(function(p){
+    var card=document.createElement('div'); card.className='pcard';
+    card.innerHTML='<div class="g '+(side[0]==='w'?'w':'')+'">'+p[side[1]]+'</div><div class="n">'+p[2]+'</div><div class="v">Vale: '+p[3]+'</div>';
+    pc.appendChild(card);
+  });
+});
+// planilla
+var pl=document.getElementById('planilla');
+pl.innerHTML='<tr><th>#</th><th>Blancas</th><th>Negras</th><th>#</th><th>Blancas</th><th>Negras</th></tr>';
+for(var k=1;k<=20;k++){
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td>'+k+'</td><td></td><td></td><td>'+(k+20)+'</td><td></td><td></td>';
+  pl.appendChild(tr);
+}
+// actividad
+var act=document.getElementById('activity');
+PIECES.forEach(function(p){
+  var row=document.createElement('div'); row.className='act-row';
+  row.innerHTML='<div class="g">'+p[1]+'</div><div class="line"></div>';
+  act.appendChild(row);
+});
+</script>
+</body>
+</html>

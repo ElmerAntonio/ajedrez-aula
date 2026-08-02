@@ -26,46 +26,61 @@
 <body>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
   <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk" href="estrategias.html">Estrategias</a>
   <a class="lnk" href="jugar.html">Jugar</a>
-  <a class="lnk" href="nivel.html">Mi nivel</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
 </div></nav>
 
 <header class="hero">
   <div class="wrap" style="padding-top:0">
-    <div class="eyebrow">Plataforma educativa libre · Edición 2026</div>
-    <h1>Ajedrez<br>en el Aula</h1>
-    <p class="lead" style="margin:.7em 0 0">Enseñar y aprender ajedrez desde cero: para el <strong>maestro</strong> que nunca ha dado una clase de ajedrez y para el <strong>alumno</strong> que mueve su primera pieza. Todo funciona en el navegador — sin cuenta, sin costo y, una vez abierto, sin internet.</p>
-    <div class="for">
+    <div class="eyebrow anim-in">Plataforma educativa libre · Edición 2026</div>
+    <h1 class="anim-in d1">Ajedrez<br>en el Aula</h1>
+    <p class="lead anim-in d2" style="margin:.7em 0 0">Enseñar y aprender ajedrez desde cero: para el <strong>maestro</strong> que nunca ha dado una clase de ajedrez y para el <strong>alumno</strong> que mueve su primera pieza. Todo funciona en el navegador — sin cuenta, sin costo y, una vez abierto, sin internet.</p>
+    <div class="for anim-in d3">
       <span>👩‍🏫 Para maestros</span>
       <span>🧒 Para alumnos</span>
       <span>🏫 CEFACEI a 9.° grado</span>
       <span>📱 Funciona en el celular</span>
     </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1.8em">
+    <div class="anim-in d4" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1.8em">
       <a class="btn" href="jugar.html">♟ Jugar contra la IA</a>
-      <a class="btn ghost" href="guia.html">📖 Abrir la guía docente</a>
-      <a class="btn ghost" href="nivel.html">🎯 Descubrir mi nivel</a>
+      <a class="btn ghost" href="aprende.html">🧸 Aprender desde cero</a>
+      <a class="btn ghost" href="guia.html">📖 Guía docente</a>
+      <a class="btn ghost" href="nivel.html">🎯 Mi nivel</a>
     </div>
   </div>
 </header>
 
 <div class="wrap">
   <h2>Todo lo que hay aquí</h2>
-  <p class="lead" style="margin:.3em 0 1.4em">Cinco secciones que se complementan. Empieza por donde quieras.</p>
+  <p class="lead" style="margin:.3em 0 1.4em">Nueve secciones que se complementan. Empieza por donde quieras.</p>
 
   <div class="grid g3 section-cards">
+    <a class="card warm" href="aprende.html">
+      <div class="ico">🧸</div><h3>Aprende jugando</h3>
+      <p>Para los más pequeños que aún no saben jugar: conoce las piezas, mira cómo se mueven y juega a adivinar y a la memoria. Colorido y divertido.</p>
+      <p class="note" style="margin-top:.6em">Ideal para CEFACEI y primeros grados</p>
+    </a>
     <a class="card" href="guia.html">
       <div class="ico">📖</div><h3>Guía docente</h3>
       <p>Presentación de 40 láminas: el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo con palabras que los niños entienden. Con tableros animados.</p>
       <p class="note" style="margin-top:.6em">Ideal para el maestro · también sirve de repaso al alumno</p>
     </a>
+    <a class="card" href="reglas.html">
+      <div class="ico">📜</div><h3>Reglas</h3>
+      <p>Todas las reglas en un solo lugar para consultar rápido: el tablero, cómo se mueve cada pieza, enroque, al paso, coronación, jaque, mate, tablas y torneo.</p>
+      <p class="note" style="margin-top:.6em">Referencia completa con diagramas</p>
+    </a>
     <a class="card" href="practicas.html">
       <div class="ico">🧩</div><h3>Prácticas</h3>
-      <p>Ejercicios interactivos de fácil a normal: mover piezas, capturar, tenedores y mate en una jugada. La página te dice al instante si acertaste.</p>
-      <p class="note" style="margin-top:.6em">15 ejercicios con pistas y solución</p>
+      <p>Ejercicios interactivos de fácil a normal: mover piezas, capturar, tenedores, mate en una jugada y un modo de <strong>notación</strong>. Te dice al instante si acertaste.</p>
+      <p class="note" style="margin-top:.6em">15 ejercicios + práctica de notación</p>
     </a>
     <a class="card" href="estrategias.html">
       <div class="ico">♟</div><h3>Estrategias</h3>
@@ -74,8 +89,18 @@
     </a>
     <a class="card" href="jugar.html">
       <div class="ico">🤖</div><h3>Jugar contra la IA</h3>
-      <p>Una inteligencia artificial vive en la página y juega contra ti en tres niveles: fácil, medio y normal. Con pistas, deshacer y lista de jugadas.</p>
-      <p class="note" style="margin-top:.6em">Elige tu color y la dificultad</p>
+      <p>Una inteligencia artificial vive en la página y juega contra ti en tres niveles. Con pistas, deshacer, lista de jugadas y <strong>reloj</strong> para practicar con el tiempo.</p>
+      <p class="note" style="margin-top:.6em">Elige color, dificultad y reloj</p>
+    </a>
+    <a class="card" href="arbitraje.html">
+      <div class="ico">⚖️</div><h3>Prácticas de árbitro</h3>
+      <p>Casos reales de torneo escolar donde debes decidir qué hacer, con la regla FIDE que lo respalda. Para estudiantes que serán jueces auxiliares.</p>
+      <p class="note" style="margin-top:.6em">8 casos con explicación</p>
+    </a>
+    <a class="card" href="imprimibles.html">
+      <div class="ico">🖨️</div><h3>Imprimibles</h3>
+      <p>Materiales para imprimir gratis: tablero, fichas para recortar (cartas), planilla en blanco y hojas de actividad para niños pequeños.</p>
+      <p class="note" style="margin-top:.6em">Para el aula sin presupuesto</p>
     </a>
     <a class="card" href="nivel.html">
       <div class="ico">🎯</div><h3>Mi nivel</h3>
@@ -84,7 +109,7 @@
     </a>
     <div class="card warm">
       <div class="ico">🧭</div><h3>¿Por dónde empiezo?</h3>
-      <p><strong>Maestro:</strong> abre la Guía y sigue el plan de 12 clases.<br><strong>Alumno nuevo:</strong> haz el test de nivel y sigue sus recomendaciones.<br><strong>¿Ya juegas?</strong> ve directo a Jugar contra la IA.</p>
+      <p><strong>Niño pequeño:</strong> empieza en «Aprende jugando».<br><strong>Maestro:</strong> abre la Guía y sigue el plan de 12 clases.<br><strong>Alumno nuevo:</strong> haz el test de nivel y sigue sus recomendaciones.<br><strong>¿Ya juegas?</strong> ve directo a Jugar contra la IA.</p>
     </div>
   </div>
 

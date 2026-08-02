@@ -19,11 +19,15 @@
 <body>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
   <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk on" href="estrategias.html">Estrategias</a>
   <a class="lnk" href="jugar.html">Jugar</a>
-  <a class="lnk" href="nivel.html">Mi nivel</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
 </div></nav>
 
 <div class="wrap">
@@ -149,7 +153,9 @@ function validate(mv){
   if(ok){
     done[idx]=true; cscore.textContent=Object.keys(done).length+' / '+CH.length;
     statusEl.textContent='✅ ¡Estrategia aplicada!'; statusEl.className='status win';
-    board.lock(true); setTimeout(next,1200); return true;
+    board.lock(true);
+    if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('board'));},180);
+    setTimeout(next,1300); return true;
   }
   statusEl.textContent='🔁 Esa no logra la idea. Prueba otra.'; statusEl.className='status lose';
   return false;
