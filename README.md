@@ -24,13 +24,13 @@ celular.
 | Página | Para qué sirve | Dirigido a |
 |---|---|---|
 | **`index.html`** | Portal de inicio que reúne todo. | Todos |
-| **`aprende.html`** | Para los más pequeños que aún no saben jugar: conocer las piezas, ver cómo se mueven, y juegos de adivinar la ficha y de memoria (cartas). Colorido y con celebraciones. | Niños pequeños |
+| **`aprende.html`** | Para los más pequeños que aún no saben jugar: conocer las piezas, ver cómo se mueven, juegos de adivinar la ficha, de memoria (cartas) y **El caballo glotón** (capturar todos los peones). Colorido y con celebraciones. | Niños pequeños |
 | **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
 | **`pedagogia.html`** | Cómo enseñar de **muchas maneras** (por pasos, cuento, mini-juegos, ajedrez humano, descubrimiento, entre pares, gamificación), los **estilos de aprendizaje** (VAK + social), **adaptaciones por contexto** (rural, escasos recursos, ciudad, multigrado, aula numerosa), **cómo se forma el propio maestro** y un **planificador de clase** interactivo. | Maestros |
 | **`reglas.html`** | Referencia completa de todas las reglas en un solo lugar, con diagramas: tablero, movimientos, enroque, al paso, coronación, jaque, mate, tablas y reglas de competencia. | Todos |
 | **`practicas.html`** | 15 ejercicios interactivos de **fácil a normal** (mover, capturar, tenedores, mate en una jugada) **más un modo de notación**. Con pistas, solución y verificación automática. | Alumnos |
-| **`estrategias.html`** | Estrategias y **seis tácticas** (tenedor, clavada, brocheta, mate del pasillo, ataque doble, jaque descubierto), **nociones de final** (oposición, peón pasado) y una **prueba interactiva** de 6 retos. | Alumnos y maestros |
-| **`jugar.html`** | **Juega contra una IA** en tres niveles **o en modo 2 jugadores** en el mismo dispositivo. Con pistas, deshacer, lista de jugadas, capturas y **reloj**. | Todos |
+| **`estrategias.html`** | Estrategias y **ocho tácticas** (tenedor, clavada, brocheta, mate del pasillo, ataque doble, jaque descubierto, clavada ganadora, doble jaque), **nociones de final** (oposición, peón pasado) y una **prueba interactiva** de 7 retos. | Alumnos y maestros |
+| **`jugar.html`** | **Juega contra una IA** en tres niveles reales **o en modo 2 jugadores**. Con pistas, deshacer, lista de jugadas, capturas y **reloj**. | Todos |
 | **`arbitraje.html`** | Prácticas de **árbitro**: 8 casos reales de torneo escolar donde hay que decidir, con la regla FIDE que lo respalda y la adaptación para primaria. | Estudiantes de 7.º–9.º |
 | **`imprimibles.html`** | Materiales para **imprimir gratis**: tablero, fichas para recortar (cartas), planilla en blanco, hoja de actividad y **ficha del docente** (rúbrica + lista de cotejo). | Maestros |
 | **`nivel.html`** | Test de 8 preguntas que **verifica tu nivel** (principiante, intermedio o avanzado) y recomienda qué practicar. | Alumnos |
@@ -48,12 +48,15 @@ escrito desde cero en JavaScript (`assets/chess.js`) que:
    jugadas de anticipación, y evalúa las posiciones por material y posición de
    las piezas.
 
-Los tres niveles cambian cuánto «piensa» la IA:
+Los tres niveles son **reales** y distintos:
 
 - **Fácil** — juega rápido y a veces deja piezas a propósito, para que un
   principiante gane sus primeras partidas y no se desanime.
-- **Medio** — piensa 2 jugadas hacia adelante.
-- **Normal** — piensa 3 jugadas hacia adelante y elige la mejor.
+- **Medio** — mira unas 3 jugadas hacia adelante con algo de variedad.
+- **Difícil** — usa **profundización iterativa con límite de tiempo** (~1,8 s),
+  **búsqueda de reposo (quiescence)** para no regalar piezas en los cambios y
+  **extensión por jaque** para encontrar mates. Da pelea de verdad tanto a
+  maestros como a alumnos.
 
 El motor está verificado con pruebas **perft** estándar
 (`perft(4) = 197 281` desde la posición inicial y la posición *Kiwipete*), que
@@ -104,6 +107,10 @@ HTML, CSS y JavaScript que se abren directamente.
 - Al entrar por primera vez, el sitio pregunta **si eres maestro, estudiante o
   niño pequeño** y **reacomoda el inicio y la navegación** según la respuesta.
   Puedes cambiar de rol cuando quieras desde el botón de la barra superior.
+- Cada rol ve **solo las secciones apropiadas**: el estudiante y el niño no ven
+  el material docente (guía, pedagogía, imprimibles); el niño ve únicamente lo
+  esencial (aprender, jugar, practicar, reglas).
+- La barra de navegación se **colapsa en un menú (☰)** en pantallas pequeñas.
 - Un sistema de **medallas** (gamificación) premia cada logro: resolver un
   ejercicio, acertar una notación, aplicar una estrategia, ganarle a la IA,
   completar el test de nivel, aprobar las prácticas de árbitro, etc.

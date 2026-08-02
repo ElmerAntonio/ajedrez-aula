@@ -18,12 +18,18 @@ function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 var ROLES={
   maestro:{icon:'👩‍🏫', label:'Maestro',
     nav:['guia','pedagogia','reglas','imprimibles','arbitraje','practicas','estrategias','jugar','nivel','aprende'],
+    // el maestro ve todo
+    allow:null,
     hero:'Bienvenido, maestro. Aquí tienes la guía, la pedagogía, el reglamento, los imprimibles y las prácticas para llevar el ajedrez a tu aula, aunque nunca hayas jugado.'},
   estudiante:{icon:'🧒', label:'Estudiante',
-    nav:['aprende','practicas','jugar','estrategias','nivel','reglas','guia','pedagogia','arbitraje','imprimibles'],
+    nav:['aprende','practicas','jugar','estrategias','nivel','reglas','arbitraje'],
+    // el estudiante no ve material docente (guía, pedagogía, imprimibles)
+    allow:['aprende','practicas','jugar','estrategias','nivel','reglas','arbitraje'],
     hero:'¡Hola! Aprende, practica, juega contra la computadora y descubre tu nivel. Todo es como un juego: gana medallas mientras avanzas.'},
   nino:{icon:'🧸', label:'Niño pequeño',
-    nav:['aprende','jugar','practicas','reglas','estrategias','nivel','imprimibles','guia','pedagogia','arbitraje'],
+    nav:['aprende','jugar','practicas','reglas'],
+    // para los pequeños, solo lo esencial y divertido
+    allow:['aprende','jugar','practicas','reglas'],
     hero:'¡Vamos a jugar! Conoce las piezas, mira cómo se mueven y diviértete con los juegos. No necesitas saber nada todavía.'}
 };
 function getRole(){ var r=lsGet(LS_ROLE); return ROLES[r]?r:null; }
@@ -34,21 +40,29 @@ function base(href){ return (href||'').split('/').pop().replace('.html','').spli
 function applyRole(){
   var r=getRole();
   document.body.setAttribute('data-role', r||'');
-  // ---- reordena la navegación ----
+  var allow = r ? ROLES[r].allow : null; // null = ver todo
+  // ---- reordena y filtra la navegación ----
   var navIn=document.querySelector('.nav-in');
   if(navIn){
     var order=(r?ROLES[r].nav:null);
+    var links=Array.prototype.slice.call(navIn.querySelectorAll('a.lnk'));
     if(order){
-      var links=Array.prototype.slice.call(navIn.querySelectorAll('a.lnk'));
       links.sort(function(a,b){
         var ia=order.indexOf(base(a.getAttribute('href'))); var ib=order.indexOf(base(b.getAttribute('href')));
         if(ia<0)ia=99; if(ib<0)ib=99; return ia-ib;
       });
-      links.forEach(function(l){ navIn.appendChild(l); }); // reubica antes del chip
+      links.forEach(function(l){ navIn.appendChild(l); });
     }
+    // oculta las secciones no permitidas para el rol (con clase, no estilo,
+    // para que el menú móvil abierto tampoco las revele)
+    links.forEach(function(l){
+      var b=base(l.getAttribute('href'));
+      l.classList.toggle('role-hidden', !!(allow && allow.indexOf(b)<0));
+    });
+    ensureBurger(navIn);
     ensureRoleChip(navIn, r);
   }
-  // ---- reordena las tarjetas del inicio ----
+  // ---- reordena y filtra las tarjetas del inicio ----
   var cards=document.querySelector('.section-cards');
   if(cards && r){
     var order2=ROLES[r].nav;
@@ -59,12 +73,39 @@ function applyRole(){
       if(ia<0)ia=98; if(ib<0)ib=98; return ia-ib;
     });
     kids.forEach(function(k){ cards.appendChild(k); });
+    // oculta las tarjetas de secciones no permitidas (deja las que no son enlaces)
+    kids.forEach(function(k){
+      var h=k.getAttribute('href');
+      if(h && allow) k.style.display = (allow.indexOf(base(h))<0) ? 'none' : '';
+      else if(h) k.style.display='';
+    });
   }
   // ---- personaliza el hero del inicio ----
   var heroLead=document.getElementById('heroLead');
   if(heroLead && r){ heroLead.textContent=ROLES[r].hero; }
   // ---- muestra el muro de medallas si existe ----
   renderBadges();
+}
+
+/* botón hamburguesa para móviles: colapsa los enlaces */
+function ensureBurger(navIn){
+  var burger=document.getElementById('navBurger');
+  if(!burger){
+    burger=document.createElement('button');
+    burger.id='navBurger'; burger.className='nav-burger'; burger.type='button';
+    burger.setAttribute('aria-label','Abrir el menú'); burger.setAttribute('aria-expanded','false');
+    burger.innerHTML='☰';
+    burger.addEventListener('click',function(){
+      var open=navIn.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open?'true':'false');
+      burger.innerHTML=open?'✕':'☰';
+    });
+    // colapsa al tocar un enlace
+    navIn.addEventListener('click',function(e){
+      if(e.target.closest('a.lnk')){ navIn.classList.remove('open'); burger.setAttribute('aria-expanded','false'); burger.innerHTML='☰'; }
+    });
+  }
+  navIn.appendChild(burger);
 }
 
 /* chip de rol en la barra: muestra el rol y permite cambiarlo */

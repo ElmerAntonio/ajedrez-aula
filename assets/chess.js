@@ -347,17 +347,44 @@ function orderMoves(moves){
   });
 }
 
-function negamax(state, depth, alpha, beta, color){
+var NODECAP=350000, nodes=0;
+
+/* Búsqueda de reposo: solo capturas/coronaciones, para no evaluar en medio
+   de un cambio de piezas (evita que la IA regale material). */
+function quiesce(state, alpha, beta, color, deadline){
+  nodes++;
+  var standPat=color*evaluate(state);
+  if(standPat>=beta) return beta;
+  if(standPat>alpha) alpha=standPat;
+  if(nodes>NODECAP || Date.now()>deadline) return alpha;
+  var caps=legalMoves(state).filter(function(m){return m.capture||m.ep||m.promotion;});
+  caps=orderMoves(caps);
+  for(var i=0;i<caps.length;i++){
+    var val=-quiesce(makeMove(state,caps[i]), -beta, -alpha, -color, deadline);
+    if(val>=beta) return beta;
+    if(val>alpha) alpha=val;
+  }
+  return alpha;
+}
+
+var MATE=100000;
+function negamax(state, depth, alpha, beta, color, deadline, ply){
+  nodes++;
+  if(nodes>NODECAP || Date.now()>deadline) return color*evaluate(state);
   var moves=legalMoves(state);
   if(moves.length===0){
-    if(inCheck(state,state.turn)) return -100000 - depth; // mate: cuanto antes, mejor
+    // mate puntuado por distancia desde la raíz (ply): el mate más corto vale
+    // más, sin que las extensiones por jaque lo distorsionen.
+    if(inCheck(state,state.turn)) return -(MATE - ply);
     return 0; // ahogado
   }
-  if(depth===0) return color*evaluate(state);
+  if(depth<=0) return quiesce(state, alpha, beta, color, deadline);
+  var check=inCheck(state,state.turn);   // extensión: si estoy en jaque, busca más hondo
   moves=orderMoves(moves);
   var best=-Infinity;
   for(var i=0;i<moves.length;i++){
-    var val=-negamax(makeMove(state,moves[i]), depth-1, -beta, -alpha, -color);
+    var nd=depth-1+(check?1:0);
+    var val=-negamax(makeMove(state,moves[i]), nd, -beta, -alpha, -color, deadline, ply+1);
     if(val>best) best=val;
     if(best>alpha) alpha=best;
     if(alpha>=beta) break;
@@ -365,41 +392,59 @@ function negamax(state, depth, alpha, beta, color){
   return best;
 }
 
-/* Elige el mejor movimiento. difficulty: 1 fácil, 2 medio, 3 normal */
+/* Profundización iterativa con límite de tiempo: mientras haya tiempo, busca
+   un ply más hondo. Devuelve la mejor jugada del último nivel completado. */
+function search(state, maxDepth, timeMs, jitter){
+  var color=(state.turn==='w')?1:-1;
+  var root=orderMoves(legalMoves(state));
+  if(root.length===0) return null;
+  if(root.length===1) return root[0];
+  var deadline=Date.now()+timeMs;
+  nodes=0;
+  var bestScored=root.map(function(m){return {mv:m,val:0};});
+  for(var d=1; d<=maxDepth; d++){
+    var scored=[], completed=true;
+    for(var i=0;i<root.length;i++){
+      if(nodes>NODECAP || Date.now()>deadline){ completed=false; break; }
+      // ventana completa por jugada raíz: así el puntaje es EXACTO (no un
+      // límite de poda) y el ordenamiento entre jugadas es correcto.
+      var val=-negamax(makeMove(state,root[i]), d-1, -Infinity, Infinity, -color, deadline, 1);
+      scored.push({mv:root[i], val:val});
+    }
+    if(completed && scored.length){
+      scored.sort(function(a,b){return b.val-a.val;});
+      bestScored=scored;
+      root=scored.map(function(s){return s.mv;}); // mejor orden para el próximo nivel
+    } else { break; } // descarta el nivel incompleto y conserva el anterior
+  }
+  var top0=bestScored[0].val, margin=jitter||0;
+  var top=bestScored.filter(function(s){return s.val>=top0-margin;});
+  return top[Math.floor(Math.random()*top.length)].mv;
+}
+
+/* Elige el mejor movimiento. difficulty: 1 fácil, 2 medio, 3 difícil.
+   Los niveles son reales: el difícil usa quiescence + profundización iterativa. */
 function bestMove(state, difficulty){
   var moves=legalMoves(state);
   if(moves.length===0) return null;
-  var color=(state.turn==='w')?1:-1;
 
-  // Nivel fácil: mezcla de aleatoriedad con algo de sensatez (profundidad 1)
   if(difficulty<=1){
-    // 45% del tiempo juega una jugada razonable; si no, aleatoria (pero no regala mate)
-    if(Math.random()<0.45){
-      return pickBest(state,1,color,moves);
+    // Fácil: juega para que un principiante pueda ganar. Mitad al azar,
+    // mitad una jugada floja de profundidad 1 (con mucha variedad).
+    if(Math.random()<0.5){
+      var caps=moves.filter(function(m){return m.capture;});
+      var pool=(caps.length && Math.random()<0.5)?caps:moves;
+      return pool[Math.floor(Math.random()*pool.length)];
     }
-    // aleatoria, pero prefiere capturar si hay algo gratis evidente
-    var caps=moves.filter(function(m){return m.capture;});
-    var pool=(caps.length && Math.random()<0.5)?caps:moves;
-    return pool[Math.floor(Math.random()*pool.length)];
+    return search(state, 1, 200, 130);
   }
-  var depth = (difficulty>=3)?3:2;
-  // un poco de variedad: entre las mejores casi-iguales, elige al azar
-  return pickBest(state, depth, color, moves, difficulty>=3?0:25);
-}
-
-function pickBest(state, depth, color, moves, jitter){
-  moves=orderMoves(moves);
-  var scored=[];
-  var alpha=-Infinity, beta=Infinity, best=-Infinity;
-  for(var i=0;i<moves.length;i++){
-    var val=-negamax(makeMove(state,moves[i]), depth-1, -beta, -alpha, -color);
-    scored.push({mv:moves[i], val:val});
-    if(val>best) best=val;
-    if(val>alpha) alpha=val;
+  if(difficulty===2){
+    // Medio: mira ~3 jugadas, con algo de variedad.
+    return search(state, 3, 700, 35);
   }
-  var margin=jitter||0;
-  var top=scored.filter(function(s){return s.val>=best-margin;});
-  return top[Math.floor(Math.random()*top.length)].mv;
+  // Difícil: profundización iterativa hasta 5 plies (más extensiones por jaque)
+  // con ~1.8 s de reflexión y quiescence. Da pelea a maestros y alumnos.
+  return search(state, 5, 1800, 0);
 }
 
 /* ---------- API pública ---------- */
