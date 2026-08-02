@@ -13,11 +13,16 @@
 <body>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
   <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="pedagogia.html">Pedagogía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
   <a class="lnk on" href="practicas.html">Prácticas</a>
   <a class="lnk" href="estrategias.html">Estrategias</a>
   <a class="lnk" href="jugar.html">Jugar</a>
-  <a class="lnk" href="nivel.html">Mi nivel</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
 </div></nav>
 
 <div class="wrap">
@@ -29,17 +34,20 @@
     <button data-lv="facil" class="on">🟢 Fácil</button>
     <button data-lv="medio">🟡 Medio</button>
     <button data-lv="normal">🔴 Normal</button>
+    <button data-lv="notacion">🔤 Notación</button>
   </div>
 
   <div class="game">
     <div class="board-wrap">
       <div class="status" id="status">&nbsp;</div>
       <div id="board" class="cb"></div>
-      <div class="controls" style="justify-content:center;margin-top:4px">
+      <div class="controls" id="puzzleControls" style="justify-content:center;margin-top:4px">
         <button class="btn ghost sm" id="hint">💡 Pista</button>
         <button class="btn ghost sm" id="show">👁 Ver solución</button>
         <button class="btn sm" id="skip">⏭ Siguiente</button>
       </div>
+      <div id="notaOpts" style="display:none;width:100%;max-width:min(72vh,560px);margin:8px auto 0;
+           grid-template-columns:repeat(2,1fr);gap:8px"></div>
     </div>
     <div>
       <div class="card">
@@ -121,14 +129,27 @@ var board=new ChessBoard(document.getElementById('board'),{
   onDrop:function(mv,state){ return validate(mv); }
 });
 
+// posiciones para el modo Notación (se genera una jugada legal al azar y su notación correcta)
+var NOTA_FENS=[
+  'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1',
+  'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w - - 0 1',
+  'rnbqkb1r/pp2pppp/3p1n2/2p5/2B1P3/5N2/PPPP1PPP/RNBQK2R w - - 0 1',
+  'r2q1rk1/ppp2ppp/2np1n2/2b1p1B1/2B1P1b1/2NP1N2/PPP2PPP/R2Q1RK1 w - - 0 1',
+  '2kr3r/ppp2ppp/2n1b3/3q4/3P4/2N1BN2/PPP2PPP/R2Q1RK1 w - - 0 1'
+];
 var statusEl=document.getElementById('status');
 var pnum=document.getElementById('pnum');
 var ptitle=document.getElementById('ptitle');
 var pdesc=document.getElementById('pdesc');
 var phint=document.getElementById('phint');
 var scoreEl=document.getElementById('score');
+var notaOpts=document.getElementById('notaOpts');
+var puzzleControls=document.getElementById('puzzleControls');
+var notaSAN=null;
 
 function load(){
+  if(level==='notacion'){ loadNotation(); return; }
+  puzzleControls.style.display='flex'; notaOpts.style.display='none';
   current=PUZZLES[level][idx];
   board.setState(current.fen);
   board.setFlip(false);
@@ -141,6 +162,55 @@ function load(){
   phint.style.display='none';
   phint.textContent='';
 }
+
+function loadNotation(){
+  puzzleControls.style.display='none'; notaOpts.style.display='grid';
+  var fen=NOTA_FENS[Math.floor(Math.random()*NOTA_FENS.length)];
+  var st=Chess.parseFEN(fen);
+  var moves=Chess.legalMoves(st);
+  var mv=moves[Math.floor(Math.random()*moves.length)];
+  notaSAN=Chess.toSAN(st, mv);
+  board.setState(fen); board.setFlip(false); board.lock(true);
+  // marca la jugada: origen (ámbar) y destino (aro)
+  board.sel=mv.from;
+  board.legal=[];
+  board.render();
+  var toCell=board.cells[mv.to[0]+'-'+mv.to[1]]; if(toCell){toCell.classList.add('hint'); if(mv.capture||mv.ep) toCell.classList.add('cap');}
+  var fromSq=Chess.rcToSq(mv.from[0],mv.from[1]), toSq=Chess.rcToSq(mv.to[0],mv.to[1]);
+  ptitle.textContent='¿Cómo se anota esta jugada?';
+  pdesc.innerHTML='La pieza va de <strong class="mono">'+fromSq+'</strong> (casilla marcada) a <strong class="mono">'+toSq+'</strong> (aro). Elige la notación correcta.';
+  pnum.textContent='Notación';
+  phint.style.display='block'; phint.textContent='💡 Primero la inicial de la pieza (el peón no lleva), luego el destino. x = captura.';
+  statusEl.textContent='Lee la jugada marcada en el tablero.'; statusEl.className='status';
+  // opciones: la correcta + 3 distractores de otras jugadas legales
+  var opts=[notaSAN];
+  var others=moves.map(function(m){return Chess.toSAN(st,m);}).filter(function(s){return s!==notaSAN;});
+  others.sort(function(){return Math.random()-0.5;});
+  for(var i=0;i<others.length && opts.length<4;i++){ if(opts.indexOf(others[i])<0) opts.push(others[i]); }
+  opts.sort(function(){return Math.random()-0.5;});
+  notaOpts.innerHTML='';
+  opts.forEach(function(s){
+    var b=document.createElement('button'); b.className='btn ghost'; b.style.width='100%'; b.textContent=s;
+    b.addEventListener('click',function(){ answerNotation(s,b); });
+    notaOpts.appendChild(b);
+  });
+}
+function answerNotation(s,btn){
+  Array.prototype.slice.call(notaOpts.children).forEach(function(x){x.disabled=true;});
+  if(s===notaSAN){
+    btn.style.background='var(--selva)'; btn.style.color='#fff';
+    if(!solved['notacion'+Date.now()]){} // el puntaje de notación cuenta aciertos
+    notaScore++; scoreEl.textContent = level==='notacion' ? notaScore : countSolved();
+    if(window.AA) AA.award('notacion');
+    statusEl.textContent='✅ ¡Correcto! Se anota '+notaSAN; statusEl.className='status win';
+  } else {
+    btn.style.background='var(--fuego)'; btn.style.color='#fff';
+    Array.prototype.slice.call(notaOpts.children).forEach(function(x){ if(x.textContent===notaSAN){x.style.background='var(--selva)';x.style.color='#fff';} });
+    statusEl.textContent='La correcta es '+notaSAN; statusEl.className='status lose';
+  }
+  setTimeout(loadNotation, 1400);
+}
+var notaScore=0;
 
 function validate(mv){
   var from=Chess.rcToSq(mv.from[0],mv.from[1]);
@@ -156,7 +226,9 @@ function validate(mv){
     statusEl.textContent='✅ ¡Correcto! Bien jugado.';
     statusEl.className='status win';
     board.lock(true);
-    setTimeout(function(){ next(); }, 1100);
+    if(window.AA) AA.award('practica');
+    if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('board'));},180);
+    setTimeout(function(){ next(); }, 1250);
     return true; // deja que el tablero aplique la jugada para que se vea
   } else {
     statusEl.textContent='🔁 Esa no es. Inténtalo de nuevo.';
@@ -168,6 +240,7 @@ function validate(mv){
 function countSolved(){ return Object.keys(solved).filter(function(k){return k.indexOf(level)===0;}).length; }
 
 function next(){
+  if(level==='notacion'){ loadNotation(); return; }
   idx=(idx+1)%PUZZLES[level].length;
   load();
 }
@@ -176,7 +249,9 @@ document.getElementById('tabs').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
   Array.prototype.slice.call(this.children).forEach(function(x){x.classList.remove('on');});
   b.classList.add('on');
-  level=b.dataset.lv; idx=0; scoreEl.textContent=countSolved(); load();
+  level=b.dataset.lv; idx=0;
+  scoreEl.textContent = level==='notacion' ? notaScore : countSolved();
+  load();
 });
 document.getElementById('skip').addEventListener('click',next);
 document.getElementById('hint').addEventListener('click',function(){
@@ -199,5 +274,6 @@ document.getElementById('show').addEventListener('click',function(){
 load();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

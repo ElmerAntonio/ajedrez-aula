@@ -13,11 +13,16 @@
 <body>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
   <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="pedagogia.html">Pedagogía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk" href="estrategias.html">Estrategias</a>
   <a class="lnk on" href="jugar.html">Jugar</a>
-  <a class="lnk" href="nivel.html">Mi nivel</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
 </div></nav>
 
 <div class="wrap">
@@ -40,18 +45,44 @@
     <!-- Panel lateral -->
     <div>
       <div class="field">
+        <label>Modo de juego</label>
+        <div class="seg" id="mode">
+          <button data-v="ia" class="on">🤖 Contra la IA</button>
+          <button data-v="2p">👦👧 2 jugadores</button>
+        </div>
+      </div>
+      <div class="field" id="sideField">
         <label>Tu color</label>
         <div class="seg" id="side">
           <button data-v="w" class="on">Blancas ♔</button>
           <button data-v="b">Negras ♚</button>
         </div>
       </div>
-      <div class="field">
+      <div class="field" id="levelField">
         <label>Nivel de la IA</label>
         <div class="seg" id="level">
           <button data-v="1">Fácil</button>
           <button data-v="2" class="on">Medio</button>
           <button data-v="3">Normal</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Reloj (practica con el tiempo)</label>
+        <div class="seg" id="clockSel">
+          <button data-v="0" class="on">Sin reloj</button>
+          <button data-v="5">5 min</button>
+          <button data-v="10">10 min</button>
+          <button data-v="15">15+5</button>
+        </div>
+        <div id="clocks" style="display:none;gap:10px;margin-top:8px">
+          <div class="card" style="flex:1;text-align:center;padding:10px">
+            <div class="note mono" id="lblHuman">TÚ</div>
+            <div id="clkHuman" class="mono" style="font-size:26px;font-weight:700;color:var(--marfil)">5:00</div>
+          </div>
+          <div class="card" style="flex:1;text-align:center;padding:10px">
+            <div class="note mono" id="lblAI">IA</div>
+            <div id="clkAI" class="mono" style="font-size:26px;font-weight:700;color:var(--marfil)">5:00</div>
+          </div>
         </div>
       </div>
       <div class="field">
@@ -92,8 +123,50 @@ var sanList=[];         // notación
 var captured={w:[],b:[]}; // piezas que capturó cada bando
 var humanSide='w';
 var level=2;
+var mode='ia';           // 'ia' o '2p'
 var thinking=false;
+var gameOver=false;
 var GLYPH={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟',K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙'};
+
+/* ---------- reloj ---------- */
+var clockBase=0, clockInc=0, clocks={human:0,ai:0}, clockTimer=null, lastTick=0;
+var clkHuman=document.getElementById('clkHuman'), clkAI=document.getElementById('clkAI'),
+    clocksBox=document.getElementById('clocks');
+function fmt(s){ s=Math.max(0,Math.ceil(s)); var m=Math.floor(s/60); var ss=s%60; return m+':'+(ss<10?'0':'')+ss; }
+function drawClocks(){
+  clkHuman.textContent=fmt(clocks.human); clkAI.textContent=fmt(clocks.ai);
+  var active = board.state.turn===humanSide ? 'human':'ai';
+  clkHuman.style.color = (!gameOver && clockBase>0 && active==='human') ? 'var(--ambar)' : 'var(--marfil)';
+  clkAI.style.color = (!gameOver && clockBase>0 && active==='ai') ? 'var(--ambar)' : 'var(--marfil)';
+}
+function stopClocks(){ if(clockTimer){ clearInterval(clockTimer); clockTimer=null; } }
+function startClocks(){
+  stopClocks();
+  if(clockBase<=0){ clocksBox.style.display='none'; return; }
+  clocksBox.style.display='flex';
+  clocks={human:clockBase, ai:clockBase}; drawClocks();
+  lastTick=Date.now();
+  clockTimer=setInterval(function(){
+    if(gameOver){ return; }
+    var now=Date.now(), dt=(now-lastTick)/1000; lastTick=now;
+    var active = board.state.turn===humanSide ? 'human':'ai';
+    clocks[active]-=dt;
+    if(clocks[active]<=0){ clocks[active]=0; drawClocks(); flagFall(active); return; }
+    drawClocks();
+  },250);
+}
+function addIncrement(who){ if(clockBase>0 && clockInc>0){ clocks[who]+=clockInc; drawClocks(); } }
+function flagFall(who){
+  stopClocks(); gameOver=true; board.lock(true);
+  if(mode==='2p'){
+    var ganan = who==='human' ? 'las negras' : 'las blancas'; // el del reloj caído pierde
+    statusEl.textContent='⏱ Se acabó el tiempo. Ganan '+ganan+'.'; statusEl.className='status win';
+    if(window.celebrate) celebrate(document.getElementById('board')); return;
+  }
+  if(who==='human'){ statusEl.textContent='⏱ Se te acabó el tiempo. Ganó la IA.'; statusEl.className='status lose'; }
+  else { statusEl.textContent='⏱ ¡A la IA se le acabó el tiempo! Ganaste 🏆'; statusEl.className='status win';
+    if(window.AA) AA.award('gana'); if(window.celebrate) celebrate(document.getElementById('board')); }
+}
 
 var statusEl=document.getElementById('status');
 var movesEl=document.getElementById('moves');
@@ -131,11 +204,29 @@ function humanTurn(){ return board.state.turn===humanSide; }
 function afterHumanMove(mv,san){
   recordCapture(mv);
   sanList.push(san);
+  if(mode==='2p'){
+    // en 2 jugadores el incremento va al bando que acaba de mover
+    var mover = board.state.turn==='w' ? 'ai' : 'human'; // el que movió es el contrario al turno actual
+    addIncrement(mover);
+    renderSide();
+    checkEnd(function(){ updateTurnStatus2p(); });
+    return;
+  }
+  addIncrement('human');
   renderSide();
   checkEnd(function(){ setTimeout(aiMove, 260); });
 }
 
+function updateTurnStatus2p(){
+  var st=Chess.status(board.state);
+  if(st.over) return;
+  var lado = board.state.turn==='w' ? 'las blancas' : 'las negras';
+  statusEl.textContent = (st.check?'¡Jaque! ':'') + 'Turno de '+lado+'.';
+  statusEl.className = 'status'+(st.check?' check':'');
+}
+
 function aiMove(){
+  if(gameOver) return;
   var st=Chess.status(board.state);
   if(st.over) return;
   thinking=true;
@@ -144,16 +235,18 @@ function aiMove(){
   board.lock(true);
   setTimeout(function(){
     var mv=Chess.bestMove(board.state, level);
-    if(mv){
-      var san=Chess.toSAN(board.state,mv);
-      recordCapture(mv);
-      board.applyMove(mv);
+    if(!mv){ thinking=false; board.lock(false); return; }
+    var san=Chess.toSAN(board.state,mv);
+    recordCapture(mv);
+    // el post-procesamiento ocurre cuando la jugada animada ya se confirmó
+    board.applyMove(mv, function(){
       sanList.push(san);
+      addIncrement('ai');
       renderSide();
-    }
-    thinking=false;
-    board.lock(false);
-    checkEnd(function(){ updateTurnStatus(); });
+      thinking=false;
+      board.lock(false);
+      checkEnd(function(){ updateTurnStatus(); });
+    });
   },30);
 }
 
@@ -173,11 +266,19 @@ function updateTurnStatus(){
 function checkEnd(cont){
   var st=Chess.status(board.state);
   if(!st.over){ if(cont) cont(); return; }
+  gameOver=true; stopClocks(); drawClocks();
   board.lock(true);
   if(st.result==='checkmate'){
-    var humanWon = st.winner===humanSide;
-    statusEl.textContent = humanWon ? '¡Jaque mate! Ganaste 🏆' : 'Jaque mate. Ganó la IA.';
-    statusEl.className = 'status '+(humanWon?'win':'lose');
+    if(mode==='2p'){
+      var g = st.winner==='w' ? 'las blancas' : 'las negras';
+      statusEl.textContent='¡Jaque mate! Ganan '+g+' 🏆'; statusEl.className='status win';
+      if(window.celebrate) celebrate(document.getElementById('board'));
+    } else {
+      var humanWon = st.winner===humanSide;
+      statusEl.textContent = humanWon ? '¡Jaque mate! Ganaste 🏆' : 'Jaque mate. Ganó la IA.';
+      statusEl.className = 'status '+(humanWon?'win':'lose');
+      if(humanWon){ if(window.AA) AA.award('gana'); if(window.celebrate) celebrate(document.getElementById('board')); }
+    }
   } else if(st.result==='stalemate'){
     statusEl.textContent='Rey ahogado: tablas (empate).';
     statusEl.className='status check';
@@ -202,6 +303,14 @@ function renderSide(){
 }
 
 /* ---------- controles ---------- */
+document.getElementById('mode').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  setSeg(this,b); mode=b.dataset.v;
+  var hide = mode==='2p';
+  document.getElementById('sideField').style.display = hide?'none':'flex';
+  document.getElementById('levelField').style.display = hide?'none':'flex';
+  newGame();
+});
 document.getElementById('side').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
   setSeg(this,b); humanSide=b.dataset.v; newGame();
@@ -209,6 +318,13 @@ document.getElementById('side').addEventListener('click',function(e){
 document.getElementById('level').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
   setSeg(this,b); level=+b.dataset.v;
+});
+document.getElementById('clockSel').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  setSeg(this,b);
+  clockBase = (+b.dataset.v)*60;
+  clockInc = (+b.dataset.v===15) ? 5 : 0;
+  newGame();
 });
 function setSeg(group,btn){
   Array.prototype.slice.call(group.children).forEach(function(x){x.classList.remove('on');});
@@ -218,10 +334,24 @@ function setSeg(group,btn){
 document.getElementById('newgame').addEventListener('click',newGame);
 function newGame(){
   board.setState(Chess.START_FEN);
+  history=[]; sanList=[]; captured={w:[],b:[]};
+  gameOver=false;
+  // etiquetas de reloj según el modo
+  document.getElementById('lblHuman').textContent = mode==='2p' ? 'BLANCAS' : 'TÚ';
+  document.getElementById('lblAI').textContent    = mode==='2p' ? 'NEGRAS' : 'IA';
+  if(mode==='2p'){
+    board.allowedSide=null;      // ambos bandos pueden mover
+    board.setFlip(false);
+    board.lock(false);
+    startClocks(); renderSide();
+    statusEl.className='status';
+    statusEl.textContent='2 jugadores · turno de las blancas.';
+    return;
+  }
   board.allowedSide=humanSide;
   board.setFlip(humanSide==='b');
   board.lock(false);
-  history=[]; sanList=[]; captured={w:[],b:[]};
+  startClocks();
   renderSide();
   statusEl.className='status';
   statusEl.textContent = humanSide==='w' ? 'Tú juegas con blancas. Te toca mover.'
@@ -235,11 +365,12 @@ document.getElementById('undo').addEventListener('click',function(){
   var target=history.pop();
   if(!target) return;
   board.setState(target.fen);
-  board.allowedSide=humanSide;
+  board.allowedSide = mode==='2p' ? null : humanSide;
+  gameOver=false; board.lock(false);
   sanList=target.san; captured=target.capW!=null?{w:target.capW,b:target.capB}:{w:[],b:[]};
   board.lastMove=target.last||null;
   board.render();
-  renderSide(); updateTurnStatus();
+  renderSide(); if(mode==='2p') updateTurnStatus2p(); else updateTurnStatus();
 });
 
 document.getElementById('hint').addEventListener('click',function(){
@@ -271,5 +402,6 @@ board._apply=function(mv){ pushHistory(); origApply(mv); };
 renderSide();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

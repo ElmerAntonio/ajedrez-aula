@@ -19,11 +19,16 @@
 <body>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
   <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="pedagogia.html">Pedagogía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk on" href="estrategias.html">Estrategias</a>
   <a class="lnk" href="jugar.html">Jugar</a>
-  <a class="lnk" href="nivel.html">Mi nivel</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
 </div></nav>
 
 <div class="wrap">
@@ -44,7 +49,7 @@
   <div class="card warm" style="margin-bottom:38px"><p><em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Regla de oro para principiantes:</em> no saques la dama en las primeras jugadas. Parece fuerte, pero el rival la persigue con piezas pequeñas y pierdes tiempo mientras él desarrolla su ejército.</p></div>
 
   <!-- TÁCTICAS -->
-  <h2>2 · Las cuatro tácticas esenciales</h2>
+  <h2>2 · Las seis tácticas esenciales</h2>
   <p class="lead" style="margin:.4em 0 20px">Una táctica es una jugada (o dos) que gana material o da mate por la fuerza. Reconocerlas es lo que más rápido sube el nivel.</p>
 
   <div class="grid" style="grid-template-columns:1fr;gap:22px;margin-bottom:40px">
@@ -68,10 +73,37 @@
       <div><span class="tag u">Mate del pasillo</span><h3 style="margin:.4em 0">El mate de la última fila</h3>
         <p>El rey enrocado queda encerrado por sus propios peones. Una torre o dama entra por la última fila y no hay escape. Es el mate que más partidas escolares decide. La defensa: hacerle un «respiradero» al rey adelantando un peón.</p></div>
     </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="8/6k1/8/4Q3/8/8/1r6/K7" data-mark="e5"></div>
+      <div><span class="tag u">Ataque doble</span><h3 style="margin:.4em 0">El ataque doble</h3>
+        <p>Una pieza (a menudo la dama) amenaza dos cosas por líneas distintas. Aquí <span class="mono" style="color:var(--ambar)">De5+</span> da jaque al rey y a la vez ataca la torre: el rival salva al rey y pierde la torre.</p></div>
+    </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="4k3/8/8/2N5/8/8/8/4R2K" data-mark="c5"></div>
+      <div><span class="tag u">Descubierto</span><h3 style="margin:.4em 0">El jaque descubierto</h3>
+        <p>Mueves una pieza y descubres el jaque de otra que estaba detrás. Como el jaque manda, tu pieza que se movió puede capturar «gratis». Aquí el caballo captura en c5 y descubre el jaque de la torre.</p></div>
+    </div>
   </div>
 
+  <!-- FINALES -->
+  <h2>3 · Nociones de final</h2>
+  <p class="lead" style="margin:.4em 0 18px">Cuando quedan pocas piezas, mandan dos ideas: la oposición de reyes y los peones pasados.</p>
+  <div class="grid" style="grid-template-columns:1fr;gap:22px;margin-bottom:40px">
+    <div class="card concept">
+      <div class="mini cb" data-fen="8/8/4k3/4K3/8/8/8/8" data-mark="e5"></div>
+      <div><span class="tag g">Oposición</span><h3 style="margin:.4em 0">La oposición</h3>
+        <p>Dos reyes frente a frente con una casilla en medio. Tiene la oposición <strong>el que NO le toca mover</strong>: obliga al otro a apartarse y así avanza su rey. Es la llave de casi todos los finales de rey y peón.</p></div>
+    </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="8/8/8/3P4/8/8/4k3/4K3" data-mark="d5"></div>
+      <div><span class="tag g">Peón pasado</span><h3 style="margin:.4em 0">El peón pasado</h3>
+        <p>Un peón sin peones enemigos que lo detengan en su columna ni en las de al lado. Su misión es coronar. «Un peón pasado debe ser empujado»: apóyalo con tu rey y conviértelo en dama.</p></div>
+    </div>
+  </div>
+  <div class="card warm" style="margin-bottom:40px"><p><em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Mates elementales:</em> para ganar cuando te sobra material, aprende los mates básicos — rey+dama, rey+dos torres y rey+torre contra rey solo. Practícalos en la sección de <a href="practicas.html">Prácticas</a> (nivel Normal) y contra la IA en <a href="jugar.html">Jugar</a>.</p></div>
+
   <!-- PRUEBA INTERACTIVA -->
-  <h2>3 · Prueba: juega la estrategia</h2>
+  <h2 style="margin-top:.4em">4 · Prueba: juega la estrategia</h2>
   <p class="lead" style="margin:.4em 0 18px">Ahora te toca a ti. En cada posición hay una jugada que aplica la idea que acabas de leer. Muévela en el tablero.</p>
 
   <div class="game">
@@ -124,7 +156,11 @@ var CH=[
   {fen:'q7/8/8/8/k7/6K1/8/7R w - - 0 1', sol:[['h1','a1']],
    t:'La brocheta', d:'Da jaque en la columna del rey. Detrás de él está la dama.', h:'Lleva la torre a la columna a y da jaque.'},
   {fen:'6k1/5ppp/8/8/8/8/8/R6K w - - 0 1', sol:[['a1','a8']],
-   t:'Mate del pasillo', d:'Aprovecha que el rey está encerrado por sus peones. Da mate en una jugada.', h:'La torre entra por la última fila.'}
+   t:'Mate del pasillo', d:'Aprovecha que el rey está encerrado por sus peones. Da mate en una jugada.', h:'La torre entra por la última fila.'},
+  {fen:'8/6k1/8/8/8/8/1r6/K3Q3 w - - 0 1', sol:[['e1','e5']],
+   t:'Ataque doble', d:'Mueve la dama a una casilla desde donde des jaque al rey y ataques la torre a la vez.', h:'Busca una casilla que toque al rey por una línea y a la torre por otra.'},
+  {fen:'4k3/8/8/2q5/4N3/8/8/4R2K w - - 0 1', sol:[['e4','c5']],
+   t:'Jaque descubierto', d:'Mueve el caballo capturando la dama y descubre el jaque de tu torre.', h:'El caballo se quita de en medio y captura; detrás aparece la torre dando jaque.'}
 ];
 var idx=0, done={};
 var board=new ChessBoard(document.getElementById('board'),{onDrop:function(mv){return validate(mv);}});
@@ -149,7 +185,10 @@ function validate(mv){
   if(ok){
     done[idx]=true; cscore.textContent=Object.keys(done).length+' / '+CH.length;
     statusEl.textContent='✅ ¡Estrategia aplicada!'; statusEl.className='status win';
-    board.lock(true); setTimeout(next,1200); return true;
+    board.lock(true);
+    if(window.AA) AA.award('estrategia');
+    if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('board'));},180);
+    setTimeout(next,1300); return true;
   }
   statusEl.textContent='🔁 Esa no logra la idea. Prueba otra.'; statusEl.className='status lose';
   return false;
@@ -168,5 +207,6 @@ document.getElementById('show').addEventListener('click',function(){
 load();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

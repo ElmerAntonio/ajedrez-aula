@@ -29,11 +29,16 @@
 <body>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
   <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="pedagogia.html">Pedagogía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk" href="estrategias.html">Estrategias</a>
   <a class="lnk" href="jugar.html">Jugar</a>
-  <a class="lnk on" href="nivel.html">Mi nivel</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk on" href="nivel.html">Nivel</a>
 </div></nav>
 
 <div class="wrap q-wrap">
@@ -189,6 +194,8 @@ function finish(){
   document.getElementById('levelName').textContent=name;
   document.getElementById('levelDesc').textContent=desc;
   document.getElementById('recs').innerHTML=recs;
+  if(window.AA) AA.award('nivel');
+  if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('levelName'));},200);
 }
 
 document.getElementById('retry').addEventListener('click',function(){
@@ -201,5 +208,6 @@ document.getElementById('retry').addEventListener('click',function(){
 render();
 })();
 </script>
+<script src="assets/app.js"></script>
 </body>
 </html>

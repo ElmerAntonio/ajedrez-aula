@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reglas del ajedrez · Ajedrez en el Aula</title>
+<meta name="description" content="Todas las reglas del ajedrez en un solo lugar: el tablero, cómo se mueve cada pieza, enroque, captura al paso, coronación, jaque, mate, tablas y reglas de competencia FIDE. Con diagramas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+.toc{position:sticky;top:56px;display:flex;gap:8px;flex-wrap:wrap;background:rgba(19,28,24,.9);
+  padding:10px 0;z-index:40;margin-bottom:10px;backdrop-filter:blur(8px)}
+.toc a{font-family:var(--mono);font-size:12px;background:var(--tinta3);color:#CFEBD8;padding:6px 12px;border-radius:999px}
+.toc a:hover{background:var(--selva);color:#fff;text-decoration:none}
+.rule{scroll-margin-top:110px;margin-bottom:34px}
+.rule h2{border-bottom:2px solid #2E3F36;padding-bottom:.2em}
+.move-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px}
+@media(max-width:720px){.move-mini{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:460px){.move-mini{grid-template-columns:1fr}}
+.mv{background:var(--tinta2);border:1px solid #2E3F36;border-radius:14px;padding:12px;text-align:center}
+.mv .cb{max-width:170px;margin:0 auto 8px}
+.mv h3{margin:0}
+.mv p{font-size:13px;margin-top:.2em}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="pedagogia.html">Pedagogía</a>
+  <a class="lnk on" href="reglas.html">Reglas</a>
+  <a class="lnk" href="practicas.html">Prácticas</a>
+  <a class="lnk" href="estrategias.html">Estrategias</a>
+  <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Reglamento · referencia completa</div>
+  <h1>Todas las reglas,<br>en un solo lugar</h1>
+  <p class="lead" style="margin:.6em 0 0">Una referencia rápida para consultar cualquier regla en clase o en un torneo. Está basada en las Leyes del Ajedrez de la FIDE, explicada en lenguaje sencillo.</p>
+
+  <div class="toc">
+    <a href="#tablero">Tablero</a><a href="#piezas">Piezas</a><a href="#enroque">Enroque</a>
+    <a href="#alpaso">Al paso</a><a href="#coronacion">Coronación</a><a href="#jaque">Jaque y mate</a>
+    <a href="#tablas">Tablas</a><a href="#competencia">Competencia</a><a href="#notacion">Notación</a>
+  </div>
+
+  <div class="rule" id="tablero">
+    <h2>1 · El tablero</h2>
+    <p>El tablero tiene <strong>64 casillas</strong> (8 × 8), claras y oscuras alternadas. Se coloca de modo que cada jugador tenga una <strong>casilla clara en su esquina derecha</strong>. Las columnas se nombran con letras (a–h) y las filas con números (1–8). Cada casilla tiene un nombre: la letra de su columna y el número de su fila (por ejemplo, <span class="mono">e4</span>). Las <strong>blancas mueven primero</strong> y luego se alternan los turnos.</p>
+  </div>
+
+  <div class="rule" id="piezas">
+    <h2>2 · Cómo se mueve cada pieza</h2>
+    <p>Todas las piezas capturan igual que se mueven, salvo el peón. Ninguna puede saltar sobre otras, excepto el caballo.</p>
+    <div class="move-mini" id="moveMini"></div>
+  </div>
+
+  <div class="rule" id="enroque">
+    <h2>3 · El enroque</h2>
+    <p>Única jugada que mueve <strong>dos piezas a la vez</strong> (rey y torre). Pone al rey a salvo. Condiciones:</p>
+    <ol style="counter-reset:n;margin-top:.4em">
+      <li>El rey no se ha movido nunca en la partida.</li>
+      <li>Esa torre tampoco se ha movido.</li>
+      <li>No hay piezas entre el rey y la torre.</li>
+      <li>El rey no está en jaque en este momento.</li>
+      <li>El rey no pasa por ni llega a una casilla atacada.</li>
+    </ol>
+    <p class="note" style="margin-top:.5em">Se permite enrocar aunque la torre esté atacada. Se anota <span class="mono">0-0</span> (corto) o <span class="mono">0-0-0</span> (largo).</p>
+  </div>
+
+  <div class="rule" id="alpaso">
+    <h2>4 · Captura al paso <span class="mono" style="font-size:.6em;color:#9DAFA2">(en passant)</span></h2>
+    <p>Si un peón enemigo avanza <strong>dos casillas de golpe</strong> y queda al lado del tuyo, tu peón puede capturarlo <strong>como si solo hubiera avanzado una</strong>. Solo un peón captura a otro peón, y debe hacerse <strong>de inmediato</strong>, en la jugada siguiente, o se pierde el derecho.</p>
+  </div>
+
+  <div class="rule" id="coronacion">
+    <h2>5 · Coronación</h2>
+    <p>Cuando un peón llega a la <strong>última fila</strong>, se convierte en <strong>dama, torre, alfil o caballo</strong> de su color (no puede quedar como peón ni volverse rey). Casi siempre se elige dama. La pieza nueva actúa de inmediato. Puedes tener varias damas.</p>
+  </div>
+
+  <div class="rule" id="jaque">
+    <h2>6 · Jaque, jaque mate y rey ahogado</h2>
+    <p><strong>Jaque:</strong> el rey está amenazado. Hay que resolverlo de inmediato de una de tres formas: mover el rey, capturar la pieza que ataca, o tapar el camino. No se puede ignorar ni dejar al rey en jaque.</p>
+    <p style="margin-top:.5em"><strong>Jaque mate:</strong> el rey está en jaque y ninguna de las tres salidas funciona. La partida termina y gana quien da el mate. Se anota con <span class="mono">#</span>.</p>
+    <p style="margin-top:.5em"><strong>Rey ahogado:</strong> el jugador de turno <strong>no está en jaque</strong> pero no tiene ninguna jugada legal. Es <strong>tablas</strong> (empate), aunque tenga menos piezas.</p>
+  </div>
+
+  <div class="rule" id="tablas">
+    <h2>7 · Las tablas (empate)</h2>
+    <p>Medio punto para cada jugador (<span class="mono">½–½</span>). Ocurren por:</p>
+    <div class="grid g3" style="margin-top:.5em">
+      <div class="card"><h3>Rey ahogado</h3><p>Sin jaque y sin jugada legal.</p></div>
+      <div class="card"><h3>Acuerdo</h3><p>Los dos jugadores lo aceptan.</p></div>
+      <div class="card"><h3>Triple repetición</h3><p>La misma posición tres veces. Se reclama al árbitro.</p></div>
+      <div class="card"><h3>50 jugadas</h3><p>50 jugadas sin mover peón ni capturar. Se reclama.</p></div>
+      <div class="card"><h3>Material insuficiente</h3><p>Ningún bando puede dar mate (por ejemplo, rey solo contra rey).</p></div>
+      <div class="card warm"><h3>Automáticas</h3><p>A las 75 jugadas o quíntuple repetición, el árbitro declara tablas solo.</p></div>
+    </div>
+  </div>
+
+  <div class="rule" id="competencia">
+    <h2>8 · Reglas de competencia (torneo)</h2>
+    <div class="grid g2" style="margin-top:.5em">
+      <div class="card hot"><h3>Pieza tocada, pieza jugada</h3>
+        <p>Si tocas una pieza tuya, debes moverla (si es legal). Si tocas una del rival, debes capturarla. Para acomodar sin jugar, avisa antes: «compongo» (<span class="mono">j'adoube</span>).</p></div>
+      <div class="card cool"><h3>Jugada ilegal (FIDE 7.5)</h3>
+        <p>Se restaura la posición anterior, se aplica pieza tocada y el rival gana 2 minutos. La <strong>segunda</strong> jugada ilegal del mismo jugador pierde la partida.</p></div>
+      <div class="card warm"><h3>El reloj</h3>
+        <p>Solo corre el del jugador de turno. Primero mueve, después aprieta, con la misma mano. Quedarse sin tiempo pierde, salvo que el rival no tenga material para dar mate.</p></div>
+      <div class="card"><h3>Conducta</h3>
+        <p>Prohibido recibir ayuda, usar apuntes o dispositivos y molestar al rival. Los teléfonos que suenan pueden costar la partida. El árbitro vela por el reglamento y resuelve los reclamos.</p></div>
+    </div>
+    <div class="card warm" style="margin-top:14px"><p><em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Adaptación escolar:</em> en primaria puedes suavizar «pieza tocada» y no exigir planilla — pero anúncialo <strong>antes</strong> del torneo. Desde 5.° grado, aplica el reglamento completo.</p></div>
+  </div>
+
+  <div class="rule" id="notacion">
+    <h2>9 · Notación algebraica</h2>
+    <p>Se escribe la <strong>inicial de la pieza</strong> (en español: R rey, D dama, T torre, A alfil, C caballo; el peón no lleva inicial) seguida de la <strong>casilla de destino</strong>.</p>
+    <div class="grid g2" style="margin-top:.5em">
+      <div class="card"><h3>Símbolos</h3>
+        <p class="mono" style="line-height:2">x captura · + jaque · # mate<br>0-0 enroque corto · 0-0-0 largo<br>= coronación · ½–½ tablas</p></div>
+      <div class="card warm"><h3>Ejemplos</h3>
+        <p class="mono" style="color:var(--ambar);line-height:2">e4 · Cf3 · Axc6 · Dh5+<br>Te8# · b8=D · 0-0</p>
+        <p class="note">Practícala en la sección de <a href="practicas.html">Prácticas</a> → modo Notación.</p></div>
+    </div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:20px">
+    <strong>Solo para enseñar y aprender.</strong> Material educativo abierto basado en las Leyes FIDE. No otorga certificados ni acreditación. Publicado con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
+
+<script src="assets/chess.js"></script>
+<script src="assets/board.js"></script>
+<script>
+(function(){
+'use strict';
+var C=window.Chess;
+var P=[
+ {k:'K',nm:'Rey',sq:'d4',d:'Un paso en cualquier dirección.'},
+ {k:'Q',nm:'Dama',sq:'d4',d:'Recto y diagonal, sin límite.'},
+ {k:'R',nm:'Torre',sq:'d4',d:'En línea recta.'},
+ {k:'B',nm:'Alfil',sq:'d4',d:'Solo en diagonal.'},
+ {k:'N',nm:'Caballo',sq:'d4',d:'En forma de L; salta.'},
+ {k:'P',nm:'Peón',sq:'d2',d:'Avanza recto, come en diagonal.'}
+];
+var holder=document.getElementById('moveMini');
+P.forEach(function(p){
+  var wrap=document.createElement('div'); wrap.className='mv';
+  var bd=document.createElement('div'); bd.className='cb';
+  wrap.appendChild(bd);
+  wrap.insertAdjacentHTML('beforeend','<h3>'+p.nm+'</h3><p>'+p.d+'</p>');
+  holder.appendChild(wrap);
+  var rc=C.sqToRC(p.sq);
+  var rows=Array(8).fill(null).map(function(){return Array(8).fill(null);});
+  rows[rc[0]][rc[1]]=p.k;
+  var fen=rows.map(function(row){var e=0,s='';row.forEach(function(c){if(!c){e++;}else{if(e){s+=e;e=0;}s+=c;}});if(e)s+=e;return s;}).join('/')+' w - - 0 1';
+  var b=new ChessBoard(bd,{fen:fen,interactive:false});
+  var st=C.parseFEN(fen);
+  C.legalMoves(st).filter(function(m){return m.from[0]===rc[0]&&m.from[1]===rc[1];})
+    .forEach(function(m){var cell=b.cells[m.to[0]+'-'+m.to[1]];if(cell)cell.classList.add('hint');});
+  var scell=b.cells[rc[0]+'-'+rc[1]]; if(scell) scell.classList.add('sel');
+});
+})();
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

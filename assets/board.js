@@ -38,7 +38,18 @@ ChessBoard.prototype._build=function(){
   for(var r=0;r<8;r++)for(var c=0;c<8;c++){
     var sq=el('div','sq '+((r+c)%2===0?'lt':'dk'));
     sq.dataset.r=r; sq.dataset.c=c;
-    (function(rr,cc){ sq.addEventListener('click',function(){ self._click(rr,cc); }); })(r,c);
+    // accesibilidad: cada casilla es operable por teclado (WCAG 2.1.1)
+    if(this.interactive){
+      sq.setAttribute('role','button');
+      sq.setAttribute('tabindex','0');
+      sq.setAttribute('aria-label', Chess.rcToSq(r,c));
+    }
+    (function(rr,cc){
+      sq.addEventListener('click',function(){ self._click(rr,cc); });
+      sq.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); self._click(rr,cc); }
+      });
+    })(r,c);
     this.cells[r+'-'+c]=sq;
     g.appendChild(sq);
   }
@@ -76,11 +87,13 @@ ChessBoard.prototype.render=function(){
   for(var k in this.cells) this.cells[k].className='sq '+((+k.split('-')[0]+ +k.split('-')[1])%2===0?'lt':'dk');
   // piezas
   var b=this.state.board;
+  this.pcEls={};
   for(var r=0;r<8;r++)for(var c=0;c<8;c++){
     var code=b[r][c]; if(!code) continue;
     var pc=this._pieceEl(code);
     pc.style.left=(c*12.5)+'%'; pc.style.top=(r*12.5)+'%';
     this.grid.appendChild(pc);
+    this.pcEls[r+'-'+c]=pc;
   }
   // última jugada
   if(this.lastMove){
@@ -104,6 +117,20 @@ ChessBoard.prototype.render=function(){
       if(m.capture||m.ep) cell.classList.add('cap');
     });
   }
+  // etiquetas accesibles con el contenido de cada casilla
+  if(this.interactive) this._aria();
+};
+
+var PNAME={p:'peón',n:'caballo',b:'alfil',r:'torre',q:'dama',k:'rey'};
+ChessBoard.prototype._aria=function(){
+  var b=this.state.board;
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var cell=this.cells[r+'-'+c]; if(!cell) continue;
+    var sq=Chess.rcToSq(r,c), code=b[r][c];
+    cell.setAttribute('aria-label', code
+      ? (sq+', '+(Chess.isWhite(code)?'blanca':'negra')+' '+PNAME[code.toLowerCase()])
+      : (sq+', vacía'));
+  }
 };
 
 ChessBoard.prototype._mark=function(rc,cls){
@@ -111,7 +138,7 @@ ChessBoard.prototype._mark=function(rc,cls){
 };
 
 ChessBoard.prototype._click=function(r,c){
-  if(!this.interactive || this.pendingPromo) return;
+  if(!this.interactive || this.pendingPromo || this._animating) return;
   var st=Chess.status(this.state);
   if(st.over) return;
   var b=this.state.board, p=b[r][c];
@@ -159,10 +186,45 @@ ChessBoard.prototype._apply=function(mv){
     if(ok===false){ this.sel=null; this.legal=[]; this.render(); return; }
   }
   var san=Chess.toSAN(this.state, mv);
-  this.state=Chess.makeMove(this.state, mv);
-  this.lastMove=mv; this.sel=null; this.legal=[];
-  this.render();
-  this.onMove(mv, san, this.state);
+  var self=this;
+  this._animate(mv, function(){
+    self.state=Chess.makeMove(self.state, mv);
+    self.lastMove=mv; self.sel=null; self.legal=[];
+    self.render();
+    self.onMove(mv, san, self.state);
+  });
+};
+
+/* Desliza la pieza que se mueve hacia su destino y desvanece la capturada,
+   luego ejecuta commit() para fijar el estado y redibujar. Suave y rápido. */
+var REDUCE = typeof matchMedia!=='undefined' && matchMedia('(prefers-reduced-motion:reduce)').matches;
+ChessBoard.prototype._animate=function(mv, commit){
+  var self=this;
+  var done=function(){ self._animating=false; commit(); };
+  var fromKey=mv.from[0]+'-'+mv.from[1], toKey=mv.to[0]+'-'+mv.to[1];
+  var el=this.pcEls && this.pcEls[fromKey];
+  if(REDUCE || !el){ done(); return; }
+  this._animating=true;
+  // limpiar marcas de selección/pistas para que no distraigan durante el deslizamiento
+  this.sel=null; this.legal=[];
+  for(var k in this.cells) this.cells[k].className='sq '+((+k.split('-')[0]+ +k.split('-')[1])%2===0?'lt':'dk');
+  // desvanecer la pieza capturada
+  var victimKey = mv.ep ? (mv.from[0]+'-'+mv.to[1]) : toKey;
+  var victim=this.pcEls[victimKey];
+  if(victim && (mv.capture||mv.ep)) victim.classList.add('capd');
+  // mover la torre del enroque también
+  if(mv.castle){
+    var rank=mv.to[0];
+    var rookFrom = mv.castle==='K' ? (rank+'-7') : (rank+'-0');
+    var rookTo   = mv.castle==='K' ? (rank+'-5') : (rank+'-3');
+    var rook=this.pcEls[rookFrom];
+    if(rook){ rook.style.left=((mv.castle==='K'?5:3)*12.5)+'%'; rook.style.top=(rank*12.5)+'%'; }
+  }
+  // deslizar la pieza principal
+  el.style.left=(mv.to[1]*12.5)+'%';
+  el.style.top=(mv.to[0]*12.5)+'%';
+  el.style.zIndex=6;
+  setTimeout(done, 190);
 };
 
 /* API para uso externo */
@@ -172,10 +234,14 @@ ChessBoard.prototype.setState=function(fen){
   this.promoEl.classList.remove('on');
   this.render();
 };
-ChessBoard.prototype.applyMove=function(mv){ // aplica sin interacción (jugada de la IA)
-  this.state=Chess.makeMove(this.state, mv);
-  this.lastMove=mv; this.sel=null; this.legal=[];
-  this.render();
+ChessBoard.prototype.applyMove=function(mv, cb){ // aplica sin interacción (jugada de la IA)
+  var self=this;
+  this._animate(mv, function(){
+    self.state=Chess.makeMove(self.state, mv);
+    self.lastMove=mv; self.sel=null; self.legal=[];
+    self.render();
+    if(cb) cb();
+  });
 };
 ChessBoard.prototype.setFlip=function(v){
   this.flip=!!v;
@@ -189,4 +255,25 @@ ChessBoard.prototype.setFlip=function(v){
 ChessBoard.prototype.lock=function(v){ this.interactive=!v; };
 
 global.ChessBoard=ChessBoard;
+
+/* Confeti breve y ligero para celebrar aciertos y victorias. */
+global.celebrate=function(origin){
+  if(REDUCE) return;
+  var rect = origin && origin.getBoundingClientRect ? origin.getBoundingClientRect()
+           : {left:innerWidth/2, top:innerHeight/2, width:0, height:0};
+  var cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
+  var colors=['#E9A73C','#6FA37C','#6FA8C7','#C8503C','#8B6FA8','#FAF5E9'];
+  for(var i=0;i<26;i++){
+    var p=document.createElement('div'); p.className='confetti-pc';
+    var ang=Math.random()*Math.PI*2, dist=60+Math.random()*150;
+    p.style.left=cx+'px'; p.style.top=cy+'px';
+    p.style.background=colors[i%colors.length];
+    p.style.setProperty('--dx',(Math.cos(ang)*dist)+'px');
+    p.style.setProperty('--dy',(Math.sin(ang)*dist - 40)+'px');
+    p.style.setProperty('--rot',(Math.random()*540-270)+'deg');
+    p.style.animationDelay=(Math.random()*0.08)+'s';
+    document.body.appendChild(p);
+    (function(el){ setTimeout(function(){el.remove();}, 1000); })(p);
+  }
+};
 })(typeof window!=='undefined'?window:this);
