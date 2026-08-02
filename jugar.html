@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jugar contra la IA · Ajedrez en el Aula</title>
+<meta name="description" content="Juega una partida de ajedrez contra una inteligencia artificial en tres niveles: fácil, medio y normal. Gratis, sin cuenta y sin internet una vez cargado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="practicas.html">Prácticas</a>
+  <a class="lnk" href="estrategias.html">Estrategias</a>
+  <a class="lnk on" href="jugar.html">Jugar</a>
+  <a class="lnk" href="nivel.html">Mi nivel</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Jugar · IA integrada</div>
+  <h1>Juega contra la computadora</h1>
+  <p class="lead" style="margin:.6em 0 1.4em">Una IA vive dentro de esta página: piensa tus jugadas y responde. Elige tu color y la dificultad. Todo pasa en tu navegador — no se envía nada a ningún servidor.</p>
+
+  <div class="game">
+    <!-- Columna del tablero -->
+    <div class="board-wrap">
+      <div class="status" id="status">Tú juegas con blancas. Te toca mover.</div>
+      <div id="board" class="cb"></div>
+      <div class="controls" style="justify-content:center;margin-top:4px">
+        <button class="btn ghost sm" id="undo">↶ Deshacer</button>
+        <button class="btn ghost sm" id="hint">💡 Pista</button>
+        <button class="btn sm" id="newgame">↻ Nueva partida</button>
+      </div>
+    </div>
+
+    <!-- Panel lateral -->
+    <div>
+      <div class="field">
+        <label>Tu color</label>
+        <div class="seg" id="side">
+          <button data-v="w" class="on">Blancas ♔</button>
+          <button data-v="b">Negras ♚</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Nivel de la IA</label>
+        <div class="seg" id="level">
+          <button data-v="1">Fácil</button>
+          <button data-v="2" class="on">Medio</button>
+          <button data-v="3">Normal</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Piezas capturadas</label>
+        <div class="captured" id="capW" title="capturadas por ti"></div>
+        <div class="captured" id="capB" title="capturadas por la IA"></div>
+      </div>
+      <div class="field">
+        <label>Jugadas</label>
+        <div class="moves" id="moves"><span style="color:#5E7568">Aún no hay jugadas.</span></div>
+      </div>
+      <p class="note">Consejo docente: en <strong>Fácil</strong> la IA deja piezas a propósito, ideal para que un principiante gane sus primeras partidas y no se desanime.</p>
+    </div>
+  </div>
+
+  <div class="card cool" style="margin-top:26px">
+    <h3>¿Cómo funciona esta IA? (para curiosos y maestros)</h3>
+    <p style="margin-top:.3em">No usa internet ni un modelo gigante. Es un programa clásico de ajedrez que hace dos cosas: (1) genera <strong>todas las jugadas legales</strong> y (2) mira unas jugadas hacia adelante calculando quién quedaría mejor, contando el valor de las piezas y su posición. En <strong>Normal</strong> piensa 3 jugadas de anticipación. Es el mismo principio de los primeros programas que vencieron a campeones humanos, solo que mucho más pequeño.</p>
+  </div>
+
+  <div class="disclaimer" style="margin-top:22px">
+    <strong>Solo para enseñar y aprender.</strong> Esta herramienta es material educativo abierto. No otorga certificados, títulos ni acreditación de ningún tipo. Se publica gratuitamente con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">
+  Ajedrez en el Aula · material educativo libre · alojado en
+  <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a>
+</div>
+
+<script src="assets/chess.js"></script>
+<script src="assets/board.js"></script>
+<script>
+(function(){
+'use strict';
+var history=[];         // pila de estados para deshacer
+var sanList=[];         // notación
+var captured={w:[],b:[]}; // piezas que capturó cada bando
+var humanSide='w';
+var level=2;
+var thinking=false;
+var GLYPH={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟',K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙'};
+
+var statusEl=document.getElementById('status');
+var movesEl=document.getElementById('moves');
+var capWEl=document.getElementById('capW');
+var capBEl=document.getElementById('capB');
+
+var board=new ChessBoard(document.getElementById('board'),{
+  allowedSide:'w',
+  onMove:function(mv,san,state){ afterHumanMove(mv,san); }
+});
+
+function pushHistory(){
+  history.push({fen:serialize(board.state), san:sanList.slice(),
+    capW:captured.w.slice(), capB:captured.b.slice(), last:board.lastMove});
+}
+function serialize(s){ // FEN parcial suficiente para reconstruir
+  var rows=[];
+  for(var r=0;r<8;r++){var e=0,line='';for(var c=0;c<8;c++){var p=s.board[r][c];
+    if(!p){e++;}else{if(e){line+=e;e=0;}line+=p;}}if(e)line+=e;rows.push(line);}
+  var cs=(s.castling.K?'K':'')+(s.castling.Q?'Q':'')+(s.castling.k?'k':'')+(s.castling.q?'q':'')||'-';
+  var ep=s.ep?Chess.rcToSq(s.ep[0],s.ep[1]):'-';
+  return rows.join('/')+' '+s.turn+' '+cs+' '+ep+' '+s.half+' '+s.full;
+}
+
+function recordCapture(mv){
+  var victim = mv.ep ? (humanTurn()? 'p':'P') : mv.capture;
+  if(mv.capture||mv.ep){
+    var who = Chess.colorOf(mv.piece); // quien capturó
+    var v = mv.ep ? (who==='w'?'p':'P') : mv.capture;
+    captured[who].push(v);
+  }
+}
+function humanTurn(){ return board.state.turn===humanSide; }
+
+function afterHumanMove(mv,san){
+  recordCapture(mv);
+  sanList.push(san);
+  renderSide();
+  checkEnd(function(){ setTimeout(aiMove, 260); });
+}
+
+function aiMove(){
+  var st=Chess.status(board.state);
+  if(st.over) return;
+  thinking=true;
+  statusEl.textContent='La IA está pensando…';
+  statusEl.className='status';
+  board.lock(true);
+  setTimeout(function(){
+    var mv=Chess.bestMove(board.state, level);
+    if(mv){
+      var san=Chess.toSAN(board.state,mv);
+      recordCapture(mv);
+      board.applyMove(mv);
+      sanList.push(san);
+      renderSide();
+    }
+    thinking=false;
+    board.lock(false);
+    checkEnd(function(){ updateTurnStatus(); });
+  },30);
+}
+
+function updateTurnStatus(){
+  var st=Chess.status(board.state);
+  if(st.over) return;
+  var yourTurn = board.state.turn===humanSide;
+  if(st.check){
+    statusEl.textContent = yourTurn ? '¡Jaque! Debes proteger tu rey.' : 'Le das jaque a la IA.';
+    statusEl.className='status check';
+  } else {
+    statusEl.textContent = yourTurn ? 'Te toca mover.' : 'Turno de la IA.';
+    statusEl.className='status';
+  }
+}
+
+function checkEnd(cont){
+  var st=Chess.status(board.state);
+  if(!st.over){ if(cont) cont(); return; }
+  board.lock(true);
+  if(st.result==='checkmate'){
+    var humanWon = st.winner===humanSide;
+    statusEl.textContent = humanWon ? '¡Jaque mate! Ganaste 🏆' : 'Jaque mate. Ganó la IA.';
+    statusEl.className = 'status '+(humanWon?'win':'lose');
+  } else if(st.result==='stalemate'){
+    statusEl.textContent='Rey ahogado: tablas (empate).';
+    statusEl.className='status check';
+  } else if(st.result==='fifty'){
+    statusEl.textContent='Tablas por la regla de 50 jugadas.';
+    statusEl.className='status check';
+  }
+}
+
+function renderSide(){
+  // lista de jugadas emparejadas
+  var html='';
+  for(var i=0;i<sanList.length;i+=2){
+    var n=(i/2)+1;
+    html+='<div><b>'+n+'.</b> '+sanList[i]+(sanList[i+1]?' &nbsp; '+sanList[i+1]:'')+'</div>';
+  }
+  movesEl.innerHTML = html || '<span style="color:#5E7568">Aún no hay jugadas.</span>';
+  movesEl.scrollTop=movesEl.scrollHeight;
+  // capturas (las que TÚ capturaste = piezas del rival)
+  capWEl.textContent = captured[humanSide].map(function(p){return GLYPH[p];}).join(' ');
+  capBEl.textContent = captured[humanSide==='w'?'b':'w'].map(function(p){return GLYPH[p];}).join(' ');
+}
+
+/* ---------- controles ---------- */
+document.getElementById('side').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  setSeg(this,b); humanSide=b.dataset.v; newGame();
+});
+document.getElementById('level').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  setSeg(this,b); level=+b.dataset.v;
+});
+function setSeg(group,btn){
+  Array.prototype.slice.call(group.children).forEach(function(x){x.classList.remove('on');});
+  btn.classList.add('on');
+}
+
+document.getElementById('newgame').addEventListener('click',newGame);
+function newGame(){
+  board.setState(Chess.START_FEN);
+  board.allowedSide=humanSide;
+  board.setFlip(humanSide==='b');
+  board.lock(false);
+  history=[]; sanList=[]; captured={w:[],b:[]};
+  renderSide();
+  statusEl.className='status';
+  statusEl.textContent = humanSide==='w' ? 'Tú juegas con blancas. Te toca mover.'
+                                         : 'Tú juegas con negras. La IA abre.';
+  if(humanSide==='b') setTimeout(aiMove, 400);
+}
+
+document.getElementById('undo').addEventListener('click',function(){
+  if(thinking || history.length===0) return;
+  // deshacer una jugada tuya = retroceder hasta tu turno anterior
+  var target=history.pop();
+  if(!target) return;
+  board.setState(target.fen);
+  board.allowedSide=humanSide;
+  sanList=target.san; captured=target.capW!=null?{w:target.capW,b:target.capB}:{w:[],b:[]};
+  board.lastMove=target.last||null;
+  board.render();
+  renderSide(); updateTurnStatus();
+});
+
+document.getElementById('hint').addEventListener('click',function(){
+  if(thinking) return;
+  var st=Chess.status(board.state);
+  if(st.over || board.state.turn!==humanSide) return;
+  statusEl.textContent='Pensando una buena jugada para ti…';
+  setTimeout(function(){
+    var mv=Chess.bestMove(board.state, 3);
+    if(mv){
+      board.sel=mv.from;
+      board.legal=Chess.legalMoves(board.state).filter(function(m){
+        return m.from[0]===mv.from[0]&&m.from[1]===mv.from[1];});
+      board.render();
+      // resalta destino sugerido
+      var cell=board.cells[mv.to[0]+'-'+mv.to[1]];
+      if(cell) cell.classList.add('sel');
+      statusEl.textContent='Pista: mueve la pieza marcada a la casilla resaltada.';
+      statusEl.className='status check';
+    }
+  },30);
+});
+
+/* Guardar estado antes de cada jugada humana para poder deshacer.
+   Interceptamos el onMove envolviendo: pushHistory ocurre al seleccionar. */
+var origApply=board._apply.bind(board);
+board._apply=function(mv){ pushHistory(); origApply(mv); };
+
+renderSide();
+})();
+</script>
+</body>
+</html>
