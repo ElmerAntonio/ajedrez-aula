@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Cuál es mi nivel? · Ajedrez en el Aula</title>
+<meta name="description" content="Test rápido que verifica tu nivel de ajedrez (principiante, intermedio o avanzado) mezclando preguntas de reglas y retos en el tablero, con recomendaciones de qué estudiar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+.q-wrap{max-width:720px;margin:0 auto}
+.bar{height:8px;background:var(--tinta3);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.bar > i{display:block;height:100%;background:var(--ambar);width:0;transition:width .3s}
+.opt{display:block;width:100%;text-align:left;background:var(--tinta2);color:var(--marfil);
+  border:1px solid #33473C;border-radius:12px;padding:14px 18px;margin-bottom:10px;cursor:pointer;
+  font-family:var(--body);font-size:16px;transition:background .15s,border-color .15s}
+.opt:hover{background:var(--tinta3)}
+.opt.correct{background:#26402C;border-color:var(--selva-cl)}
+.opt.wrong{background:#3A211C;border-color:var(--fuego)}
+.opt:disabled{cursor:default}
+.qboard{max-width:340px;margin:6px auto 0}
+.result{display:none}
+.result.on{display:block}
+.level-badge{font-family:var(--disp);font-weight:900;font-size:clamp(28px,6vw,52px);color:var(--ambar)}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="practicas.html">Prácticas</a>
+  <a class="lnk" href="estrategias.html">Estrategias</a>
+  <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk on" href="nivel.html">Mi nivel</a>
+</div></nav>
+
+<div class="wrap q-wrap">
+  <div class="eyebrow">Mi nivel · test de 8 preguntas</div>
+  <h1>¿Cuál es tu nivel?</h1>
+  <p class="lead" style="margin:.6em 0 1.6em">Ocho preguntas, de fáciles a difíciles. Al final te decimos si vas empezando, si ya juegas o si dominas las reglas — y qué te conviene practicar. No es un examen: nadie ve tus respuestas y no se guarda nada.</p>
+
+  <!-- CUESTIONARIO -->
+  <div id="quiz">
+    <div class="bar"><i id="prog"></i></div>
+    <div class="card" style="padding:clamp(18px,3vw,28px)">
+      <div class="note mono" id="qcount">Pregunta 1 de 8</div>
+      <h3 id="qtitle" style="margin:.4em 0 .2em;font-size:clamp(18px,2.2vw,26px)">—</h3>
+      <p id="qsub" class="note" style="margin-bottom:14px"></p>
+      <div id="qboard-holder"></div>
+      <div id="opts"></div>
+      <div id="feedback" class="status" style="text-align:left;min-height:1.6em;margin-top:6px"></div>
+      <div style="text-align:right;margin-top:10px">
+        <button class="btn" id="next" disabled>Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="result" class="result">
+    <div class="card" style="text-align:center;padding:clamp(22px,4vw,40px)">
+      <div class="note mono">Tu resultado</div>
+      <div class="level-badge" id="levelName">—</div>
+      <p id="levelDesc" class="lead" style="margin:.6em auto 1em"></p>
+      <p class="mono" style="color:var(--selva-cl)">Puntaje: <span id="finalScore">0</span> / 8</p>
+      <div class="card cool" style="text-align:left;margin-top:20px">
+        <h3>Te recomendamos</h3>
+        <div id="recs"></div>
+      </div>
+      <button class="btn" id="retry" style="margin-top:20px">↻ Hacer el test otra vez</button>
+    </div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:26px">
+    <strong>Solo para enseñar y aprender.</strong> Este test es orientativo y educativo. <strong>No otorga certificados, títulos ni acreditación</strong> de ningún tipo. Publicado gratuitamente con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
+
+<script src="assets/chess.js"></script>
+<script src="assets/board.js"></script>
+<script>
+(function(){
+'use strict';
+var C=window.Chess;
+// tipo 'mc': opciones, correcta=índice. tipo 'board': fen + solución from-to.
+var Q=[
+  {type:'mc', t:'¿Cuántas casillas tiene el tablero de ajedrez?',
+   opts:['32 casillas','64 casillas','100 casillas','48 casillas'], correct:1},
+  {type:'mc', t:'¿Cómo se mueve la torre?',
+   opts:['Solo en diagonal','En forma de L','En línea recta: filas y columnas','Una casilla en cualquier dirección'], correct:2},
+  {type:'mc', t:'¿Cuál es la única pieza que puede saltar por encima de otras?',
+   opts:['El alfil','La torre','La dama','El caballo'], correct:3},
+  {type:'mc', t:'Al armar el tablero, la casilla de la esquina derecha de cada jugador debe ser…',
+   opts:['Oscura','Clara','No importa el color','Siempre la del rey'], correct:1},
+  {type:'board', t:'Muestra un movimiento del caballo.',
+   sub:'Toca el caballo blanco del centro y llévalo a cualquiera de sus casillas legales.',
+   fen:'7k/8/8/8/3N4/8/8/7K w - - 0 1',
+   check:function(mv){ return C.colorOf(mv.piece)==='w' && mv.piece.toLowerCase()==='n'; }},
+  {type:'mc', t:'¿Qué significa "coronar" un peón?',
+   opts:['Ponerle una corona de adorno','Que llega a la última fila y se convierte en otra pieza (casi siempre dama)','Que captura a la dama','Que da jaque al rey'], correct:1},
+  {type:'mc', t:'En la captura al paso (en passant), ¿qué pieza puede capturar y a cuál?',
+   opts:['Cualquier pieza a un peón','Un peón a otro peón que acaba de avanzar dos casillas','La torre a un peón','El rey a la dama'], correct:1},
+  {type:'board', t:'Da jaque mate en una jugada.',
+   sub:'Las blancas juegan. Encuentra el mate del pasillo con la torre.',
+   fen:'6k1/5ppp/8/8/8/8/8/R6K w - - 0 1',
+   check:function(mv,state){ var st=C.status(C.makeMove(state,mv)); return st.result==='checkmate'; }}
+];
+
+var i=0, score=0, answered=false;
+var qboardObj=null;
+var qcount=document.getElementById('qcount'), qtitle=document.getElementById('qtitle'),
+    qsub=document.getElementById('qsub'), optsEl=document.getElementById('opts'),
+    fb=document.getElementById('feedback'), nextBtn=document.getElementById('next'),
+    prog=document.getElementById('prog'), holder=document.getElementById('qboard-holder');
+
+function render(){
+  answered=false; nextBtn.disabled=true; fb.textContent=''; fb.className='status';
+  optsEl.innerHTML=''; holder.innerHTML='';
+  prog.style.width=((i)/Q.length*100)+'%';
+  qcount.textContent='Pregunta '+(i+1)+' de '+Q.length;
+  var q=Q[i]; qtitle.textContent=q.t; qsub.textContent=q.sub||'';
+  if(q.type==='mc'){
+    q.opts.forEach(function(text,idx){
+      var b=document.createElement('button'); b.className='opt'; b.type='button'; b.textContent=text;
+      b.addEventListener('click',function(){ answerMC(q,idx,b); });
+      optsEl.appendChild(b);
+    });
+  } else {
+    var box=document.createElement('div'); box.className='cb qboard'; holder.appendChild(box);
+    qboardObj=new ChessBoard(box,{fen:q.fen, onDrop:function(mv,state){ return answerBoard(q,mv,state); }});
+  }
+}
+
+function answerMC(q,idx,btn){
+  if(answered) return; answered=true;
+  var buttons=optsEl.querySelectorAll('.opt');
+  buttons.forEach(function(b){b.disabled=true;});
+  if(idx===q.correct){ btn.classList.add('correct'); score++; fb.textContent='✅ ¡Correcto!'; fb.className='status win'; }
+  else { btn.classList.add('wrong'); buttons[q.correct].classList.add('correct');
+    fb.textContent='La respuesta correcta está marcada en verde.'; fb.className='status lose'; }
+  nextBtn.disabled=false;
+}
+
+function answerBoard(q,mv,state){
+  if(answered) return false;
+  var ok=q.check(mv,state);
+  if(ok){ answered=true; score++; fb.textContent='✅ ¡Bien hecho!'; fb.className='status win';
+    nextBtn.disabled=false; qboardObj.lock(true); return true; }
+  fb.textContent='🔁 Esa no. Inténtalo otra vez.'; fb.className='status lose';
+  return false;
+}
+
+nextBtn.addEventListener('click',function(){
+  i++;
+  if(i>=Q.length) finish(); else render();
+});
+
+function finish(){
+  document.getElementById('quiz').style.display='none';
+  var res=document.getElementById('result'); res.classList.add('on');
+  document.getElementById('finalScore').textContent=score;
+  var name,desc,recs;
+  if(score<=3){
+    name='Principiante';
+    desc='Estás empezando y eso es genial. Ya reconoces el tablero y algunas piezas; ahora toca afianzar cómo se mueve cada una.';
+    recs='<ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">'+
+      '<li>📖 Repasa la <a href="guia.html">Guía</a> — bloques 1 y 2 (el tablero y las piezas).</li>'+
+      '<li>🟢 Haz las <a href="practicas.html">Prácticas fáciles</a> hasta resolverlas sin pistas.</li>'+
+      '<li>🤖 Juega contra la IA en nivel <a href="jugar.html">Fácil</a>: te deja ganar para agarrar confianza.</li></ul>';
+  } else if(score<=6){
+    name='Intermedio';
+    desc='¡Ya juegas! Conoces las reglas y las piezas. El siguiente paso es aprender a atacar con ideas: tácticas y mates básicos.';
+    recs='<ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">'+
+      '<li>♟ Estudia las <a href="estrategias.html">Estrategias</a>: tenedor, clavada y brocheta.</li>'+
+      '<li>🟡 Sube a las <a href="practicas.html">Prácticas de nivel medio y normal</a>.</li>'+
+      '<li>🤖 Juega contra la IA en nivel <a href="jugar.html">Medio</a>.</li>'+
+      '<li>📖 Guía — bloques 3 y 4 (reglas especiales y fin de la partida).</li></ul>';
+  } else {
+    name='Avanzado';
+    desc='Dominas las reglas, las tácticas y el mate. Estás listo para la competencia y para ayudar a otros a aprender.';
+    recs='<ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">'+
+      '<li>🏆 Reta a la IA en nivel <a href="jugar.html">Normal</a> y trata de ganarle.</li>'+
+      '<li>📖 Guía — bloque 5 (Reglamento FIDE): planilla, reloj, sistema suizo.</li>'+
+      '<li>🧑‍🏫 Conviértete en monitor: enseña y arbitra a los que van empezando.</li></ul>';
+  }
+  document.getElementById('levelName').textContent=name;
+  document.getElementById('levelDesc').textContent=desc;
+  document.getElementById('recs').innerHTML=recs;
+}
+
+document.getElementById('retry').addEventListener('click',function(){
+  i=0; score=0;
+  document.getElementById('result').classList.remove('on');
+  document.getElementById('quiz').style.display='';
+  render();
+});
+
+render();
+})();
+</script>
+</body>
+</html>

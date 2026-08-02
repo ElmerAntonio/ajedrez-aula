@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prácticas · Ajedrez en el Aula</title>
+<meta name="description" content="Ejercicios de ajedrez interactivos, de fácil a normal: mueve las piezas, captura, tenedores y mate en una jugada. Con pistas y verificación automática.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk on" href="practicas.html">Prácticas</a>
+  <a class="lnk" href="estrategias.html">Estrategias</a>
+  <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk" href="nivel.html">Mi nivel</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Prácticas · de fácil a normal</div>
+  <h1>Ejercicios para resolver</h1>
+  <p class="lead" style="margin:.6em 0 1.2em">Cada ejercicio tiene una única jugada correcta. Mueve las piezas del tablero; la página te dice al instante si acertaste. Empieza por <strong>Fácil</strong> y avanza cuando te sientas cómodo. Ideal para que el alumno practique solo o en parejas.</p>
+
+  <div class="seg" id="tabs" style="margin-bottom:16px">
+    <button data-lv="facil" class="on">🟢 Fácil</button>
+    <button data-lv="medio">🟡 Medio</button>
+    <button data-lv="normal">🔴 Normal</button>
+  </div>
+
+  <div class="game">
+    <div class="board-wrap">
+      <div class="status" id="status">&nbsp;</div>
+      <div id="board" class="cb"></div>
+      <div class="controls" style="justify-content:center;margin-top:4px">
+        <button class="btn ghost sm" id="hint">💡 Pista</button>
+        <button class="btn ghost sm" id="show">👁 Ver solución</button>
+        <button class="btn sm" id="skip">⏭ Siguiente</button>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="tag" id="pnum">1 / 5</div>
+        <h3 id="ptitle" style="margin-top:.5em">—</h3>
+        <p id="pdesc" style="margin-top:.2em">—</p>
+        <p class="note" id="phint" style="margin-top:.8em;display:none"></p>
+      </div>
+      <div class="card cool" style="margin-top:14px">
+        <h3>Cómo se juega</h3>
+        <ul style="list-style:none;margin-top:.3em;display:flex;flex-direction:column;gap:.4em">
+          <li>👆 Toca una pieza tuya para ver a dónde puede ir.</li>
+          <li>🎯 Toca la casilla de destino para mover.</li>
+          <li>✅ Verde = acertaste · 🔁 rojo = inténtalo otra vez.</li>
+        </ul>
+      </div>
+      <p class="note" style="margin-top:12px">Progreso de esta tanda: <span id="score" class="mono" style="color:var(--ambar)">0</span> resueltos.</p>
+    </div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:26px">
+    <strong>Solo para enseñar y aprender.</strong> Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
+
+<script src="assets/chess.js"></script>
+<script src="assets/board.js"></script>
+<script>
+(function(){
+'use strict';
+// Todos los ejercicios fueron verificados con el motor (from-to, resultado esperado).
+var PUZZLES={
+  facil:[
+    {fen:'7k/8/8/3p4/8/8/3R4/7K w - - 0 1', sol:[['d2','d5']],
+     t:'La torre captura', d:'Las blancas mueven. Captura el peón negro con la torre.', h:'La torre va en línea recta: sube por su columna.'},
+    {fen:'7k/8/4q3/8/3N4/8/8/7K w - - 0 1', sol:[['d4','e6']],
+     t:'El caballo captura la dama', d:'Las blancas mueven. Come la dama negra con el caballo.', h:'El caballo salta en forma de L: dos y una.'},
+    {fen:'7k/8/5r2/8/8/2B5/8/7K w - - 0 1', sol:[['c3','f6']],
+     t:'El alfil por la diagonal', d:'Las blancas mueven. Captura la torre negra con el alfil.', h:'El alfil viaja en diagonal, sin cambiar de color de casilla.'},
+    {fen:'7k/P7/8/8/8/8/8/7K w - - 0 1', sol:[['a7','a8','q']],
+     t:'Corona el peón', d:'Las blancas mueven. Lleva el peón hasta el final y conviértelo en dama.', h:'Un peón que llega a la última fila se transforma.'},
+    {fen:'7k/8/8/8/8/8/6Q1/K7 w - - 0 1', sol:[['g2','g7'],['g2','g8']],
+     t:'Da jaque con la dama', d:'Las blancas mueven. Ataca al rey negro con la dama (dale jaque).', h:'La dama se mueve recto y en diagonal, todo lo lejos que quiera.'}
+  ],
+  medio:[
+    {fen:'7k/8/8/3q4/4P3/8/8/7K w - - 0 1', sol:[['e4','d5']],
+     t:'El peón come de lado', d:'Las blancas mueven. Captura la dama negra con el peón.', h:'El peón avanza recto, pero captura en diagonal.'},
+    {fen:'4k3/8/8/5r2/4N3/8/8/7K w - - 0 1', sol:[['e4','d6']],
+     t:'Tenedor de caballo', d:'Las blancas mueven. Con un salto, ataca a la vez al rey y a la torre.', h:'Busca una casilla desde donde el caballo amenace dos piezas.'},
+    {fen:'6k1/8/8/8/8/8/8/R3K2R w KQ - 0 1', sol:[['e1','g1']],
+     t:'Haz el enroque corto', d:'Las blancas mueven. Pon a salvo al rey enrocando del lado corto.', h:'El rey se mueve dos casillas hacia la torre de la derecha.'},
+    {fen:'7k/6pp/8/8/8/8/1r6/R6K w - - 0 1', sol:[['a1','a8']],
+     t:'Amenaza el mate del pasillo', d:'Las blancas mueven. Lleva la torre a la última fila y da jaque.', h:'La primera fila del rival puede ser su tumba.'},
+    {fen:'r3k3/8/8/8/8/8/8/4K2R w Kq - 0 1', sol:[['h1','h8']],
+     t:'Torre a la fila del rey', d:'Las blancas mueven. Da jaque metiendo la torre en la fila del rey negro.', h:'La torre por la columna h llega hasta arriba.'}
+  ],
+  normal:[
+    {fen:'6k1/5ppp/8/8/8/8/8/R6K w - - 0 1', sol:[['a1','a8']],
+     t:'Mate del pasillo', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'El rey está encerrado por sus propios peones.'},
+    {fen:'6k1/8/6K1/8/8/8/8/1Q6 w - - 0 1', sol:[['b1','b8']],
+     t:'Mate con dama y rey', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'Tu rey ya cuida las casillas de escape. Falta el ataque.'},
+    {fen:'k7/8/1K6/8/8/8/8/7R w - - 0 1', sol:[['h1','h8']],
+     t:'Mate en la esquina', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'Empuja al rey contra el borde con la torre.'},
+    {fen:'6k1/R7/6K1/8/8/8/8/8 w - - 0 1', sol:[['a7','a8']],
+     t:'Mate de torre y rey', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'El rey blanco quita las casillas de escape; la torre remata.'},
+    {fen:'6k1/4Pp1p/5K2/8/8/8/8/8 w - - 0 1', sol:[['e7','e8','q']],
+     t:'Corona con mate', d:'Las blancas mueven y dan JAQUE MATE coronando el peón.', h:'Al llegar a la última fila, el peón se vuelve dama y remata.'}
+  ]
+};
+
+var level='facil';
+var idx=0;
+var solved={};
+var current;
+
+var board=new ChessBoard(document.getElementById('board'),{
+  onDrop:function(mv,state){ return validate(mv); }
+});
+
+var statusEl=document.getElementById('status');
+var pnum=document.getElementById('pnum');
+var ptitle=document.getElementById('ptitle');
+var pdesc=document.getElementById('pdesc');
+var phint=document.getElementById('phint');
+var scoreEl=document.getElementById('score');
+
+function load(){
+  current=PUZZLES[level][idx];
+  board.setState(current.fen);
+  board.setFlip(false);
+  board.lock(false);
+  statusEl.textContent='Las blancas mueven.';
+  statusEl.className='status';
+  pnum.textContent=(idx+1)+' / '+PUZZLES[level].length;
+  ptitle.textContent=current.t;
+  pdesc.textContent=current.d;
+  phint.style.display='none';
+  phint.textContent='';
+}
+
+function validate(mv){
+  var from=Chess.rcToSq(mv.from[0],mv.from[1]);
+  var to=Chess.rcToSq(mv.to[0],mv.to[1]);
+  var ok=current.sol.some(function(s){
+    if(s[0]!==from||s[1]!==to) return false;
+    if(s[2]) return mv.promotion===s[2];
+    return true;
+  });
+  if(ok){
+    var key=level+idx;
+    if(!solved[key]){ solved[key]=true; scoreEl.textContent=countSolved(); }
+    statusEl.textContent='✅ ¡Correcto! Bien jugado.';
+    statusEl.className='status win';
+    board.lock(true);
+    setTimeout(function(){ next(); }, 1100);
+    return true; // deja que el tablero aplique la jugada para que se vea
+  } else {
+    statusEl.textContent='🔁 Esa no es. Inténtalo de nuevo.';
+    statusEl.className='status lose';
+    return false; // el tablero no aplica la jugada
+  }
+}
+
+function countSolved(){ return Object.keys(solved).filter(function(k){return k.indexOf(level)===0;}).length; }
+
+function next(){
+  idx=(idx+1)%PUZZLES[level].length;
+  load();
+}
+
+document.getElementById('tabs').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  Array.prototype.slice.call(this.children).forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');
+  level=b.dataset.lv; idx=0; scoreEl.textContent=countSolved(); load();
+});
+document.getElementById('skip').addEventListener('click',next);
+document.getElementById('hint').addEventListener('click',function(){
+  phint.style.display='block'; phint.textContent='💡 '+current.h;
+});
+document.getElementById('show').addEventListener('click',function(){
+  var s=current.sol[0];
+  var from=Chess.sqToRC(s[0]);
+  board.sel=from;
+  board.legal=Chess.legalMoves(board.state).filter(function(m){
+    return m.from[0]===from[0]&&m.from[1]===from[1];});
+  board.render();
+  var to=Chess.sqToRC(s[1]);
+  var cell=board.cells[to[0]+'-'+to[1]];
+  if(cell) cell.classList.add('sel');
+  statusEl.textContent='La jugada correcta está marcada.';
+  statusEl.className='status check';
+});
+
+load();
+})();
+</script>
+</body>
+</html>

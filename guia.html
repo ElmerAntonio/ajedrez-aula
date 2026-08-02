@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ajedrez en el Aula · Guía para Docentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#131C18; --tinta2:#1D2A24; --tinta3:#27362E;
+  --marfil:#F0E7D2; --marfil2:#FAF5E9;
+  --selva:#4C7A58; --selva-cl:#6FA37C;
+  --ambar:#E9A73C; --fuego:#C8503C; --cielo:#6FA8C7; --uva:#8B6FA8;
+  --disp:'Fraunces',Georgia,serif;
+  --body:'Nunito Sans',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--tinta);color:var(--marfil);font-family:var(--body);
+  overflow:hidden;-webkit-font-smoothing:antialiased}
+
+/* ---------- ESTRUCTURA DE DIAPOSITIVA ---------- */
+#deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;
+  padding:clamp(20px,3.4vh,44px) clamp(22px,4vw,72px) 74px;
+  opacity:0;transform:translateY(14px);overflow:hidden}
+.slide.on{display:flex;animation:in .45s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes in{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.on{animation:none;opacity:1;transform:none}}
+
+.eyebrow{font-family:var(--mono);font-size:clamp(10px,1.15vw,13px);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--selva-cl);display:flex;gap:14px;align-items:center;
+  flex-wrap:wrap;margin-bottom:.5em}
+.eyebrow .chip{background:var(--tinta3);color:var(--marfil);padding:3px 10px;border-radius:999px;
+  letter-spacing:.1em;font-size:.92em}
+.chip.a{background:#3B5C46;color:#CFEBD8}
+.chip.b{background:#5B4A22;color:#F5DCA8}
+.chip.c{background:#4A3630;color:#F2C4B6}
+.chip.d{background:#33475A;color:#C7E2F2}
+
+h1{font-family:var(--disp);font-weight:900;font-size:clamp(34px,5.6vw,78px);
+  line-height:.98;letter-spacing:-.02em}
+h2{font-family:var(--disp);font-weight:900;font-size:clamp(26px,3.9vw,52px);
+  line-height:1.02;letter-spacing:-.015em;margin-bottom:.28em}
+h3{font-family:var(--disp);font-weight:600;font-size:clamp(16px,1.65vw,23px);
+  line-height:1.15;margin-bottom:.3em}
+p,li{font-size:clamp(13px,1.35vw,19px);line-height:1.5;color:#DDD5C2}
+.lead{font-size:clamp(15px,1.6vw,23px);color:var(--marfil);max-width:60ch}
+strong{color:var(--marfil);font-weight:800}
+em.k{font-style:normal;color:var(--ambar);font-weight:800}
+.mono{font-family:var(--mono)}
+.body{flex:1;min-height:0;display:flex;gap:clamp(16px,2.6vw,40px);margin-top:.7em}
+.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(9px,1.3vh,18px);
+  justify-content:center}
+.col.top{justify-content:flex-start}
+.center{align-items:center;justify-content:center;text-align:center}
+ul{list-style:none;display:flex;flex-direction:column;gap:.5em}
+ul li{padding-left:1.5em;position:relative}
+ul li::before{content:'';position:absolute;left:0;top:.55em;width:.62em;height:.62em;
+  background:var(--selva-cl);border-radius:2px}
+ul.amb li::before{background:var(--ambar)}
+ol{list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:.55em}
+ol li{counter-increment:n;padding-left:2.1em;position:relative}
+ol li::before{content:counter(n);position:absolute;left:0;top:.05em;width:1.5em;height:1.5em;
+  background:var(--ambar);color:var(--tinta);border-radius:5px;font-family:var(--mono);
+  font-weight:700;font-size:.78em;display:grid;place-items:center}
+
+/* ---------- TARJETAS ---------- */
+.card{background:var(--tinta2);border-radius:14px;padding:clamp(11px,1.5vw,20px);
+  border:1px solid #2E3F36}
+.card.warm{background:#2A2119;border-color:#4A3A24}
+.card.hot{background:#2E1E1A;border-color:#5A3229}
+.card.cool{background:#1A2730;border-color:#2E4553}
+.card h3{color:var(--marfil)}
+.card p,.card li{font-size:clamp(12px,1.18vw,16px)}
+.grid{display:grid;gap:clamp(9px,1.2vw,16px)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.big{font-family:var(--disp);font-weight:900;font-size:clamp(28px,4vw,58px);
+  line-height:1;color:var(--ambar)}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72em;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--tinta);background:var(--ambar);
+  padding:2px 8px;border-radius:4px;font-weight:700}
+.tag.g{background:var(--selva-cl)} .tag.r{background:var(--fuego);color:#fff}
+.tag.b{background:var(--cielo)}
+.say{border-left:3px solid var(--ambar);padding:.15em 0 .15em .8em;
+  font-family:var(--disp);font-style:italic;font-size:clamp(13px,1.3vw,18px);color:var(--marfil2)}
+.note{font-size:clamp(11px,1.05vw,14px);color:#9DAFA2}
+
+/* ---------- TABLERO ---------- */
+.board{position:relative;aspect-ratio:1;width:100%;max-width:min(46vh,100%);
+  background:var(--tinta2);border-radius:12px;padding:4.6%;margin:0 auto;flex:none}
+.board.nc{padding:1.6%}
+.board .grid8{position:relative;width:100%;height:100%;display:grid;
+  grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
+  border-radius:3px;overflow:hidden}
+.sq{position:relative}
+.sq.lt{background:var(--marfil)} .sq.dk{background:var(--selva)}
+.sq::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
+.sq.mk::after{background:var(--ambar);opacity:.72}
+.sq.dg::after{background:var(--fuego);opacity:.66}
+.sq.nf::after{background:var(--cielo);opacity:.58}
+.dot{position:absolute;left:50%;top:50%;width:31%;height:31%;transform:translate(-50%,-50%);
+  background:var(--ambar);border:2px solid #3C2C0E;border-radius:50%;z-index:3;
+  animation:pop .35s cubic-bezier(.34,1.56,.64,1) backwards}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(0)}}
+.pc{position:absolute;width:12.5%;height:12.5%;display:grid;place-items:center;
+  z-index:4;transition:transform .55s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.pc span{position:absolute;font-size:min(9.4vh,5.4vw);line-height:1;
+  font-family:'DejaVu Sans','Segoe UI Symbol','Noto Sans Symbols 2',sans-serif}
+.pc .f{color:#fff} .pc .o{color:#111C17}
+.pc.blk .f{color:#16211B} .pc.blk .o{color:var(--marfil)}
+.coord{position:absolute;font-family:var(--mono);font-size:min(1.9vh,1.05vw);
+  color:var(--marfil);opacity:.75}
+.arrow{position:absolute;inset:4.6%;z-index:5;pointer-events:none;overflow:visible}
+.board.nc .arrow{inset:1.6%}
+.play{display:inline-flex;align-items:center;gap:8px;background:var(--ambar);color:var(--tinta);
+  border:0;border-radius:999px;padding:7px 18px;font-family:var(--body);font-weight:800;
+  font-size:clamp(11px,1.1vw,15px);cursor:pointer;transition:transform .15s,filter .15s;
+  margin:9px auto 0}
+.play:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.play:focus-visible{outline:3px solid var(--cielo);outline-offset:3px}
+.bw{display:flex;flex-direction:column;align-items:center;min-width:0}
+.bw .cap{font-family:var(--mono);font-size:clamp(10px,1vw,13px);color:#9DAFA2;
+  margin-top:8px;text-align:center;letter-spacing:.04em}
+
+/* ---------- PORTADA ---------- */
+.cover{background:
+  radial-gradient(1100px 620px at 78% 18%,rgba(76,122,88,.42),transparent 62%),
+  radial-gradient(760px 520px at 12% 92%,rgba(233,167,60,.16),transparent 60%),var(--tinta)}
+.cover h1{font-size:clamp(42px,8.2vw,120px)}
+
+/* ---------- NAVEGACIÓN ---------- */
+#rail{position:fixed;left:0;right:0;bottom:0;height:8px;display:flex;z-index:20}
+#rail i{flex:1;background:var(--tinta3);transition:background .3s}
+#rail i:nth-child(odd){background:#202D26}
+#rail i.done{background:var(--selva)}
+#rail i.cur{background:var(--ambar)}
+#hud{position:fixed;right:clamp(14px,2.4vw,30px);bottom:20px;display:flex;gap:9px;
+  align-items:center;z-index:21}
+#hud button{background:var(--tinta2);color:var(--marfil);border:1px solid #33473C;
+  width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:15px;
+  display:grid;place-items:center;transition:background .15s}
+#hud button:hover{background:var(--selva)}
+#hud button:focus-visible{outline:2px solid var(--ambar);outline-offset:2px}
+#num{font-family:var(--mono);font-size:12px;color:#9DAFA2;letter-spacing:.08em;
+  background:var(--tinta2);padding:8px 12px;border-radius:9px;border:1px solid #33473C}
+#tt{position:fixed;left:clamp(14px,2.4vw,30px);bottom:22px;font-family:var(--mono);
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5E7568;z-index:21}
+@media(max-width:820px){#tt{display:none}.body{flex-direction:column;overflow-y:auto}
+  .g4,.g5{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}
+  .board{max-width:min(52vh,86%)}.pc span{font-size:9vw}}
+#home{position:fixed;left:clamp(14px,2.4vw,30px);top:16px;z-index:30;font-family:var(--mono);
+  font-size:12px;letter-spacing:.06em;color:#BFC7BD;background:var(--tinta2);border:1px solid #33473C;
+  padding:7px 13px;border-radius:9px;text-decoration:none;transition:background .15s}
+#home:hover{background:var(--selva);color:#fff}
+</style>
+</head>
+<body>
+<a id="home" href="index.html" aria-label="Volver al inicio">♞ Inicio</a>
+<div id="deck">
+<!-- 1 -->
+<section class="slide cover center" data-t="Portada">
+  <div class="eyebrow" style="justify-content:center">Escuela · Guía docente · Edición 2026</div>
+  <h1>Ajedrez<br>en el Aula</h1>
+  <p class="lead" style="margin-top:.7em;max-width:36ch">Todo lo que un maestro necesita para enseñar ajedrez desde CEFACEI hasta 9.° grado: movimientos, reglas, Leyes FIDE y cómo explicarlo con palabras que los niños entienden.</p>
+  <div style="display:flex;gap:10px;margin-top:1.5em;flex-wrap:wrap;justify-content:center">
+    <span class="chip a mono" style="padding:6px 14px;border-radius:999px;font-size:12px">CEFACEI · 1.°</span>
+    <span class="chip b mono" style="padding:6px 14px;border-radius:999px;font-size:12px">2.° – 4.°</span>
+    <span class="chip c mono" style="padding:6px 14px;border-radius:999px;font-size:12px">5.° – 6.°</span>
+    <span class="chip d mono" style="padding:6px 14px;border-radius:999px;font-size:12px">7.° – 9.°</span>
+  </div>
+  <p class="note" style="margin-top:2.2em">Usa ← → o la barra espaciadora para avanzar</p>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-t="Cómo usar esta guía">
+  <div class="eyebrow">Antes de empezar</div>
+  <h2>Cómo usar esta guía</h2>
+  <p class="lead">Cada lámina lleva una etiqueta de nivel. No enseñes todo a todos: escoge la ruta según la edad de tu grupo.</p>
+  <div class="body">
+    <div class="col">
+      <div class="grid g2" style="grid-template-columns:1fr 1fr">
+        <div class="card"><span class="chip a mono" style="font-size:11px;padding:3px 9px;border-radius:999px">CEFACEI · 1.°</span>
+          <h3 style="margin-top:.5em">Jugar antes que saber</h3>
+          <p>Reconocer piezas, colores y el tablero. Mover una sola pieza por sesión. Nada de notación ni reloj.</p></div>
+        <div class="card"><span class="chip b mono" style="font-size:11px;padding:3px 9px;border-radius:999px">2.° – 4.°</span>
+          <h3 style="margin-top:.5em">La partida completa</h3>
+          <p>Todos los movimientos, reglas especiales, jaque y mate. Se introducen las coordenadas.</p></div>
+        <div class="card"><span class="chip c mono" style="font-size:11px;padding:3px 9px;border-radius:999px">5.° – 6.°</span>
+          <h3 style="margin-top:.5em">Jugar bien</h3>
+          <p>Notación algebraica, tablas, mates básicos, reloj. Ya pueden competir en un torneo interno.</p></div>
+        <div class="card"><span class="chip d mono" style="font-size:11px;padding:3px 9px;border-radius:999px">7.° – 9.°</span>
+          <h3 style="margin-top:.5em">Reglamento FIDE</h3>
+          <p>Leyes completas, planilla, arbitraje, sistema suizo. Pueden ser jueces auxiliares del torneo escolar.</p></div>
+      </div>
+    </div>
+    <div class="col" style="flex:.72">
+      <div class="card warm">
+        <h3>Lo que sí necesitas</h3>
+        <ul class="amb" style="margin-top:.4em">
+          <li>Un tablero por cada dos estudiantes (o dibujado en cartulina)</li>
+          <li>Un tablero grande visible para todo el grupo</li>
+          <li>20 minutos seguidos de clase</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Lo que NO necesitas</h3>
+        <ul style="margin-top:.4em">
+          <li>Saber jugar bien tú mismo</li>
+          <li>Relojes ni piezas de torneo</li>
+          <li>Computadora o internet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-t="Por qué el ajedrez">
+  <div class="eyebrow">Fundamento <span class="chip">Docente</span></div>
+  <h2>Por qué vale la pena<br>en un aula rural</h2>
+  <div class="body">
+    <div class="col">
+      <div class="grid g2">
+        <div class="card"><div class="big">0</div><h3>de costo por partida</h3><p>Un juego dura años. Se puede fabricar con cartón y tapitas.</p></div>
+        <div class="card"><div class="big">2</div><h3>estudiantes por tablero</h3><p>Multiplica la participación sin multiplicar el material.</p></div>
+        <div class="card"><div class="big">64</div><h3>casillas, un solo idioma</h3><p>No depende del español ni del ngäbere: se juega igual en todas partes.</p></div>
+        <div class="card"><div class="big">12</div><h3>clases para saber jugar</h3><p>Con una sesión semanal, en un trimestre todo el grupo juega partidas completas.</p></div>
+      </div>
+    </div>
+    <div class="col" style="flex:.9">
+      <div class="card cool">
+        <h3>Lo que el ajedrez entrena de verdad</h3>
+        <ul style="margin-top:.5em">
+          <li><strong>Pensar antes de actuar.</strong> El movimiento no se deshace: es la lección más honesta del juego.</li>
+          <li><strong>Consecuencias.</strong> Cada error tiene un costo visible e inmediato.</li>
+          <li><strong>Perder con dignidad.</strong> Se pierde mucho y se aprende a dar la mano.</li>
+          <li><strong>Atención sostenida.</strong> Veinte minutos de concentración voluntaria.</li>
+        </ul>
+      </div>
+      <p class="note">Sé honesto con tus colegas: el ajedrez no sube automáticamente las notas de matemática. Lo que sí hace, y muy bien, es enseñar a un niño a detenerse a pensar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-t="Progresión por edad">
+  <div class="eyebrow">Planificación <span class="chip">Docente</span></div>
+  <h2>Qué enseñar a cada edad</h2>
+  <div class="body">
+    <div class="col top">
+      <div class="grid g4" style="align-items:stretch">
+        <div class="card" style="border-top:none">
+          <span class="chip a mono" style="font-size:11px;padding:3px 9px;border-radius:999px">4 – 6 años</span>
+          <h3 style="margin-top:.6em">El tablero es un mapa</h3>
+          <ul style="margin-top:.3em"><li>Claro y oscuro</li><li>Nombres de las piezas</li><li>Torre y rey solamente</li><li>Juegos de carrera con peones</li></ul>
+          <p class="note" style="margin-top:.7em">Sesiones de 10 minutos. Sin partidas completas.</p>
+        </div>
+        <div class="card">
+          <span class="chip b mono" style="font-size:11px;padding:3px 9px;border-radius:999px">7 – 9 años</span>
+          <h3 style="margin-top:.6em">La partida completa</h3>
+          <ul style="margin-top:.3em"><li>Los seis movimientos</li><li>Jaque y jaque mate</li><li>Enroque y coronación</li><li>Valor de las piezas</li></ul>
+          <p class="note" style="margin-top:.7em">Ya juegan partidas de principio a fin.</p>
+        </div>
+        <div class="card">
+          <span class="chip c mono" style="font-size:11px;padding:3px 9px;border-radius:999px">10 – 12 años</span>
+          <h3 style="margin-top:.6em">Jugar con criterio</h3>
+          <ul style="margin-top:.3em"><li>Notación algebraica</li><li>Captura al paso</li><li>Ahogado y tablas</li><li>Mate con dos torres</li><li>Reloj de ajedrez</li></ul>
+          <p class="note" style="margin-top:.7em">Listos para el torneo interno.</p>
+        </div>
+        <div class="card">
+          <span class="chip d mono" style="font-size:11px;padding:3px 9px;border-radius:999px">13 – 15 años</span>
+          <h3 style="margin-top:.6em">Reglamento y competencia</h3>
+          <ul style="margin-top:.3em"><li>Leyes FIDE completas</li><li>Pieza tocada, jugada ilegal</li><li>Llenar la planilla</li><li>Sistema suizo</li><li>Arbitrar a los pequeños</li></ul>
+          <p class="note" style="margin-top:.7em">Se convierten en tus monitores.</p>
+        </div>
+      </div>
+      <div class="card warm" style="margin-top:auto">
+        <p><em class="k">Principio rector:</em> un niño que no sabe leer puede jugar ajedrez perfectamente. La notación y el reglamento llegan después, no antes. Primero se juega; luego se nombra lo que ya se sabe hacer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-t="El tablero">
+  <div class="eyebrow">Bloque 1 · El tablero <span class="chip a">CEFACEI · 1.°</span></div>
+  <h2>Sesenta y cuatro casillas</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">El tablero tiene <strong>8 casillas de ancho por 8 de alto</strong>. Se alternan claras y oscuras, siempre. Nunca hay dos del mismo color pegadas de lado.</p>
+      <div class="card">
+        <h3>Actividad de entrada</h3>
+        <p>Pide a los niños que cuenten las casillas de una fila. Ocho. Luego que cuenten las filas. Ocho. Pregunta cuántas hay en total y deja que lo descubran contando de ocho en ocho. Es la primera tabla de multiplicar que aprenden sin darse cuenta.</p>
+      </div>
+      <div class="say">«Este es el patio donde vive nuestro ejército. Tiene ocho pasillos a lo largo y ocho a lo ancho.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/8/8/8/8" data-coords="0"></div>
+      <div class="cap">8 × 8 = 64 casillas · 32 claras y 32 oscuras</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-t="Casilla clara a la derecha">
+  <div class="eyebrow">Bloque 1 · El tablero <span class="chip a">CEFACEI · 1.°</span></div>
+  <h2>La regla de oro:<br>casilla clara a la derecha</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Antes de colocar una sola pieza, el tablero debe estar bien orientado. La <strong>casilla de la esquina derecha más cercana a cada jugador debe ser clara.</strong></p>
+      <div class="card hot">
+        <h3>Por qué importa de verdad</h3>
+        <p>Si el tablero está al revés, el rey y la dama quedan invertidos, el enroque sale mal y las diagonales del alfil no coinciden con ningún libro ni diagrama. La mitad de los errores de un principiante empiezan aquí.</p>
+      </div>
+      <div class="say">«Busca la casilla blanca en tu mano derecha. Si no está, gira el tablero. Blanco a la derecha, siempre.»</div>
+      <p class="note">En español también se dice «la blanca a la derecha». En inglés, <span class="mono">light square on the right</span>.</p>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/8/8/8/8" data-mark="h1" data-coords="0"></div>
+      <div class="cap">La esquina h1 — abajo a la derecha — es clara</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-t="Filas, columnas y diagonales">
+  <div class="eyebrow">Bloque 1 · El tablero <span class="chip b">2.° – 4.°</span></div>
+  <h2>Filas, columnas<br>y diagonales</h2>
+  <div class="body">
+    <div class="col">
+      <div class="card cool"><h3><span class="tag b">Fila</span> &nbsp;horizontal</h3>
+        <p>Va de izquierda a derecha. Hay 8 y se numeran del <span class="mono">1</span> al <span class="mono">8</span>. Es el camino de la torre.</p></div>
+      <div class="card warm"><h3><span class="tag">Columna</span> &nbsp;vertical</h3>
+        <p>Va de abajo hacia arriba. Hay 8 y se nombran con letras de la <span class="mono">a</span> a la <span class="mono">h</span>. También es camino de la torre.</p></div>
+      <div class="card hot"><h3><span class="tag r">Diagonal</span> &nbsp;inclinada</h3>
+        <p>Va en esquina. Cada diagonal conserva siempre el mismo color de casilla. Es el camino del alfil.</p></div>
+      <div class="say">«La fila es acostada, la columna está parada y la diagonal va de puntillas.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/8/8/8/8"
+        data-info="a4 b4 c4 d4 e4 f4 g4 h4"
+        data-mark="d1 d2 d3 d5 d6 d7 d8"
+        data-danger="a1 b2 c3 e5 f6 g7 h8"></div>
+      <div class="cap">Azul: la fila 4 · Ámbar: la columna d · Rojo: la diagonal a1–h8</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-t="Coordenadas">
+  <div class="eyebrow">Bloque 1 · El tablero <span class="chip b">2.° – 4.°</span></div>
+  <h2>Cada casilla<br>tiene nombre y apellido</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Primero la <strong>letra</strong> de la columna, después el <strong>número</strong> de la fila. Siempre en ese orden y siempre en minúscula.</p>
+      <div class="card">
+        <h3>Cómo se lee</h3>
+        <p style="font-family:var(--mono);font-size:clamp(15px,1.9vw,26px);color:var(--ambar);margin:.35em 0">e4 &nbsp;·&nbsp; a1 &nbsp;·&nbsp; h8 &nbsp;·&nbsp; d5 &nbsp;·&nbsp; g7</p>
+        <p>Las letras corren siempre de izquierda a derecha <em>vistas desde las blancas</em>. Los números suben del lado de las blancas hacia el de las negras.</p>
+      </div>
+      <div class="card warm"><h3>Juego: «Encuentra la casilla»</h3>
+        <p>Dices una coordenada en voz alta y los niños ponen el dedo encima. Quien acierte primero canta la siguiente. Cinco minutos y ya se saben el tablero de memoria.</p></div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/8/8/8/8"
+        data-mark="e4 a1 h8 d5"
+        data-labels="e4:e4|a1:a1|h8:h8|d5:d5"></div>
+      <div class="cap">Letras abajo, números al lado izquierdo</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-t="Posición inicial">
+  <div class="eyebrow">Bloque 1 · El tablero <span class="chip a">CEFACEI · 1.°</span></div>
+  <h2>La posición inicial</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Se arma <strong>de afuera hacia adentro</strong>. Ese orden hace que ningún niño se equivoque.</p>
+      <ol>
+        <li><strong>Las torres</strong> en las cuatro esquinas.</li>
+        <li><strong>Los caballos</strong> al lado de cada torre.</li>
+        <li><strong>Los alfiles</strong> al lado de cada caballo.</li>
+        <li><strong>La dama</strong> en la casilla que sobra de su mismo color.</li>
+        <li><strong>El rey</strong> en la última casilla libre, junto a su dama.</li>
+        <li><strong>Los ocho peones</strong> forman la muralla al frente.</li>
+      </ol>
+      <p class="note">Las blancas siempre mueven primero. Es una regla, no una ventaja que se discuta.</p>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"></div>
+      <div class="cap">16 piezas por bando · 32 en total</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-t="La dama a su color">
+  <div class="eyebrow">Bloque 1 · El tablero <span class="chip b">2.° – 4.°</span></div>
+  <h2>La dama<br>se viste de su color</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Es el error más frecuente al armar el tablero: cambiar de lugar al rey y a la dama. Hay un truco infalible.</p>
+      <div class="card warm">
+        <h3>El truco</h3>
+        <p style="margin-top:.3em"><strong>La dama blanca va en casilla clara</strong> (d1).<br><strong>La dama negra va en casilla oscura</strong> (d8).</p>
+        <p style="margin-top:.5em">Como las dos quedan en la columna <span class="mono">d</span>, terminan una frente a la otra. Y los reyes también, en la columna <span class="mono">e</span>.</p>
+      </div>
+      <div class="say">«La reina siempre combina con su vestido. Reina blanca, casilla blanca. Reina negra, casilla negra.»</div>
+      <p class="note">Si los reyes no quedan frente a frente, algo está mal colocado. Es la revisión de un segundo antes de empezar.</p>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR" data-mark="d1 d8" data-info="e1 e8"></div>
+      <div class="cap">Ámbar: las damas en la columna d · Azul: los reyes en la columna e</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-t="Las seis piezas">
+  <div class="eyebrow">Bloque 2 · Las piezas <span class="chip b">2.° – 4.°</span></div>
+  <h2>Seis piezas, seis valores</h2>
+  <p class="lead">El valor no es una regla del juego: es una guía para decidir cambios. Se enseña recién cuando ya saben mover todo.</p>
+  <div class="body">
+    <div class="col top">
+      <div class="grid g3" style="margin-top:.2em">
+        <div class="card"><h3 style="font-size:clamp(20px,2.4vw,32px)">♙ &nbsp;Peón</h3>
+          <p><span class="tag">1 punto</span></p><p style="margin-top:.5em">El más humilde y el único que puede transformarse. Nunca retrocede.</p></div>
+        <div class="card"><h3 style="font-size:clamp(20px,2.4vw,32px)">♘ &nbsp;Caballo</h3>
+          <p><span class="tag">3 puntos</span></p><p style="margin-top:.5em">El único que salta por encima de otras piezas.</p></div>
+        <div class="card"><h3 style="font-size:clamp(20px,2.4vw,32px)">♗ &nbsp;Alfil</h3>
+          <p><span class="tag">3 puntos</span></p><p style="margin-top:.5em">Vive toda la partida en casillas de un solo color.</p></div>
+        <div class="card"><h3 style="font-size:clamp(20px,2.4vw,32px)">♖ &nbsp;Torre</h3>
+          <p><span class="tag">5 puntos</span></p><p style="margin-top:.5em">Fuerte cuando el tablero está despejado.</p></div>
+        <div class="card"><h3 style="font-size:clamp(20px,2.4vw,32px)">♕ &nbsp;Dama</h3>
+          <p><span class="tag">9 puntos</span></p><p style="margin-top:.5em">Torre y alfil juntos. La pieza más poderosa.</p></div>
+        <div class="card hot"><h3 style="font-size:clamp(20px,2.4vw,32px)">♔ &nbsp;Rey</h3>
+          <p><span class="tag r">Sin valor</span></p><p style="margin-top:.5em">No se cambia ni se captura: vale la partida entera.</p></div>
+      </div>
+      <div class="say" style="margin-top:auto">«El rey no tiene puntos porque no se puede comprar con nada. Si lo pierdes, se acabó el juego.»</div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-t="El peón">
+  <div class="eyebrow">Bloque 2 · Las piezas <span class="chip b">2.° – 4.°</span> <span class="tag">1 punto</span></div>
+  <h2>El peón</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Es la pieza más difícil de explicar, porque <strong>camina de una forma y come de otra</strong>.</p>
+      <ul class="amb">
+        <li><strong>Avanza</strong> una casilla recto hacia adelante.</li>
+        <li><strong>En su primera jugada</strong> puede avanzar una o dos casillas, a elección.</li>
+        <li><strong>Captura en diagonal</strong>, una casilla, solo hacia adelante.</li>
+        <li><strong>Nunca retrocede</strong> ni se mueve de lado.</li>
+        <li>Si tiene una pieza justo enfrente, <strong>queda bloqueado</strong>: no puede comerla ni saltarla.</li>
+      </ul>
+      <div class="say">«El peón camina derechito, pero come de ladito. Y nunca, nunca da marcha atrás.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/3p4/2P5/8/4P3/8" data-dots="e3 e4 c5" data-danger="d5" data-mark="e2 c4"></div>
+      <div class="cap">El peón de e2 avanza 1 o 2 · el de c4 puede avanzar a c5 o capturar en d5</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-t="La torre">
+  <div class="eyebrow">Bloque 2 · Las piezas <span class="chip a">CEFACEI · 1.°</span> <span class="tag">5 puntos</span></div>
+  <h2>La torre</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Se mueve en <strong>línea recta</strong>: hacia adelante, hacia atrás, a la izquierda o a la derecha. Todas las casillas que quiera.</p>
+      <ul class="amb">
+        <li>No puede saltar piezas: se detiene antes de una propia y captura sobre una enemiga.</li>
+        <li>Come igual que se mueve. Esto vale para todas las piezas menos el peón.</li>
+        <li>Es la primera pieza que se enseña: su movimiento es el más limpio.</li>
+      </ul>
+      <div class="card warm"><h3>Primer juego con torres</h3>
+        <p>Una torre blanca en a1 y una negra en h8, sin más piezas. Gana quien capture primero. Enseña movimiento, captura y cuidado en dos minutos.</p></div>
+      <div class="say">«La torre dibuja una cruz. Solo va derecho, como un carro por la carretera.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/3R4/8/8/8" data-mark="d4"
+        data-dots="a4 b4 c4 e4 f4 g4 h4 d1 d2 d3 d5 d6 d7 d8"></div>
+      <div class="cap">14 casillas disponibles desde el centro</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-t="El alfil">
+  <div class="eyebrow">Bloque 2 · Las piezas <span class="chip b">2.° – 4.°</span> <span class="tag">3 puntos</span></div>
+  <h2>El alfil</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Se mueve solo en <strong>diagonal</strong>, tantas casillas como quiera, en cualquiera de las cuatro direcciones.</p>
+      <ul class="amb">
+        <li>Tampoco salta piezas.</li>
+        <li>Cada bando tiene dos: uno de casillas claras y otro de casillas oscuras.</li>
+        <li><strong>Un alfil jamás cambia de color de casilla.</strong> El de casillas claras vivirá y morirá en casillas claras.</li>
+      </ul>
+      <div class="card hot"><h3>Error típico del niño</h3>
+        <p>Mover el alfil «en diagonal» pero cambiando de color, saltando de esquina a esquina. Corrige mostrando que su dedo debe deslizarse por casillas que se tocan solo en la punta.</p></div>
+      <div class="say">«El alfil es como el que camina siempre por la sombra. Nunca pisa el sol.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/3B4/8/8/8" data-mark="d4"
+        data-dots="a1 b2 c3 e5 f6 g7 h8 a7 b6 c5 e3 f2 g1"></div>
+      <div class="cap">Trece casillas, todas del mismo color que la de partida</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-t="La dama">
+  <div class="eyebrow">Bloque 2 · Las piezas <span class="chip b">2.° – 4.°</span> <span class="tag">9 puntos</span></div>
+  <h2>La dama</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Combina a la torre y al alfil: se mueve en <strong>línea recta y en diagonal</strong>, tantas casillas como quiera.</p>
+      <ul class="amb">
+        <li>Tampoco puede saltar piezas.</li>
+        <li>Desde el centro domina hasta 27 casillas: casi la mitad del tablero.</li>
+        <li>Por poderosa que sea, <strong>no se saca temprano</strong>: las piezas menores la persiguen y pierdes tiempo.</li>
+      </ul>
+      <div class="card warm"><h3>Cómo enseñarla</h3>
+        <p>Nunca la presentes primero. Enséñala después de la torre y el alfil, y deja que los niños digan solos que «hace las dos cosas juntas». El descubrimiento se recuerda; la explicación se olvida.</p></div>
+      <div class="say">«La dama es torre y alfil en la misma pieza. Por eso es la más fuerte del ejército.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/3Q4/8/8/8" data-mark="d4"
+        data-dots="a4 b4 c4 e4 f4 g4 h4 d1 d2 d3 d5 d6 d7 d8 a1 b2 c3 e5 f6 g7 h8 a7 b6 c5 e3 f2 g1"></div>
+      <div class="cap">27 casillas desde d4 · 14 de torre + 13 de alfil</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-t="El caballo">
+  <div class="eyebrow">Bloque 2 · Las piezas <span class="chip b">2.° – 4.°</span> <span class="tag">3 puntos</span></div>
+  <h2>El caballo</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Se mueve en forma de <strong>L</strong>: dos casillas en una dirección y una en ángulo recto. O una y luego dos: es lo mismo.</p>
+      <ul class="amb">
+        <li><strong>Es el único que salta.</strong> No le importa lo que haya en el camino; solo importa dónde cae.</li>
+        <li>Solo captura la pieza que está en la casilla donde aterriza.</li>
+        <li>Siempre cambia de color de casilla al moverse. De clara pasa a oscura y viceversa.</li>
+        <li>En el centro alcanza 8 casillas; en una esquina, apenas 2.</li>
+      </ul>
+      <div class="say">«Dos pasos y dobla. Como cuando caminas dos cuadras y volteas la esquina. Y salta por encima de todos, porque va montado.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/3N4/8/8/8" data-mark="d4"
+        data-dots="b5 c6 e6 f5 f3 e2 c2 b3" data-anim="d4-e6"></div>
+      <div class="cap">Ocho destinos desde el centro · pulsa para ver el salto</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-t="El rey">
+  <div class="eyebrow">Bloque 2 · Las piezas <span class="chip a">CEFACEI · 1.°</span> <span class="tag r">Sin valor</span></div>
+  <h2>El rey</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Se mueve <strong>una sola casilla</strong> en cualquier dirección: recta o diagonal.</p>
+      <ul class="amb">
+        <li>Es lento, pero es la pieza más importante: si cae, se acaba la partida.</li>
+        <li><strong>No puede moverse a una casilla atacada</strong> por una pieza enemiga.</li>
+        <li><strong>Los dos reyes nunca pueden quedar pegados.</strong> Siempre queda al menos una casilla entre ellos.</li>
+        <li>El rey <strong>nunca se captura</strong>. La partida termina antes, con el jaque mate.</li>
+      </ul>
+      <div class="say">«El rey es viejito: da un pasito nada más. Pero si lo atrapan, perdimos todos.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/8/8/8/3K4/8/8/8" data-mark="d4"
+        data-dots="c3 c4 c5 d3 d5 e3 e4 e5"></div>
+      <div class="cap">Ocho casillas vecinas, una a la vez</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-t="El enroque">
+  <div class="eyebrow">Bloque 3 · Reglas especiales <span class="chip c">5.° – 6.°</span></div>
+  <h2>El enroque</h2>
+  <p class="lead">La única jugada en la que se mueven <strong>dos piezas a la vez</strong>. Pone al rey a salvo y activa la torre.</p>
+  <div class="body">
+    <div class="col" style="flex:.62"><div class="bw">
+      <div class="board nc" data-fen="8/8/8/8/8/8/8/R3K2R" data-coords="0"
+        data-mark="e1 g1" data-anim="e1-g1,h1-f1"></div>
+      <div class="cap">Enroque corto · <span class="mono">0-0</span></div>
+    </div></div>
+    <div class="col" style="flex:.62"><div class="bw">
+      <div class="board nc" data-fen="8/8/8/8/8/8/8/R3K2R" data-coords="0"
+        data-mark="e1 c1" data-anim="e1-c1,a1-d1"></div>
+      <div class="cap">Enroque largo · <span class="mono">0-0-0</span></div>
+    </div></div>
+    <div class="col">
+      <div class="card hot">
+        <h3>Las cinco condiciones</h3>
+        <ol style="margin-top:.4em;font-size:.94em">
+          <li>El rey <strong>no se ha movido nunca</strong> en la partida.</li>
+          <li>Esa torre <strong>tampoco se ha movido</strong> nunca.</li>
+          <li>No hay <strong>ninguna pieza</strong> entre el rey y la torre.</li>
+          <li>El rey <strong>no está en jaque</strong> en este momento.</li>
+          <li>El rey <strong>no pasa por</strong> ni <strong>llega a</strong> una casilla atacada.</li>
+        </ol>
+      </div>
+      <p class="note"><strong>Sí se permite</strong> enrocar aunque la torre esté atacada o pase por una casilla atacada. La restricción es solo para el rey.</p>
+      <div class="say">«El rey se esconde en su casita y la torre lo cuida desde adentro.»</div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-t="Captura al paso">
+  <div class="eyebrow">Bloque 3 · Reglas especiales <span class="chip c">5.° – 6.°</span></div>
+  <h2>Captura al paso</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">La regla más olvidada del ajedrez. En francés, <span class="mono">en passant</span>.</p>
+      <p>Si un peón enemigo usa su <strong>avance doble</strong> para pasar de largo junto a tu peón, tu peón puede capturarlo <strong>como si solo hubiera avanzado una casilla</strong>.</p>
+      <div class="card hot">
+        <h3>Las tres condiciones</h3>
+        <ol style="margin-top:.4em;font-size:.94em">
+          <li>Solo un <strong>peón</strong> puede capturar así, y solo a otro <strong>peón</strong>.</li>
+          <li>El peón enemigo debe haber avanzado <strong>dos casillas de golpe</strong> y quedar al lado del tuyo.</li>
+          <li>Debe hacerse <strong>de inmediato</strong>, en la jugada siguiente. Si esperas, se pierde el derecho para siempre.</li>
+        </ol>
+      </div>
+      <div class="say">«Quiso pasar corriendo para que no lo vieras, pero lo atrapaste igual. El peón cae en la casilla por donde pasó.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/3p4/8/4P3/8/8/8/8" data-mark="e5"
+        data-anim="d7-d5,e5-d6!d5"></div>
+      <div class="cap">Negras juegan d7–d5 · las blancas capturan en d6 y el peón de d5 sale del tablero</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide" data-t="Coronación">
+  <div class="eyebrow">Bloque 3 · Reglas especiales <span class="chip b">2.° – 4.°</span></div>
+  <h2>Coronación</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Cuando un peón llega a la <strong>última fila</strong>, sale del tablero y en su lugar entra una pieza nueva.</p>
+      <ul class="amb">
+        <li>Puedes elegir <strong>dama, torre, alfil o caballo</strong> de tu color.</li>
+        <li><strong>No</strong> puedes elegir rey, ni dejar el peón como peón.</li>
+        <li>No importa si ya tienes una dama en el tablero: puedes tener dos, tres o nueve.</li>
+        <li>La pieza nueva actúa <strong>de inmediato</strong>, en esa misma jugada.</li>
+      </ul>
+      <div class="card warm"><h3>Coronación menor</h3>
+        <p>Casi siempre se elige dama. Pero a veces coronar <strong>caballo</strong> da un jaque decisivo, o coronar <strong>torre</strong> evita un ahogado. Se llama subpromoción y encanta a los estudiantes mayores.</p></div>
+      <div class="say">«El peón caminó todo el tablero sin retroceder nunca. Se ganó ser reina.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="8/1P6/8/8/8/8/8/8" data-mark="b7 b8" data-anim="b7-b8=Q"></div>
+      <div class="cap">El peón de b7 llega a b8 y se convierte en dama · <span class="mono">b8=D</span></div>
+    </div></div>
+  </div>
+</section>
+<!-- 21 -->
+<section class="slide" data-t="Jaque">
+  <div class="eyebrow">Bloque 4 · Fin de la partida <span class="chip b">2.° – 4.°</span></div>
+  <h2>Jaque: el rey<br>está amenazado</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Hay jaque cuando una pieza enemiga <strong>ataca al rey</strong>. No es una jugada ni una amenaza opcional: <strong>hay que resolverlo de inmediato</strong>.</p>
+      <div class="card warm">
+        <h3>Las tres únicas salidas</h3>
+        <ol style="margin-top:.4em">
+          <li><strong>Mover el rey</strong> a una casilla segura.</li>
+          <li><strong>Capturar</strong> la pieza que da el jaque.</li>
+          <li><strong>Tapar</strong> el camino con otra pieza propia.</li>
+        </ol>
+        <p class="note" style="margin-top:.6em">Si ninguna de las tres es posible, es jaque mate.</p>
+      </div>
+      <p><strong>No se puede</strong> ignorar el jaque ni hacer otra jugada. Y jamás se deja al rey en jaque después de mover: eso es una jugada ilegal.</p>
+      <p class="note">Decir «jaque» en voz alta es costumbre escolar y ayuda mucho, pero en torneo oficial <strong>no es obligatorio</strong> y algunos árbitros lo desalientan.</p>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="4k3/8/8/2b5/8/4R3/8/6K1"
+        data-danger="e8" data-mark="e3" data-info="e7" data-dots="d7 d8 f7 f8"
+        data-arrows="c5-e3"></div>
+      <div class="cap">Rojo: rey en jaque · Ámbar: la torre que ataca · Azul: casilla para tapar · Flecha: capturar con el alfil</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 22 -->
+<section class="slide" data-t="Jaque mate">
+  <div class="eyebrow">Bloque 4 · Fin de la partida <span class="chip b">2.° – 4.°</span></div>
+  <h2>Jaque mate:<br>se acabó la partida</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">El rey está en jaque y <strong>ninguna de las tres salidas funciona</strong>. La partida termina en ese instante. Quien da mate, gana.</p>
+      <div class="card hot">
+        <h3>El mate del pasillo</h3>
+        <p>El rey enrocado queda encerrado por sus propios peones. Una torre o una dama entra por la última fila y no hay escape. Es el primer mate que todo estudiante debe reconocer, y también el que más partidas escolares decide.</p>
+      </div>
+      <div class="card"><h3>Cómo se anuncia</h3>
+        <p>En la planilla se escribe con el símbolo <span class="mono" style="color:var(--ambar)">#</span> o con doble signo: <span class="mono">Te8#</span>. El jaque simple lleva <span class="mono" style="color:var(--ambar)">+</span>.</p></div>
+      <div class="say">«El rey está atrapado. No puede correr, no puede pelear y nadie puede taparlo. Perdió.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="4R1k1/5ppp/8/8/8/8/8/6K1" data-danger="g8" data-mark="e8"
+        data-info="f7 g7 h7"></div>
+      <div class="cap">Mate del pasillo · los propios peones le cierran la salida al rey negro</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="slide" data-t="Rey ahogado">
+  <div class="eyebrow">Bloque 4 · Fin de la partida <span class="chip c">5.° – 6.°</span></div>
+  <h2>Rey ahogado</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">El jugador que tiene el turno <strong>no está en jaque</strong>, pero <strong>no tiene ninguna jugada legal</strong>. La partida es <strong>tablas</strong>: empate.</p>
+      <div class="card hot">
+        <h3>Por qué confunde tanto</h3>
+        <p>Parece que el bando con más piezas debería ganar. Pero no: el ahogado vale medio punto para cada uno. Es la salvación del que va perdiendo y la tragedia del que iba ganando.</p>
+      </div>
+      <div class="card warm"><h3>La lección que deja</h3>
+        <p>Enseña a los estudiantes a <strong>dejarle siempre una casilla al rey enemigo</strong> mientras buscan el mate. Con dama sola contra rey, el ahogado es un accidente constante.</p></div>
+      <div class="say">«No lo estás atacando, pero no lo dejas moverse. Como taparle la puerta sin tocarlo. Eso no es ganar: es empatar.»</div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="7k/5Q2/8/8/8/8/8/6K1" data-mark="f7" data-info="g7 g8 h7"></div>
+      <div class="cap">Le toca a las negras · el rey no está en jaque, pero las tres casillas azules están cubiertas</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 24 -->
+<section class="slide" data-t="Las tablas">
+  <div class="eyebrow">Bloque 4 · Fin de la partida <span class="chip c">5.° – 6.°</span></div>
+  <h2>Las cinco formas<br>de terminar en tablas</h2>
+  <p class="lead">Tablas es empate: medio punto para cada jugador. En la planilla se anota <span class="mono" style="color:var(--ambar)">½ – ½</span>.</p>
+  <div class="body">
+    <div class="col top">
+      <div class="grid g5" style="margin-top:.4em;align-items:stretch">
+        <div class="card"><span class="tag g">1</span><h3 style="margin-top:.5em">Rey ahogado</h3>
+          <p>Sin jaque y sin jugada legal posible.</p></div>
+        <div class="card"><span class="tag g">2</span><h3 style="margin-top:.5em">Por acuerdo</h3>
+          <p>Los dos jugadores aceptan el empate. Se propone <em>después</em> de mover y antes de apretar el reloj.</p></div>
+        <div class="card"><span class="tag g">3</span><h3 style="margin-top:.5em">Triple repetición</h3>
+          <p>La misma posición aparece tres veces, con el mismo jugador al turno y las mismas jugadas posibles.</p></div>
+        <div class="card"><span class="tag g">4</span><h3 style="margin-top:.5em">Regla de 50 jugadas</h3>
+          <p>50 jugadas de cada bando sin mover un peón y sin ninguna captura.</p></div>
+        <div class="card"><span class="tag g">5</span><h3 style="margin-top:.5em">Material insuficiente</h3>
+          <p>Ningún bando puede dar mate ni jugando a propósito para perder. Rey solo contra rey, o contra rey y alfil, o contra rey y caballo.</p></div>
+      </div>
+      <div class="card warm" style="margin-top:auto">
+        <p><em class="k">Detalle FIDE que sorprende:</em> la triple repetición y las 50 jugadas <strong>no son automáticas</strong>. Un jugador debe <strong>reclamarlas al árbitro</strong>. Si nadie reclama, la partida sigue. En cambio, a las 75 jugadas o a la quíntuple repetición el árbitro declara tablas por sí mismo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 25 -->
+<section class="slide" data-t="Leyes FIDE">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip d">7.° – 9.°</span></div>
+  <h2>Las Leyes del Ajedrez<br>de la FIDE</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">La <strong>FIDE</strong> (Federación Internacional de Ajedrez) publica el reglamento oficial que rige todos los torneos del mundo, incluidos los escolares avalados por la federación nacional.</p>
+      <div class="card cool">
+        <h3>Cómo está organizado</h3>
+        <ul style="margin-top:.4em">
+          <li><strong>Artículos 1 a 5:</strong> reglas básicas del juego — el tablero, los movimientos, el fin de la partida.</li>
+          <li><strong>Artículos 6 a 12:</strong> reglas de competencia — reloj, planilla, conducta, papel del árbitro.</li>
+          <li><strong>Apéndices:</strong> ritmo rápido, blitz, notación, ajedrez para personas con discapacidad.</li>
+        </ul>
+      </div>
+      <p class="note">El reglamento no cubre todas las situaciones posibles. Por eso el Prefacio de la FIDE establece que el árbitro debe resolver los casos no previstos <strong>por analogía</strong> con casos parecidos, usando su criterio.</p>
+    </div>
+    <div class="col" style="flex:.8">
+      <div class="card warm"><h3>Lo que debes decidir antes del torneo</h3>
+        <ul class="amb" style="margin-top:.4em">
+          <li>El ritmo de juego y si hay incremento por jugada</li>
+          <li>Si es obligatorio anotar la partida (con menos de 10 minutos no lo es)</li>
+          <li>Qué pasa si un jugador llega tarde: la FIDE permite fijar cualquier tolerancia, incluida cero</li>
+          <li>Quién arbitra y quién resuelve las apelaciones</li>
+        </ul>
+        <p class="note" style="margin-top:.7em">Escríbelo en las bases del torneo y publícalo antes de la primera ronda. Casi todos los reclamos escolares nacen de algo que nunca se puso por escrito.</p>
+      </div>
+      <div class="card hot"><h3>Adaptación escolar honesta</h3>
+        <p>En primaria puedes suavizar la regla de pieza tocada y no exigir planilla. Solo asegúrate de anunciarlo antes: cambiar la regla a mitad del torneo destruye la confianza en el árbitro.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 26 -->
+<section class="slide" data-t="Pieza tocada">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip d">7.° – 9.°</span></div>
+  <h2>Pieza tocada,<br>pieza jugada</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Es la regla que más discusiones genera en un torneo escolar, y la más fácil de enseñar si se explica antes de la primera ronda.</p>
+      <ul class="amb">
+        <li>Si tocas <strong>una pieza tuya</strong>, debes moverla — si tiene alguna jugada legal.</li>
+        <li>Si tocas <strong>una pieza del rival</strong>, debes capturarla — si es legalmente posible.</li>
+        <li>Si tocas <strong>rey y torre</strong>, debes enrocar si es legal.</li>
+        <li>La jugada queda <strong>hecha</strong> cuando sueltas la pieza en su casilla.</li>
+      </ul>
+      <div class="card warm">
+        <h3>Cómo acomodar sin jugar</h3>
+        <p>Si una pieza está torcida y quieres centrarla, debes avisar <strong>antes</strong> de tocarla, diciendo en voz alta <span class="mono" style="color:var(--ambar)">«compongo»</span> (en francés, <span class="mono">j'adoube</span>). Solo se puede hacer cuando es tu turno.</p>
+      </div>
+    </div>
+    <div class="col" style="flex:.8">
+      <div class="card hot">
+        <h3>Cómo enseñarlo sin dramas</h3>
+        <ol style="margin-top:.4em">
+          <li>Practíquenlo en clase con partidas de entrenamiento durante dos semanas.</li>
+          <li>Enseña la frase «manos en las rodillas hasta que decidas».</li>
+          <li>En CEFACEI y primeros grados, <strong>no la apliques</strong>: solo genera llanto y no enseña nada.</li>
+          <li>Desde 5.° grado, aplícala completa. Es la puerta de entrada a la competencia real.</li>
+        </ol>
+      </div>
+      <div class="say">«Tus manos deciden antes que tu boca. Piensa con los ojos; toca solo cuando ya estés seguro.»</div>
+    </div>
+  </div>
+</section>
+
+<!-- 27 -->
+<section class="slide" data-t="Jugada ilegal">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip d">7.° – 9.°</span></div>
+  <h2>Jugada ilegal</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Una jugada es ilegal cuando <strong>viola las reglas del movimiento</strong> o deja al propio rey en jaque.</p>
+      <div class="card"><h3>Casos típicos en el aula</h3>
+        <ul style="margin-top:.4em">
+          <li>Mover el alfil en línea recta</li>
+          <li>Enrocar estando en jaque</li>
+          <li>Mover una pieza clavada y descubrir al rey</li>
+          <li>Ignorar un jaque y hacer otra jugada</li>
+          <li>Capturar el rey del rival: <strong>el rey nunca se captura</strong></li>
+        </ul>
+      </div>
+      <div class="card cool"><h3>Qué manda la FIDE (art. 7.5)</h3>
+        <p>Se <strong>restaura la posición</strong> anterior a la jugada ilegal. Se aplica la regla de pieza tocada. El árbitro da <strong>dos minutos extra al rival</strong>. Si el mismo jugador comete <strong>una segunda jugada ilegal</strong> en la misma partida, <strong>pierde</strong>.</p>
+      </div>
+    </div>
+    <div class="col" style="flex:.8">
+      <div class="card warm">
+        <h3>Adaptación escolar recomendada</h3>
+        <p><strong>Primaria:</strong> se restaura la posición, se explica el error y se sigue jugando. Sin sanción de tiempo ni pérdida de partida. El objetivo es aprender, no castigar.</p>
+        <p style="margin-top:.6em"><strong>Premedia:</strong> aplica la regla completa. A los 13 años ya se entiende que una competencia tiene consecuencias.</p>
+      </div>
+      <p class="note">Deja siempre claro quién detiene el reloj y llama al árbitro. En un aula, el árbitro eres tú o un estudiante de 9.° entrenado para eso.</p>
+      <div class="say">«Si tu jugada no se puede, no pasó nada malo: volvemos atrás y la piensas otra vez.»</div>
+    </div>
+  </div>
+</section>
+
+<!-- 28 -->
+<section class="slide" data-t="El reloj">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip c">5.° – 6.°</span></div>
+  <h2>El reloj de ajedrez</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Dos relojes en uno: <strong>solo corre el del jugador que tiene el turno</strong>. Al mover, se aprieta el botón y arranca el del rival.</p>
+      <div class="card warm"><h3>Las tres reglas de oro</h3>
+        <ol style="margin-top:.4em">
+          <li><strong>Primero mueve, después aprieta.</strong> Nunca al revés.</li>
+          <li><strong>Se aprieta con la misma mano</strong> que movió la pieza.</li>
+          <li><strong>La otra mano no toca el reloj</strong> nunca.</li>
+        </ol>
+      </div>
+      <div class="card hot"><h3>Cuando cae la bandera</h3>
+        <p>Quien se queda sin tiempo <strong>pierde</strong>… salvo que el rival <strong>no tenga material suficiente para dar mate</strong>. En ese caso son tablas. Y el tiempo caído <strong>debe ser reclamado</strong>: si nadie lo nota, la partida sigue.</p></div>
+    </div>
+    <div class="col" style="flex:.8">
+      <div class="card cool">
+        <h3>Ritmos recomendados para escolares</h3>
+        <ul style="margin-top:.4em">
+          <li><strong>Primaria (7–11 años):</strong> 15 minutos + 5 segundos por jugada. Sin planilla obligatoria.</li>
+          <li><strong>Premedia (12–15 años):</strong> 25 minutos + 10 segundos. Con planilla.</li>
+          <li><strong>Torneo de un solo día:</strong> 10 minutos + 5 segundos, sistema suizo de 5 rondas.</li>
+        </ul>
+        <p class="note" style="margin-top:.7em">El incremento por jugada evita la escena más frustrante del ajedrez escolar: perder una partida ganada por segundos.</p>
+      </div>
+      <p class="note"><strong>Sin relojes:</strong> pon un temporizador de celular por mesa con 20 minutos para toda la partida. Al sonar, gana quien tenga más puntos de material.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 29 -->
+<section class="slide" data-t="Notación algebraica">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip c">5.° – 6.°</span></div>
+  <h2>Notación algebraica</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Se escribe la <strong>inicial de la pieza</strong> seguida de la <strong>casilla de destino</strong>. El peón no lleva inicial.</p>
+      <div class="grid g2">
+        <div class="card"><h3>Iniciales en español</h3>
+          <p class="mono" style="line-height:2;font-size:clamp(12px,1.2vw,16px)">R = Rey &nbsp; D = Dama<br>T = Torre &nbsp; A = Alfil<br>C = Caballo &nbsp; (peón: nada)</p>
+          <p class="note">En inglés: K Q R B N</p></div>
+        <div class="card"><h3>Símbolos</h3>
+          <p class="mono" style="line-height:2;font-size:clamp(12px,1.2vw,16px)">x &nbsp;captura<br>+ &nbsp;jaque<br># &nbsp;jaque mate<br>0-0 &nbsp;enroque corto<br>0-0-0 &nbsp;enroque largo<br>= &nbsp;coronación</p></div>
+      </div>
+      <div class="card warm"><h3>Ejemplos</h3>
+        <p class="mono" style="color:var(--ambar);font-size:clamp(12px,1.25vw,17px);line-height:1.9">e4 · Cf3 · Axc6 · Dh5+ · Te8# · b8=D · 0-0</p></div>
+    </div>
+    <div class="col" style="flex:.85"><div class="bw">
+      <div class="board" data-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+        data-anim="e2-e4,e7-e5,g1-f3,b8-c6"></div>
+      <div class="cap">1. e4 e5 &nbsp; 2. Cf3 Cc6</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 30 -->
+<section class="slide" data-t="La planilla">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip d">7.° – 9.°</span> · Partida en vivo</div>
+  <h2>La planilla</h2>
+  <div class="body">
+    <div class="col" style="flex:.9"><div class="bw">
+      <div class="board" data-fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+        data-sheet="#pastor" data-anim="e2-e4,e7-e5,f1-c4,f8-c5,d1-h5,g8-f6,h5-f7"></div>
+      <div class="cap">El mate del pastor · cuatro jugadas</div>
+    </div></div>
+    <div class="col">
+      <p class="lead">Cada jugador anota <strong>las jugadas de los dos bandos</strong> en su propia planilla, de forma legible y jugada por jugada.</p>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div id="pastor" class="sheet">
+          <div class="hd"><span>#</span><span>Blancas</span><span>Negras</span></div>
+          <div class="rw"><span class="n">1</span><span data-i="0">e4</span><span data-i="1">e5</span></div>
+          <div class="rw"><span class="n">2</span><span data-i="2">Ac4</span><span data-i="3">Ac5</span></div>
+          <div class="rw"><span class="n">3</span><span data-i="4">Dh5</span><span data-i="5">Cf6??</span></div>
+          <div class="rw"><span class="n">4</span><span data-i="6">Dxf7#</span><span class="res">1 – 0</span></div>
+        </div>
+      </div>
+      <ul class="amb" style="font-size:.94em">
+        <li>Se anota <strong>después</strong> de hacer la jugada en el tablero, nunca antes.</li>
+        <li>Al terminar, <strong>ambos firman</strong> las dos planillas con el resultado.</li>
+        <li>Es obligatoria salvo que queden <strong>menos de 5 minutos</strong> sin incremento.</li>
+        <li>Es la única prueba válida para reclamar triple repetición o las 50 jugadas.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 31 -->
+<section class="slide" data-t="Conducta y arbitraje">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip d">7.° – 9.°</span></div>
+  <h2>Conducta en la sala<br>y papel del árbitro</h2>
+  <div class="body">
+    <div class="col">
+      <div class="card hot"><h3>Prohibido durante la partida</h3>
+        <ul style="margin-top:.4em">
+          <li>Hablar con el rival o con otros jugadores</li>
+          <li>Recibir consejos, señas o gestos de nadie</li>
+          <li>Analizar en otro tablero dentro de la sala</li>
+          <li>Usar apuntes, libros o dispositivos electrónicos</li>
+          <li>Distraer o molestar al rival de cualquier forma</li>
+        </ul>
+        <p class="note" style="margin-top:.6em">La FIDE es especialmente estricta con los teléfonos celulares: si suena uno en la sala, el jugador puede perder la partida.</p>
+      </div>
+      <div class="say">«Mientras juegas, el tablero es tu único amigo. Nadie te ayuda y tú no ayudas a nadie.»</div>
+    </div>
+    <div class="col" style="flex:.9">
+      <div class="card cool"><h3>Qué hace el árbitro</h3>
+        <ul style="margin-top:.4em">
+          <li>Vela por que se cumpla el reglamento</li>
+          <li>Supervisa el desarrollo de las partidas</li>
+          <li>Resuelve los reclamos y decide en los casos dudosos</li>
+          <li>Actúa en interés de la competencia, no de un jugador</li>
+        </ul>
+      </div>
+      <div class="card warm"><h3>Protocolo del reclamo</h3>
+        <ol style="margin-top:.4em">
+          <li>Detener el reloj</li>
+          <li>Levantar la mano y esperar en silencio</li>
+          <li>Explicar el hecho, sin discutir con el rival</li>
+          <li>Acatar la decisión del árbitro</li>
+        </ol>
+        <p class="note" style="margin-top:.6em">Enseña este protocolo el mismo día que enseñas el reloj. Los estudiantes de 9.° pueden ser árbitros auxiliares de las mesas de primaria.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 32 -->
+<section class="slide" data-t="Sistema suizo">
+  <div class="eyebrow">Bloque 5 · Reglamento <span class="chip d">7.° – 9.°</span></div>
+  <h2>Organizar el torneo:<br>sistema suizo</h2>
+  <div class="body">
+    <div class="col">
+      <p class="lead">Permite que <strong>muchos jugadores</strong> compitan en <strong>pocas rondas</strong>, sin que nadie quede eliminado.</p>
+      <div class="card"><h3>Cómo funciona</h3>
+        <ul style="margin-top:.4em">
+          <li>Todos juegan <strong>todas las rondas</strong>.</li>
+          <li>En cada ronda te toca alguien con <strong>puntaje parecido</strong> al tuyo.</li>
+          <li>Nunca se repite el rival.</li>
+          <li>Se alternan los colores lo más parejo posible.</li>
+        </ul>
+      </div>
+      <div class="card warm"><h3>Cuántas rondas</h3>
+        <p class="mono" style="line-height:1.9;font-size:clamp(12px,1.2vw,16px);color:var(--ambar)">
+          8 – 15 jugadores → 5 rondas<br>16 – 32 jugadores → 5 o 6 rondas<br>33 – 64 jugadores → 6 o 7 rondas</p>
+        <p class="note">Si el número de jugadores es impar, uno descansa cada ronda y recibe 1 punto (<em>bye</em>).</p></div>
+    </div>
+    <div class="col" style="flex:.85">
+      <div class="card cool"><h3>Puntuación</h3>
+        <p class="mono" style="line-height:2;font-size:clamp(13px,1.4vw,19px);color:var(--marfil)">
+          Victoria &nbsp;=&nbsp; <span style="color:var(--ambar)">1</span><br>
+          Tablas &nbsp;=&nbsp; <span style="color:var(--ambar)">½</span><br>
+          Derrota &nbsp;=&nbsp; <span style="color:var(--ambar)">0</span></p></div>
+      <div class="card"><h3>Desempates, en orden</h3>
+        <ol style="margin-top:.4em;font-size:.94em">
+          <li><strong>Buchholz</strong> — suma de puntos de todos tus rivales. Premia a quien enfrentó a los más fuertes.</li>
+          <li><strong>Buchholz recortado</strong> — igual, descartando el peor resultado.</li>
+          <li><strong>Sonneborn-Berger</strong> — suma los puntos de los rivales a quienes venciste, y la mitad de los que empataste.</li>
+          <li><strong>Resultado directo</strong> — quién ganó a quién, si se enfrentaron.</li>
+        </ol>
+        <p class="note" style="margin-top:.6em">Anuncia los desempates <strong>en las bases del torneo</strong>. Decidirlos al final es la receta segura de un conflicto con los padres.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 33 -->
+<section class="slide" data-t="Hablarle a cada edad">
+  <div class="eyebrow">Bloque 6 · Didáctica <span class="chip">Docente</span></div>
+  <h2>Cómo decirlo<br>según la edad</h2>
+  <div class="body">
+    <div class="col top">
+      <div class="grid g3" style="align-items:stretch">
+        <div class="card">
+          <span class="chip a mono" style="font-size:11px;padding:3px 9px;border-radius:999px">4 – 6 años</span>
+          <h3 style="margin-top:.6em">Cuento y cuerpo</h3>
+          <ul style="margin-top:.3em;font-size:.94em">
+            <li>Nombra todo con personajes: el castillo, el caballito, la reina.</li>
+            <li>Que el niño <strong>camine</strong> los movimientos en el piso.</li>
+            <li>Una idea por sesión. Diez minutos.</li>
+            <li>Nada de reglas especiales todavía.</li>
+          </ul>
+          <div class="say" style="margin-top:.7em;font-size:.88em">«El caballito salta la cerca.»</div>
+        </div>
+        <div class="card">
+          <span class="chip b mono" style="font-size:11px;padding:3px 9px;border-radius:999px">7 – 10 años</span>
+          <h3 style="margin-top:.6em">Reglas y preguntas</h3>
+          <ul style="margin-top:.3em;font-size:.94em">
+            <li>Ya aceptan reglas por ser reglas.</li>
+            <li>Pregunta «¿qué pasa si…?» antes de responder tú.</li>
+            <li>Deja que se corrijan entre ellos.</li>
+            <li>Introduce las coordenadas como un juego.</li>
+          </ul>
+          <div class="say" style="margin-top:.7em;font-size:.88em">«¿Qué crees que puede hacer el rey aquí?»</div>
+        </div>
+        <div class="card">
+          <span class="chip d mono" style="font-size:11px;padding:3px 9px;border-radius:999px">11 – 15 años</span>
+          <h3 style="margin-top:.6em">Razones y reglamento</h3>
+          <ul style="margin-top:.3em;font-size:.94em">
+            <li>Explica <strong>por qué</strong> existe cada regla.</li>
+            <li>Muestra partidas reales y déjalos discutir.</li>
+            <li>Dales responsabilidad: que arbitren y enseñen.</li>
+            <li>Aquí sí: FIDE, planilla, reloj.</li>
+          </ul>
+          <div class="say" style="margin-top:.7em;font-size:.88em">«La captura al paso existe para que nadie escape corriendo.»</div>
+        </div>
+      </div>
+      <div class="card hot" style="margin-top:auto">
+        <p><em class="k">Tres cosas que nunca funcionan:</em> explicar las seis piezas en la misma clase · empezar por la teoría de aperturas · jugar contra tus estudiantes para demostrarles que sabes. Enseña una pieza, juega con esa pieza, y recién después agrega la siguiente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 34 -->
+<section class="slide" data-t="Analogías por pieza">
+  <div class="eyebrow">Bloque 6 · Didáctica <span class="chip a">CEFACEI · 1.°</span></div>
+  <h2>Las palabras exactas<br>para los más pequeños</h2>
+  <div class="body">
+    <div class="col top">
+      <div class="grid g2" style="align-items:stretch">
+        <div class="card"><h3>♖ &nbsp;La torre</h3>
+          <div class="say" style="margin-top:.3em">«Es el carro. Va por la calle derechito: para arriba, para abajo, o para los lados. Nunca cruza en diagonal.»</div>
+          <p class="note" style="margin-top:.5em">Refuerzo: dibuja una cruz con el dedo sobre el tablero.</p></div>
+        <div class="card"><h3>♗ &nbsp;El alfil</h3>
+          <div class="say" style="margin-top:.3em">«Camina en punta de pie, de esquinita en esquinita. Si empezó en el color oscuro, ahí se queda toda la vida.»</div>
+          <p class="note" style="margin-top:.5em">Refuerzo: que pinten de un color todas las casillas que puede tocar.</p></div>
+        <div class="card"><h3>♘ &nbsp;El caballo</h3>
+          <div class="say" style="margin-top:.3em">«Da dos pasitos y dobla la esquina. Y como va montado, salta por encima de todo el mundo.»</div>
+          <p class="note" style="margin-top:.5em">Refuerzo: que hagan la L caminando por el patio.</p></div>
+        <div class="card"><h3>♕ &nbsp;La dama</h3>
+          <div class="say" style="margin-top:.3em">«Es la mamá del ejército. Va para donde quiera y lo más lejos que quiera. Pero tampoco salta.»</div>
+          <p class="note" style="margin-top:.5em">Refuerzo: preséntala después de torre y alfil.</p></div>
+        <div class="card"><h3>♔ &nbsp;El rey</h3>
+          <div class="say" style="margin-top:.3em">«Es el abuelito. Da un pasito nada más, para cualquier lado. Hay que cuidarlo entre todos.»</div>
+          <p class="note" style="margin-top:.5em">Refuerzo: nunca digas «se lo comieron». Se dice «lo atraparon».</p></div>
+        <div class="card"><h3>♙ &nbsp;El peón</h3>
+          <div class="say" style="margin-top:.3em">«Camina derechito pero come de ladito. Nunca da marcha atrás. Y si llega hasta el final, se vuelve reina.»</div>
+          <p class="note" style="margin-top:.5em">Refuerzo: es la pieza que más veces hay que repetir.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 35 -->
+<section class="slide" data-t="Mini-juegos">
+  <div class="eyebrow">Bloque 6 · Didáctica <span class="chip b">2.° – 4.°</span></div>
+  <h2>Mini-juegos:<br>aprender jugando de verdad</h2>
+  <p class="lead">Nunca empieces con una partida completa. Estos juegos se juegan en 3 minutos y enseñan una sola cosa cada uno.</p>
+  <div class="body">
+    <div class="col top">
+      <div class="grid g3" style="margin-top:.3em;align-items:stretch">
+        <div class="card"><span class="tag g">1</span><h3 style="margin-top:.5em">La carrera de peones</h3>
+          <p>Solo los ocho peones de cada bando. Gana quien primero cruce al otro lado, o quien deje al rival sin jugadas.</p>
+          <p class="note" style="margin-top:.5em">Enseña: avance, captura diagonal, bloqueo.</p></div>
+        <div class="card"><span class="tag g">2</span><h3 style="margin-top:.5em">Duelo de torres</h3>
+          <p>Una torre por bando, en esquinas opuestas. Gana quien capture primero.</p>
+          <p class="note" style="margin-top:.5em">Enseña: movimiento recto y anticipar el peligro.</p></div>
+        <div class="card"><span class="tag g">3</span><h3 style="margin-top:.5em">El caballo tragón</h3>
+          <p>Un caballo blanco contra ocho peones negros que no se mueven. ¿Cuántos captura sin pisar casilla defendida?</p>
+          <p class="note" style="margin-top:.5em">Enseña: la L y la planificación.</p></div>
+        <div class="card"><span class="tag g">4</span><h3 style="margin-top:.5em">Alfiles contra peones</h3>
+          <p>Dos alfiles contra cuatro peones. Los peones ganan si uno corona.</p>
+          <p class="note" style="margin-top:.5em">Enseña: diagonales largas y control de casillas.</p></div>
+        <div class="card"><span class="tag g">5</span><h3 style="margin-top:.5em">Mate de la escalera</h3>
+          <p>Dos torres contra un rey solo. Empujarlo al borde escalón por escalón hasta el mate.</p>
+          <p class="note" style="margin-top:.5em">Enseña: el primer mate que se domina de verdad.</p></div>
+        <div class="card"><span class="tag g">6</span><h3 style="margin-top:.5em">Rey y dama contra rey</h3>
+          <p>Dar mate sin ahogar. Regla del juego: si ahogas, pierdes.</p>
+          <p class="note" style="margin-top:.5em">Enseña: mate básico y cuidado con el ahogado.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 36 -->
+<section class="slide" data-t="Errores comunes">
+  <div class="eyebrow">Bloque 6 · Didáctica <span class="chip">Docente</span></div>
+  <h2>Los errores que verás<br>en las primeras semanas</h2>
+  <div class="body">
+    <div class="col">
+      <div class="card hot"><h3>Del estudiante</h3>
+        <ul style="margin-top:.4em;font-size:.96em">
+          <li><strong>Mover el peón hacia atrás.</strong> Repítelo cada clase; es el más terco.</li>
+          <li><strong>Comer con el peón de frente.</strong> Enseña «camina derecho, come de lado».</li>
+          <li><strong>Saltar con el alfil o la torre.</strong> Solo el caballo salta.</li>
+          <li><strong>Cambiar el color del alfil.</strong> Hazle seguir la diagonal con el dedo.</li>
+          <li><strong>Sacar la dama en la jugada 2.</strong> No lo prohíbas: deja que se la persigan.</li>
+          <li><strong>Ignorar el jaque.</strong> Detén la partida y repasa las tres salidas.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card warm"><h3>Del docente</h3>
+        <ul class="amb" style="margin-top:.4em;font-size:.96em">
+          <li><strong>Explicar demasiado.</strong> Diez minutos de explicación matan cualquier clase de ajedrez.</li>
+          <li><strong>Enseñar todo en un día.</strong> Una pieza por sesión. Sin excepción.</li>
+          <li><strong>Corregir cada jugada mala.</strong> Deja que pierdan piezas: ahí aprenden.</li>
+          <li><strong>Jugar contra ellos y ganarles.</strong> Juega con desventaja o no juegues.</li>
+          <li><strong>Aplicar el reglamento estricto en primaria.</strong> Primero el gusto, después las reglas.</li>
+          <li><strong>Dejar de lado a las niñas.</strong> Forma parejas mixtas desde el primer día y nombra monitoras.</li>
+        </ul>
+      </div>
+      <div class="say">«Un maestro de ajedrez habla poco y observa mucho.»</div>
+    </div>
+  </div>
+</section>
+
+<!-- 37 -->
+<section class="slide" data-t="Plan de 12 clases">
+  <div class="eyebrow">Bloque 6 · Didáctica <span class="chip">Docente</span></div>
+  <h2>Plan de doce clases</h2>
+  <p class="lead">Una sesión semanal de 30 minutos. Al final del trimestre, todo el grupo juega una partida completa.</p>
+  <div class="body">
+    <div class="col top">
+      <div class="grid g4" style="margin-top:.3em;align-items:stretch;gap:10px">
+        <div class="card"><span class="tag">01</span><h3 style="margin-top:.4em;font-size:1.05em">El tablero</h3><p class="note">64 casillas · clara a la derecha · armar y desarmar</p></div>
+        <div class="card"><span class="tag">02</span><h3 style="margin-top:.4em;font-size:1.05em">La torre</h3><p class="note">Movimiento y captura · duelo de torres</p></div>
+        <div class="card"><span class="tag">03</span><h3 style="margin-top:.4em;font-size:1.05em">El alfil</h3><p class="note">Diagonales · alfiles contra peones</p></div>
+        <div class="card"><span class="tag">04</span><h3 style="margin-top:.4em;font-size:1.05em">La dama</h3><p class="note">Torre + alfil · dominio del centro</p></div>
+        <div class="card"><span class="tag">05</span><h3 style="margin-top:.4em;font-size:1.05em">El caballo</h3><p class="note">La L · el caballo tragón</p></div>
+        <div class="card"><span class="tag">06</span><h3 style="margin-top:.4em;font-size:1.05em">El peón</h3><p class="note">Avance, captura, doble paso · carrera de peones</p></div>
+        <div class="card"><span class="tag">07</span><h3 style="margin-top:.4em;font-size:1.05em">El rey y el jaque</h3><p class="note">Las tres salidas</p></div>
+        <div class="card"><span class="tag">08</span><h3 style="margin-top:.4em;font-size:1.05em">Jaque mate</h3><p class="note">Mate del pasillo · mate de la escalera</p></div>
+        <div class="card"><span class="tag">09</span><h3 style="margin-top:.4em;font-size:1.05em">Enroque y coronación</h3><p class="note">Las cinco condiciones</p></div>
+        <div class="card"><span class="tag">10</span><h3 style="margin-top:.4em;font-size:1.05em">Tablas y ahogado</h3><p class="note">Rey y dama contra rey sin ahogar</p></div>
+        <div class="card"><span class="tag">11</span><h3 style="margin-top:.4em;font-size:1.05em">Coordenadas y notación</h3><p class="note">Anotar una partida corta entre todos</p></div>
+        <div class="card"><span class="tag">12</span><h3 style="margin-top:.4em;font-size:1.05em">Torneo interno</h3><p class="note">Suizo de 3 rondas · premiación</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 38 -->
+<section class="slide" data-t="Evaluación">
+  <div class="eyebrow">Bloque 6 · Didáctica <span class="chip">Docente</span></div>
+  <h2>Cómo evaluar<br>sin exámenes escritos</h2>
+  <div class="body">
+    <div class="col">
+      <div class="card cool"><h3>Prueba práctica de 5 minutos</h3>
+        <ol style="margin-top:.4em;font-size:.95em">
+          <li>Arma el tablero correctamente <span class="note">(orientación + damas a su color)</span></li>
+          <li>Muestra todos los destinos del caballo desde una casilla dada</li>
+          <li>Encuentra las tres salidas de un jaque</li>
+          <li>Ejecuta un enroque corto y explica una condición</li>
+          <li>Nombra tres casillas por su coordenada</li>
+        </ol>
+      </div>
+      <p class="note">Se evalúa uno por uno mientras el resto juega. Nadie se da cuenta de que está siendo evaluado, que es exactamente el punto.</p>
+    </div>
+    <div class="col" style="flex:.9">
+      <div class="card warm"><h3>Rúbrica de tres niveles</h3>
+        <div class="grid" style="grid-template-columns:1fr;gap:8px;margin-top:.5em">
+          <div><span class="tag g">Logrado</span><p style="margin-top:.25em">Juega una partida completa sin jugadas ilegales y reconoce el jaque mate.</p></div>
+          <div><span class="tag">En proceso</span><p style="margin-top:.25em">Mueve bien todas las piezas pero olvida reglas especiales o el jaque.</p></div>
+          <div><span class="tag r">Inicial</span><p style="margin-top:.25em">Reconoce las piezas y mueve al menos tres correctamente.</p></div>
+        </div>
+      </div>
+      <div class="card"><h3>Actitud, que también cuenta</h3>
+        <ul style="margin-top:.4em;font-size:.95em">
+          <li>Da la mano al empezar y al terminar</li>
+          <li>Juega en silencio y respeta el turno</li>
+          <li>Acepta perder sin desarmar el tablero</li>
+          <li>Ayuda a un compañero que va empezando</li>
+        </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 39 -->
+<section class="slide" data-t="Materiales">
+  <div class="eyebrow">Bloque 6 · Didáctica <span class="chip">Docente</span></div>
+  <h2>Si no hay presupuesto</h2>
+  <div class="body">
+    <div class="col">
+      <div class="card warm"><h3>Tablero de cartulina</h3>
+        <p>Cuadrícula de 8 × 8 con casillas de 5 cm. Se pinta una sí y una no. Plastificado con cinta adhesiva transparente dura todo el año escolar.</p></div>
+      <div class="card"><h3>Piezas con tapitas</h3>
+        <p>Tapas de refresco de dos colores. Se les pega encima un papelito con el símbolo o la inicial de la pieza: <span class="mono">R D T A C P</span>. Cuesta cero y cada niño arma su juego.</p></div>
+      <div class="card cool"><h3>Tablero mural</h3>
+        <p>Un pliego de papel manila con la cuadrícula grande y piezas recortadas con cinta adhesiva por detrás. Es la herramienta más importante de todas: sin tablero visible, la clase se pierde.</p></div>
+    </div>
+    <div class="col" style="flex:.9">
+      <div class="card"><h3>Proyecto interdisciplinario</h3>
+        <ul style="margin-top:.4em;font-size:.95em">
+          <li><strong>Matemática:</strong> coordenadas, simetría, área, combinatoria</li>
+          <li><strong>Artística:</strong> diseñar y tallar piezas propias</li>
+          <li><strong>Español:</strong> escribir la crónica del torneo</li>
+          <li><strong>Tecnología:</strong> llevar la tabla de posiciones en hoja de cálculo</li>
+          <li><strong>Educación física:</strong> ajedrez humano en la cancha</li>
+        </ul></div>
+      <div class="card hot"><h3>Ajedrez humano</h3>
+        <p>Traza un tablero de 8 × 8 en la cancha con tiza. Treinta y dos estudiantes son las piezas y dos dirigen desde afuera. Es la actividad que mejor funciona para el aniversario escolar y la que todos recuerdan.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 40 -->
+<section class="slide cover center" data-t="Cierre">
+  <div class="eyebrow" style="justify-content:center">Para cerrar</div>
+  <h2 style="max-width:20ch">No enseñas ajedrez.<br>Enseñas a pensar<br>antes de mover.</h2>
+  <p class="lead" style="margin-top:1em;max-width:46ch">Un estudiante que aprende a detenerse un segundo antes de tocar la pieza aprendió algo que le sirve muy lejos del tablero. Todo lo demás — las aperturas, los finales, el reglamento — es consecuencia.</p>
+  <div class="grid g3" style="margin-top:2em;max-width:900px;width:100%">
+    <div class="card"><h3>Empieza mañana</h3><p class="note">Un tablero, dos estudiantes, la torre. Veinte minutos.</p></div>
+    <div class="card"><h3>Sé constante</h3><p class="note">Una sesión semanal durante un trimestre vale más que un taller intensivo.</p></div>
+    <div class="card"><h3>Termina en torneo</h3><p class="note">Nada consolida lo aprendido como competir y darse la mano al final.</p></div>
+  </div>
+</section>
+</div>
+
+<div id="rail"></div>
+<div id="tt">Ajedrez en el Aula</div>
+<div id="hud">
+  <span id="num" class="mono">01 / 40</span>
+  <button id="prev" aria-label="Diapositiva anterior">←</button>
+  <button id="next" aria-label="Diapositiva siguiente">→</button>
+  <button id="fs" aria-label="Pantalla completa">⛶</button>
+</div>
+
+<style>
+.sheet{font-family:var(--mono);font-size:clamp(11px,1.1vw,15px);width:100%}
+.sheet .hd,.sheet .rw{display:grid;grid-template-columns:2.4em 1fr 1fr;align-items:center}
+.sheet .hd{background:var(--tinta3);color:#9DAFA2;font-size:.82em;letter-spacing:.1em;
+  text-transform:uppercase;padding:7px 12px}
+.sheet .rw{padding:7px 12px;border-top:1px solid #2E3F36}
+.sheet .rw span{color:#4E6157;transition:color .3s,transform .3s}
+.sheet .rw span.n{color:#7B8E82}
+.sheet .rw span.lit{color:var(--ambar);font-weight:700;transform:translateX(2px)}
+.sheet .rw span.res{color:#7B8E82}
+.sheet .rw span.res.lit{color:var(--marfil)}
+</style>
+
+<script>
+(function(){
+'use strict';
+var FILL={k:'\u265a',q:'\u265b',r:'\u265c',b:'\u265d',n:'\u265e',p:'\u265f'};
+var OUTL={k:'\u2654',q:'\u2655',r:'\u2656',b:'\u2657',n:'\u2658',p:'\u2659'};
+
+function xy(sq){return [sq.charCodeAt(0)-97, 8-parseInt(sq[1],10)];}
+function expand(fen){
+  var g=[],rows=fen.split('/');
+  for(var i=0;i<8;i++){
+    var line=[],row=rows[i]||'8';
+    for(var j=0;j<row.length;j++){
+      var ch=row[j];
+      if(ch>='1'&&ch<='8'){for(var k=0;k<+ch;k++)line.push(null);}
+      else line.push(ch);
+    }
+    while(line.length<8)line.push(null);
+    g.push(line.slice(0,8));
+  }
+  return g;
+}
+function list(s){return (s||'').trim()?s.trim().split(/\s+/):[];}
+
+function makePiece(code){
+  var el=document.createElement('div');
+  el.className='pc'+(code===code.toLowerCase()?' blk':'');
+  var t=code.toLowerCase();
+  el.innerHTML='<span class="f">'+FILL[t]+'</span><span class="o">'+OUTL[t]+'</span>';
+  el.dataset.code=code;
+  return el;
+}
+function put(el,sq){
+  var p=xy(sq);
+  el.style.left=(p[0]*12.5)+'%';
+  el.style.top=(p[1]*12.5)+'%';
+  el.dataset.sq=sq;
+}
+
+function build(box){
+  var fen=box.dataset.fen||'8/8/8/8/8/8/8/8';
+  var coords=box.dataset.coords!=='0';
+  if(!coords) box.classList.add('nc');
+  var g=document.createElement('div'); g.className='grid8';
+  var marks=list(box.dataset.mark),dang=list(box.dataset.danger),
+      info=list(box.dataset.info),dots=list(box.dataset.dots);
+  var labels={};
+  (box.dataset.labels||'').split('|').forEach(function(s){
+    if(!s)return; var p=s.split(':'); labels[p[0]]=p[1];
+  });
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var d=document.createElement('div');
+    var sq='abcdefgh'[c]+(8-r);
+    d.className='sq '+((r+c)%2===0?'lt':'dk');
+    d.dataset.sq=sq;
+    if(marks.indexOf(sq)>-1)d.classList.add('mk');
+    if(dang.indexOf(sq)>-1)d.classList.add('dg');
+    if(info.indexOf(sq)>-1)d.classList.add('nf');
+    if(labels[sq]){
+      var lb=document.createElement('div');
+      lb.style.cssText='position:absolute;inset:0;display:grid;place-items:center;'+
+        'font-family:var(--mono);font-weight:700;font-size:min(1.9vh,1.05vw);color:#2A2110;z-index:2';
+      lb.textContent=labels[sq]; d.appendChild(lb);
+    }
+    g.appendChild(d);
+  }
+  box.appendChild(g);
+
+  var grid=expand(fen),map={};
+  for(var r2=0;r2<8;r2++)for(var c2=0;c2<8;c2++){
+    var code=grid[r2][c2];
+    if(!code)continue;
+    var sq2='abcdefgh'[c2]+(8-r2);
+    var pc=makePiece(code); put(pc,sq2); g.appendChild(pc); map[sq2]=pc;
+  }
+  box.__map=map; box.__g=g;
+
+  dots.forEach(function(sq,i){
+    var cell=g.querySelector('[data-sq="'+sq+'"]');
+    if(!cell)return;
+    var d=document.createElement('div'); d.className='dot';
+    d.style.animationDelay=(i*0.035)+'s';
+    cell.appendChild(d);
+  });
+
+  var arrows=(box.dataset.arrows||'').split(/\s+/).filter(Boolean);
+  if(arrows.length){
+    var ns='http://www.w3.org/2000/svg';
+    var svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('class','arrow'); svg.setAttribute('viewBox','0 0 80 80');
+    var defs=document.createElementNS(ns,'defs');
+    var uid='ah'+Math.random().toString(36).slice(2,8);
+    defs.innerHTML='<marker id="'+uid+'" markerWidth="4" markerHeight="4" refX="2.6" refY="2" orient="auto">'+
+      '<path d="M0,0 L4,2 L0,4 z" fill="#E9A73C"/></marker>';
+    svg.appendChild(defs);
+    arrows.forEach(function(a){
+      var p=a.split('-'); if(p.length<2)return;
+      var f=xy(p[0]),t=xy(p[1]);
+      var ln=document.createElementNS(ns,'line');
+      ln.setAttribute('x1',f[0]*10+5); ln.setAttribute('y1',f[1]*10+5);
+      ln.setAttribute('x2',t[0]*10+5); ln.setAttribute('y2',t[1]*10+5);
+      ln.setAttribute('stroke','#E9A73C'); ln.setAttribute('stroke-width','1.7');
+      ln.setAttribute('stroke-linecap','round');
+      ln.setAttribute('marker-end','url(#'+uid+')');
+      svg.appendChild(ln);
+    });
+    box.appendChild(svg);
+  }
+
+  if(coords){
+    for(var i=0;i<8;i++){
+      var f=document.createElement('div'); f.className='coord';
+      f.textContent='abcdefgh'[i];
+      f.style.cssText+=';left:calc(4.6% + '+((i+0.5)*11.36)+'%);bottom:.9%;transform:translateX(-50%)';
+      box.appendChild(f);
+      var n=document.createElement('div'); n.className='coord';
+      n.textContent=(8-i);
+      n.style.cssText+=';top:calc(4.6% + '+((i+0.5)*11.36)+'%);left:1.4%;transform:translateY(-50%)';
+      box.appendChild(n);
+    }
+  }
+
+  if(box.dataset.anim){
+    var btn=document.createElement('button');
+    btn.className='play'; btn.type='button';
+    btn.innerHTML='<span>▶</span> Mostrar la jugada';
+    box.parentNode.insertBefore(btn,box.nextSibling);
+    btn.addEventListener('click',function(){play(box,btn);});
+    box.__initial={fen:fen};
+  }
+}
+
+function reset(box){
+  var g=box.__g;
+  Array.prototype.slice.call(g.querySelectorAll('.pc')).forEach(function(p){p.remove();});
+  var grid=expand(box.__initial.fen),map={};
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var code=grid[r][c]; if(!code)continue;
+    var sq='abcdefgh'[c]+(8-r);
+    var pc=makePiece(code); put(pc,sq); g.appendChild(pc); map[sq]=pc;
+  }
+  box.__map=map;
+  var sh=box.dataset.sheet&&document.querySelector(box.dataset.sheet);
+  if(sh)Array.prototype.slice.call(sh.querySelectorAll('span')).forEach(function(s){s.classList.remove('lit');});
+}
+
+function play(box,btn){
+  if(box.__busy)return;
+  box.__busy=true; btn.disabled=true; btn.style.opacity='.55';
+  reset(box);
+  var steps=box.dataset.anim.split(',').map(function(s){return s.trim();});
+  var sh=box.dataset.sheet&&document.querySelector(box.dataset.sheet);
+  var i=0;
+  function step(){
+    if(i>=steps.length){
+      setTimeout(function(){
+        box.__busy=false; btn.disabled=false; btn.style.opacity='1';
+      },900);
+      return;
+    }
+    var tok=steps[i], promo=null, kill=null;
+    var m=tok.match(/=([QRBN])$/); if(m){promo=m[1];tok=tok.replace(/=[QRBN]$/,'');}
+    var k=tok.match(/!([a-h][1-8])$/); if(k){kill=k[1];tok=tok.replace(/![a-h][1-8]$/,'');}
+    var p=tok.split('-'), from=p[0], to=p[1];
+    var pc=box.__map[from];
+    if(pc){
+      var victim=box.__map[to];
+      if(victim){victim.style.opacity='0';victim.style.transform='scale(.4)';
+        setTimeout(function(){victim.remove();},400); delete box.__map[to];}
+      if(kill&&box.__map[kill]){
+        var v2=box.__map[kill]; v2.style.opacity='0'; v2.style.transform='scale(.4)';
+        setTimeout(function(){v2.remove();},400); delete box.__map[kill];
+      }
+      delete box.__map[from];
+      put(pc,to); box.__map[to]=pc;
+      if(promo){
+        setTimeout(function(){
+          var code=pc.dataset.code===pc.dataset.code.toUpperCase()?promo:promo.toLowerCase();
+          var t=code.toLowerCase();
+          pc.innerHTML='<span class="f">'+FILL[t]+'</span><span class="o">'+OUTL[t]+'</span>';
+          pc.dataset.code=code; pc.style.transform='scale(1.28)';
+          setTimeout(function(){pc.style.transform='';},320);
+        },600);
+      }
+    }
+    if(sh){
+      var cell=sh.querySelector('[data-i="'+i+'"]');
+      if(cell)cell.classList.add('lit');
+      if(i===steps.length-1){var res=sh.querySelector('.res'); if(res)setTimeout(function(){res.classList.add('lit');},500);}
+    }
+    i++;
+    setTimeout(step, promo?1150:820);
+  }
+  setTimeout(step,320);
+}
+
+/* ---------- NAVEGACIÓN ---------- */
+var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+var rail=document.getElementById('rail');
+slides.forEach(function(){rail.appendChild(document.createElement('i'));});
+var bars=Array.prototype.slice.call(rail.children);
+var num=document.getElementById('num'), tt=document.getElementById('tt');
+var cur=0, built=[];
+
+function show(n){
+  n=Math.max(0,Math.min(slides.length-1,n));
+  slides[cur].classList.remove('on');
+  cur=n;
+  var s=slides[cur];
+  if(built.indexOf(cur)<0){
+    Array.prototype.slice.call(s.querySelectorAll('.board')).forEach(build);
+    built.push(cur);
+  }
+  s.classList.add('on');
+  bars.forEach(function(b,i){
+    b.className=i<cur?'done':(i===cur?'cur':'');
+  });
+  var p=String(cur+1); while(p.length<2)p='0'+p;
+  num.textContent=p+' / '+slides.length;
+  tt.textContent=s.dataset.t||'';
+}
+document.getElementById('next').onclick=function(){show(cur+1);};
+document.getElementById('prev').onclick=function(){show(cur-1);};
+document.getElementById('fs').onclick=function(){
+  if(document.fullscreenElement)document.exitFullscreen();
+  else document.documentElement.requestFullscreen();
+};
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();show(cur+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(cur-1);}
+  if(e.key==='Home')show(0);
+  if(e.key==='End')show(slides.length-1);
+});
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){
+  var d=e.changedTouches[0].clientX-tx;
+  if(Math.abs(d)>60)show(cur+(d<0?1:-1));
+},{passive:true});
+
+show(0);
+})();
+</script>
+</body>
+</html>

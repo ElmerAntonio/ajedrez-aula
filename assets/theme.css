@@ -1,0 +1,153 @@
+/* ============================================================
+   Ajedrez en el Aula · Tema visual compartido
+   Extraído de la guía docente para mantener coherencia.
+   ============================================================ */
+:root{
+  --tinta:#131C18; --tinta2:#1D2A24; --tinta3:#27362E;
+  --marfil:#F0E7D2; --marfil2:#FAF5E9;
+  --selva:#4C7A58; --selva-cl:#6FA37C;
+  --ambar:#E9A73C; --fuego:#C8503C; --cielo:#6FA8C7; --uva:#8B6FA8;
+  --disp:'Fraunces',Georgia,serif;
+  --body:'Nunito Sans',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--tinta);color:var(--marfil);font-family:var(--body);
+  -webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh}
+
+h1,h2,h3{font-family:var(--disp);line-height:1.05;letter-spacing:-.015em}
+h1{font-weight:900;font-size:clamp(30px,5.2vw,64px)}
+h2{font-weight:900;font-size:clamp(24px,3.4vw,44px);margin-bottom:.35em}
+h3{font-weight:600;font-size:clamp(17px,1.7vw,24px);margin-bottom:.3em}
+p,li{font-size:clamp(14px,1.25vw,18px);color:#DDD5C2}
+a{color:var(--ambar);text-decoration:none}
+a:hover{text-decoration:underline}
+strong{color:var(--marfil);font-weight:800}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(18px,4vw,40px)}
+.eyebrow{font-family:var(--mono);font-size:clamp(10px,1.15vw,13px);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--selva-cl);margin-bottom:.6em}
+.lead{font-size:clamp(15px,1.6vw,22px);color:var(--marfil);max-width:62ch}
+.note{font-size:clamp(11px,1.05vw,14px);color:#9DAFA2}
+
+/* ---------- BARRA DE NAVEGACIÓN ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(19,28,24,.86);
+  backdrop-filter:blur(10px);border-bottom:1px solid #2E3F36}
+.nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:8px;
+  padding:10px clamp(14px,3vw,30px);flex-wrap:wrap}
+.brand{font-family:var(--disp);font-weight:900;font-size:18px;color:var(--marfil);
+  margin-right:auto;display:flex;align-items:center;gap:8px}
+.brand span{color:var(--ambar)}
+.nav a.lnk{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:#BFC7BD;
+  padding:6px 11px;border-radius:8px;text-decoration:none;transition:background .15s,color .15s}
+.nav a.lnk:hover{background:var(--tinta3);color:var(--marfil)}
+.nav a.lnk.on{background:var(--selva);color:#fff}
+@media(max-width:640px){.brand{width:100%;margin-bottom:4px}}
+
+/* ---------- TARJETAS ---------- */
+.card{background:var(--tinta2);border-radius:14px;padding:clamp(14px,1.8vw,22px);
+  border:1px solid #2E3F36}
+.card.warm{background:#2A2119;border-color:#4A3A24}
+.card.hot{background:#2E1E1A;border-color:#5A3229}
+.card.cool{background:#1A2730;border-color:#2E4553}
+.grid{display:grid;gap:clamp(12px,1.6vw,20px)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.tag{display:inline-block;font-family:var(--mono);font-size:.72em;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--tinta);background:var(--ambar);
+  padding:2px 8px;border-radius:4px;font-weight:700}
+.tag.g{background:var(--selva-cl)} .tag.r{background:var(--fuego);color:#fff}
+.tag.b{background:var(--cielo)} .tag.u{background:var(--uva);color:#fff}
+.chip{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 10px;
+  border-radius:999px;letter-spacing:.06em;background:var(--tinta3);color:var(--marfil)}
+.chip.a{background:#3B5C46;color:#CFEBD8} .chip.b{background:#5B4A22;color:#F5DCA8}
+.chip.c{background:#4A3630;color:#F2C4B6} .chip.d{background:#33475A;color:#C7E2F2}
+.say{border-left:3px solid var(--ambar);padding:.15em 0 .15em .8em;
+  font-family:var(--disp);font-style:italic;font-size:clamp(14px,1.3vw,18px);color:var(--marfil2)}
+
+/* ---------- BOTONES ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ambar);color:var(--tinta);
+  border:0;border-radius:999px;padding:9px 20px;font-family:var(--body);font-weight:800;
+  font-size:clamp(13px,1.1vw,15px);cursor:pointer;transition:transform .15s,filter .15s;text-decoration:none}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08);text-decoration:none}
+.btn:focus-visible{outline:3px solid var(--cielo);outline-offset:3px}
+.btn.ghost{background:var(--tinta2);color:var(--marfil);border:1px solid #33473C}
+.btn.ghost:hover{background:var(--selva);color:#fff}
+.btn.sm{padding:6px 14px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ---------- PIE DE PÁGINA ---------- */
+.foot{border-top:1px solid #2E3F36;margin-top:40px;padding:26px clamp(14px,3vw,30px);
+  text-align:center;color:#7E9086;font-size:13px;font-family:var(--mono)}
+.foot a{color:var(--selva-cl)}
+.disclaimer{background:#2A2119;border:1px solid #4A3A24;border-radius:12px;
+  padding:14px 18px;font-size:13.5px;color:#E4D8BE;max-width:820px;margin:0 auto}
+.disclaimer strong{color:var(--ambar)}
+
+/* ---------- TABLERO INTERACTIVO ---------- */
+.board-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.cb{position:relative;width:100%;max-width:min(72vh,560px);aspect-ratio:1;
+  background:var(--tinta2);border-radius:12px;padding:4.4%;margin:0 auto;
+  touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.cb .grid8{position:relative;width:100%;height:100%;display:grid;
+  grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
+  border-radius:4px;overflow:hidden}
+.cb .sq{position:relative;cursor:pointer}
+.cb .sq.lt{background:var(--marfil)} .cb .sq.dk{background:var(--selva)}
+.cb .sq::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .18s;pointer-events:none}
+.cb .sq.sel::after{background:var(--ambar);opacity:.55}
+.cb .sq.last::after{background:var(--ambar);opacity:.28}
+.cb .sq.chk::after{background:var(--fuego);opacity:.55}
+.cb .sq.hint::before{content:'';position:absolute;left:50%;top:50%;width:30%;height:30%;
+  transform:translate(-50%,-50%);background:rgba(60,44,14,.5);border-radius:50%;pointer-events:none;z-index:2}
+.cb .sq.hint.cap::before{width:82%;height:82%;background:transparent;
+  border:5px solid rgba(200,80,60,.6);border-radius:50%}
+.cb .pc{position:absolute;width:12.5%;height:12.5%;display:grid;place-items:center;
+  z-index:4;transition:left .18s,top .18s;pointer-events:none}
+.cb .pc span{position:absolute;font-size:min(9vh,7vw);line-height:1;
+  font-family:'DejaVu Sans','Segoe UI Symbol','Noto Sans Symbols 2',sans-serif}
+.cb .pc .f{color:#fff} .cb .pc .o{color:#111C17}
+.cb .pc.blk .f{color:#16211B} .cb .pc.blk .o{color:var(--marfil)}
+.cb .coord{position:absolute;font-family:var(--mono);font-size:min(1.7vh,2.2vw);
+  color:var(--marfil);opacity:.7;pointer-events:none;z-index:3}
+.cb.flip .grid8{transform:rotate(180deg)}
+.cb.flip .pc{transform:rotate(180deg)}
+
+.status{font-family:var(--mono);font-size:14px;color:#BFC7BD;text-align:center;min-height:1.4em}
+.status.win{color:var(--selva-cl)} .status.lose{color:var(--fuego)} .status.check{color:var(--ambar)}
+
+/* ---------- PANEL LATERAL DE JUEGO ---------- */
+.game{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(220px,.7fr);
+  gap:clamp(14px,2vw,26px);align-items:start}
+@media(max-width:820px){.game{grid-template-columns:1fr}}
+.moves{font-family:var(--mono);font-size:13px;background:var(--tinta);border:1px solid #2E3F36;
+  border-radius:10px;padding:10px;max-height:230px;overflow-y:auto;line-height:1.9;color:#BFC7BD}
+.moves b{color:#7B8E82;font-weight:400}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9DAFA2}
+select,.seg{font-family:var(--body);font-size:14px}
+select{background:var(--tinta);color:var(--marfil);border:1px solid #33473C;border-radius:8px;padding:8px 10px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{background:var(--tinta);border:1px solid #33473C;border-radius:8px;
+  padding:7px 13px;cursor:pointer;color:#BFCFC7;font-weight:700;transition:background .15s}
+.seg button.on{background:var(--ambar);color:var(--tinta);border-color:var(--ambar)}
+.captured{font-size:min(3.4vh,5vw);line-height:1;min-height:1.2em;letter-spacing:1px;color:#9DAFA2}
+
+/* ---------- PROMOCIÓN ---------- */
+.promo{position:absolute;inset:0;background:rgba(19,28,24,.88);display:none;
+  place-items:center;z-index:20;border-radius:12px}
+.promo.on{display:grid}
+.promo .opts{display:flex;gap:8px;background:var(--tinta2);padding:12px;border-radius:12px;
+  border:1px solid #33473C}
+.promo .opts button{width:clamp(46px,9vw,62px);height:clamp(46px,9vw,62px);font-size:clamp(30px,6vw,44px);
+  background:var(--tinta);border:1px solid #33473C;border-radius:10px;cursor:pointer;color:var(--marfil)}
+.promo .opts button:hover{background:var(--selva)}
+
+/* Accesibilidad: reduce animaciones */
+@media (prefers-reduced-motion:reduce){.cb .pc{transition:none}}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estrategias · Ajedrez en el Aula</title>
+<meta name="description" content="Las estrategias y tácticas más útiles del ajedrez explicadas con palabras sencillas: control del centro, desarrollo, tenedor, clavada, brocheta y mate del pasillo. Con una prueba para practicarlas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+.mini{width:100%;max-width:230px;margin:0 auto}
+.strat-card{display:flex;flex-direction:column;gap:12px}
+.concept{display:grid;grid-template-columns:230px 1fr;gap:20px;align-items:center}
+@media(max-width:640px){.concept{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="practicas.html">Prácticas</a>
+  <a class="lnk on" href="estrategias.html">Estrategias</a>
+  <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk" href="nivel.html">Mi nivel</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Estrategias · las ideas que ganan partidas</div>
+  <h1>Estrategias y tácticas</h1>
+  <p class="lead" style="margin:.6em 0 1.6em">Estas son las ideas que separan a quien mueve las piezas de quien de verdad juega. Están explicadas con palabras sencillas para que las entiendan tanto el maestro como el alumno. Al final hay una <strong>prueba interactiva</strong> para aplicarlas.</p>
+
+  <!-- PRINCIPIOS DE APERTURA -->
+  <h2 style="margin-top:.4em">1 · Los tres principios de la apertura</h2>
+  <div class="grid g3" style="margin:14px 0 34px">
+    <div class="card"><span class="tag">Centro</span><h3 style="margin-top:.5em">Domina el centro</h3>
+      <p>Las casillas del centro (d4, e4, d5, e5) son las más valiosas: desde ahí tus piezas alcanzan más lugares. Ocúpalas con peones y apunta hacia ellas.</p></div>
+    <div class="card"><span class="tag g">Desarrollo</span><h3 style="margin-top:.5em">Saca tus piezas</h3>
+      <p>Caballos y alfiles primero, hacia casillas activas. Una pieza en su casa no sirve para nada. No muevas la misma pieza dos veces en la apertura.</p></div>
+    <div class="card"><span class="tag b">Rey seguro</span><h3 style="margin-top:.5em">Enroca temprano</h3>
+      <p>Pon a tu rey a salvo con el enroque y conecta tus torres. Un rey en el centro es un rey en peligro.</p></div>
+  </div>
+  <div class="card warm" style="margin-bottom:38px"><p><em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Regla de oro para principiantes:</em> no saques la dama en las primeras jugadas. Parece fuerte, pero el rival la persigue con piezas pequeñas y pierdes tiempo mientras él desarrolla su ejército.</p></div>
+
+  <!-- TÁCTICAS -->
+  <h2>2 · Las cuatro tácticas esenciales</h2>
+  <p class="lead" style="margin:.4em 0 20px">Una táctica es una jugada (o dos) que gana material o da mate por la fuerza. Reconocerlas es lo que más rápido sube el nivel.</p>
+
+  <div class="grid" style="grid-template-columns:1fr;gap:22px;margin-bottom:40px">
+    <div class="card concept">
+      <div class="mini cb" data-fen="4k3/8/8/5r2/4N3/8/8/7K" data-mark="d6"></div>
+      <div><span class="tag u">Tenedor</span><h3 style="margin:.4em 0">El tenedor (o horquilla)</h3>
+        <p>Una sola pieza ataca dos objetivos a la vez. El rival solo puede salvar uno. El caballo es el rey del tenedor porque salta y ataca desde ángulos inesperados. Aquí <span class="mono" style="color:var(--ambar)">Cd6+</span> ataca al rey y a la torre al mismo tiempo.</p></div>
+    </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="3qk3/8/8/6B1/8/8/8/7K" data-mark="g5"></div>
+      <div><span class="tag u">Clavada</span><h3 style="margin:.4em 0">La clavada</h3>
+        <p>Atacas una pieza que no se puede mover porque detrás está algo más valioso —a menudo el rey—. La pieza queda «clavada» en su sitio. El alfil y la torre clavan muy bien. Una pieza clavada al rey <strong>no puede moverse</strong>: apílale ataques encima y cáela.</p></div>
+    </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="q7/8/8/8/k7/6K1/8/7R" data-mark="a1"></div>
+      <div><span class="tag u">Brocheta</span><h3 style="margin:.4em 0">La brocheta</h3>
+        <p>Como la clavada, pero al revés: adelante está la pieza valiosa y detrás la menos valiosa. Das jaque, el rey se aparta y capturas lo que estaba detrás. Aquí <span class="mono" style="color:var(--ambar)">Ta1+</span> pincha al rey y detrás cae la dama.</p></div>
+    </div>
+    <div class="card concept">
+      <div class="mini cb" data-fen="6k1/5ppp/8/8/8/8/8/R6K" data-mark="a8"></div>
+      <div><span class="tag u">Mate del pasillo</span><h3 style="margin:.4em 0">El mate de la última fila</h3>
+        <p>El rey enrocado queda encerrado por sus propios peones. Una torre o dama entra por la última fila y no hay escape. Es el mate que más partidas escolares decide. La defensa: hacerle un «respiradero» al rey adelantando un peón.</p></div>
+    </div>
+  </div>
+
+  <!-- PRUEBA INTERACTIVA -->
+  <h2>3 · Prueba: juega la estrategia</h2>
+  <p class="lead" style="margin:.4em 0 18px">Ahora te toca a ti. En cada posición hay una jugada que aplica la idea que acabas de leer. Muévela en el tablero.</p>
+
+  <div class="game">
+    <div class="board-wrap">
+      <div class="status" id="status">&nbsp;</div>
+      <div id="board" class="cb"></div>
+      <div class="controls" style="justify-content:center;margin-top:4px">
+        <button class="btn ghost sm" id="hint">💡 Pista</button>
+        <button class="btn ghost sm" id="show">👁 Solución</button>
+        <button class="btn sm" id="next">⏭ Siguiente</button>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="tag" id="cnum">1 / 4</div>
+        <h3 id="ctitle" style="margin-top:.5em">—</h3>
+        <p id="cdesc" style="margin-top:.2em">—</p>
+        <p class="note" id="chint" style="margin-top:.8em;display:none"></p>
+      </div>
+      <p class="note" style="margin-top:12px">Estrategias aplicadas: <span id="cscore" class="mono" style="color:var(--ambar)">0 / 4</span></p>
+    </div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:26px">
+    <strong>Solo para enseñar y aprender.</strong> Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
+
+<script src="assets/chess.js"></script>
+<script src="assets/board.js"></script>
+<script>
+(function(){
+'use strict';
+// diagramas ilustrativos (solo lectura)
+Array.prototype.slice.call(document.querySelectorAll('.mini.cb')).forEach(function(box){
+  var b=new ChessBoard(box,{fen:box.dataset.fen+' w - - 0 1',interactive:false});
+  var mk=box.dataset.mark;
+  if(mk){ var rc=Chess.sqToRC(mk); var cell=b.cells[rc[0]+'-'+rc[1]]; if(cell) cell.classList.add('sel'); }
+});
+
+var C=window.Chess;
+// retos interactivos (verificados con el motor)
+var CH=[
+  {fen:C.START_FEN, sol:[['e2','e4'],['d2','d4']],
+   t:'Domina el centro', d:'Es la primera jugada de la partida. Ocupa el centro con un peón.', h:'Adelanta el peón de rey o el de dama dos casillas.'},
+  {fen:'2q3k1/8/2N5/8/8/8/8/6K1 w - - 0 1', sol:[['c6','e7']],
+   t:'El tenedor de caballo', d:'Salta con el caballo a una casilla desde donde ataques al rey y a la dama a la vez.', h:'Busca la casilla que da jaque y toca la dama al mismo tiempo.'},
+  {fen:'q7/8/8/8/k7/6K1/8/7R w - - 0 1', sol:[['h1','a1']],
+   t:'La brocheta', d:'Da jaque en la columna del rey. Detrás de él está la dama.', h:'Lleva la torre a la columna a y da jaque.'},
+  {fen:'6k1/5ppp/8/8/8/8/8/R6K w - - 0 1', sol:[['a1','a8']],
+   t:'Mate del pasillo', d:'Aprovecha que el rey está encerrado por sus peones. Da mate en una jugada.', h:'La torre entra por la última fila.'}
+];
+var idx=0, done={};
+var board=new ChessBoard(document.getElementById('board'),{onDrop:function(mv){return validate(mv);}});
+var statusEl=document.getElementById('status');
+var cnum=document.getElementById('cnum'),ctitle=document.getElementById('ctitle'),
+    cdesc=document.getElementById('cdesc'),chint=document.getElementById('chint'),
+    cscore=document.getElementById('cscore');
+var cur;
+
+function load(){
+  cur=CH[idx];
+  board.setState(cur.fen);
+  board.lock(false);
+  statusEl.textContent='Las blancas mueven.'; statusEl.className='status';
+  cnum.textContent=(idx+1)+' / '+CH.length;
+  ctitle.textContent=cur.t; cdesc.textContent=cur.d;
+  chint.style.display='none'; chint.textContent='';
+}
+function validate(mv){
+  var from=C.rcToSq(mv.from[0],mv.from[1]), to=C.rcToSq(mv.to[0],mv.to[1]);
+  var ok=cur.sol.some(function(s){ return s[0]===from&&s[1]===to&&(!s[2]||mv.promotion===s[2]); });
+  if(ok){
+    done[idx]=true; cscore.textContent=Object.keys(done).length+' / '+CH.length;
+    statusEl.textContent='✅ ¡Estrategia aplicada!'; statusEl.className='status win';
+    board.lock(true); setTimeout(next,1200); return true;
+  }
+  statusEl.textContent='🔁 Esa no logra la idea. Prueba otra.'; statusEl.className='status lose';
+  return false;
+}
+function next(){ idx=(idx+1)%CH.length; load(); }
+document.getElementById('next').addEventListener('click',next);
+document.getElementById('hint').addEventListener('click',function(){ chint.style.display='block'; chint.textContent='💡 '+cur.h; });
+document.getElementById('show').addEventListener('click',function(){
+  var s=cur.sol[0], from=C.sqToRC(s[0]);
+  board.sel=from;
+  board.legal=C.legalMoves(board.state).filter(function(m){return m.from[0]===from[0]&&m.from[1]===from[1];});
+  board.render();
+  var to=C.sqToRC(s[1]); var cell=board.cells[to[0]+'-'+to[1]]; if(cell) cell.classList.add('sel');
+  statusEl.textContent='La jugada correcta está marcada.'; statusEl.className='status check';
+});
+load();
+})();
+</script>
+</body>
+</html>
