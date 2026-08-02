@@ -26,6 +26,7 @@ celular.
 | **`index.html`** | Portal de inicio que reúne todo. | Todos |
 | **`aprende.html`** | Para los más pequeños que aún no saben jugar: conocer las piezas, ver cómo se mueven, y juegos de adivinar la ficha y de memoria (cartas). Colorido y con celebraciones. | Niños pequeños |
 | **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
+| **`pedagogia.html`** | Cómo enseñar de **muchas maneras** (por pasos, cuento, mini-juegos, ajedrez humano, descubrimiento, entre pares, gamificación), los **estilos de aprendizaje** (VAK + social), **adaptaciones por contexto** (rural, escasos recursos, ciudad, multigrado, aula numerosa), **cómo se forma el propio maestro** y un **planificador de clase** interactivo. | Maestros |
 | **`reglas.html`** | Referencia completa de todas las reglas en un solo lugar, con diagramas: tablero, movimientos, enroque, al paso, coronación, jaque, mate, tablas y reglas de competencia. | Todos |
 | **`practicas.html`** | 15 ejercicios interactivos de **fácil a normal** (mover, capturar, tenedores, mate en una jugada) **más un modo de notación**. Con pistas, solución y verificación automática. | Alumnos |
 | **`estrategias.html`** | Estrategias y **seis tácticas** (tenedor, clavada, brocheta, mate del pasillo, ataque doble, jaque descubierto), **nociones de final** (oposición, peón pasado) y una **prueba interactiva** de 6 retos. | Alumnos y maestros |
@@ -67,6 +68,7 @@ ajedrez-aula/
 ├── index.html          Portal de inicio
 ├── aprende.html        Aprende jugando (niños pequeños)
 ├── guia.html           Guía docente (presentación de 40 láminas)
+├── pedagogia.html      Métodos de enseñanza, contexto y planificador
 ├── reglas.html         Reglamento completo (referencia)
 ├── practicas.html      Ejercicios interactivos + notación
 ├── estrategias.html    Estrategias + prueba interactiva

@@ -17,13 +17,13 @@ function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 /* ---------- ROL ---------- */
 var ROLES={
   maestro:{icon:'👩‍🏫', label:'Maestro',
-    nav:['guia','reglas','imprimibles','arbitraje','practicas','estrategias','jugar','nivel','aprende'],
-    hero:'Bienvenido, maestro. Aquí tienes la guía, el reglamento, los imprimibles y las prácticas para llevar el ajedrez a tu aula, aunque nunca hayas jugado.'},
+    nav:['guia','pedagogia','reglas','imprimibles','arbitraje','practicas','estrategias','jugar','nivel','aprende'],
+    hero:'Bienvenido, maestro. Aquí tienes la guía, la pedagogía, el reglamento, los imprimibles y las prácticas para llevar el ajedrez a tu aula, aunque nunca hayas jugado.'},
   estudiante:{icon:'🧒', label:'Estudiante',
-    nav:['aprende','practicas','jugar','estrategias','nivel','reglas','guia','arbitraje','imprimibles'],
+    nav:['aprende','practicas','jugar','estrategias','nivel','reglas','guia','pedagogia','arbitraje','imprimibles'],
     hero:'¡Hola! Aprende, practica, juega contra la computadora y descubre tu nivel. Todo es como un juego: gana medallas mientras avanzas.'},
   nino:{icon:'🧸', label:'Niño pequeño',
-    nav:['aprende','jugar','practicas','reglas','estrategias','nivel','imprimibles','guia','arbitraje'],
+    nav:['aprende','jugar','practicas','reglas','estrategias','nivel','imprimibles','guia','pedagogia','arbitraje'],
     hero:'¡Vamos a jugar! Conoce las piezas, mira cómo se mueven y diviértete con los juegos. No necesitas saber nada todavía.'}
 };
 function getRole(){ var r=lsGet(LS_ROLE); return ROLES[r]?r:null; }
