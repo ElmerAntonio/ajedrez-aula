@@ -48,7 +48,7 @@
   body.only .printable{display:none}
   body.only-tablero #m-tablero,body.only-cartas #m-cartas,
   body.only-planilla #m-planilla,body.only-actividad #m-actividad,
-  body.only-docente #m-docente{display:block}
+  body.only-docente #m-docente,body.only-juegos #m-juegos,body.only-diploma #m-diploma{display:block}
 }
 </style>
 </head>
@@ -158,6 +158,46 @@
         <tr><td>Ayuda a un compañero que va empezando</td><td>☐</td><td>☐</td></tr>
         <tr><td>Piensa antes de tocar la pieza</td><td>☐</td><td>☐</td></tr>
       </table>
+    </div>
+  </div>
+
+  <!-- HOJA DE MINI-JUEGOS -->
+  <div class="sheet-card">
+    <div class="head no-print">
+      <div><h2 style="font-size:26px">🎲 Hoja de mini-juegos</h2><p class="note">Seis juegos cortos para la clase, listos para pegar en la pared.</p></div>
+      <button class="btn" onclick="printOnly('juegos')">🖨 Imprimir mini-juegos</button>
+    </div>
+    <div class="printable" id="m-juegos">
+      <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:12px">Mini-juegos de ajedrez para el aula</h3>
+      <table class="psheet">
+        <tr><th style="width:32%">Juego</th><th>Cómo se juega y qué enseña</th></tr>
+        <tr><td>Carrera de peones</td><td>Solo los 8 peones por bando. Gana quien cruce primero o deje al rival sin jugadas. Enseña avance, captura y bloqueo.</td></tr>
+        <tr><td>Duelo de torres</td><td>Una torre por bando en esquinas opuestas. Gana quien capture primero. Enseña el movimiento recto y anticipar el peligro.</td></tr>
+        <tr><td>El caballo glotón</td><td>Un caballo contra varios peones quietos. ¿Cuántos captura sin pisar casilla defendida? Enseña la L y a planificar.</td></tr>
+        <tr><td>Alfiles contra peones</td><td>Dos alfiles contra cuatro peones. Los peones ganan si uno corona. Enseña diagonales largas y control de casillas.</td></tr>
+        <tr><td>Mate de la escalera</td><td>Dos torres contra un rey solo. Empújalo al borde escalón por escalón. Enseña el primer mate que se domina.</td></tr>
+        <tr><td>Rey y dama contra rey</td><td>Dar mate sin ahogar (si ahogas, pierdes). Enseña el mate básico y a cuidar el ahogado.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- DIPLOMA -->
+  <div class="sheet-card">
+    <div class="head no-print">
+      <div><h2 style="font-size:26px">🏅 Diploma de participación</h2><p class="note">Un recuerdo para cerrar el torneo interno. No es un título oficial.</p></div>
+      <button class="btn" onclick="printOnly('diploma')">🖨 Imprimir diploma</button>
+    </div>
+    <div class="printable" id="m-diploma">
+      <div style="border:4px double #333;border-radius:12px;padding:30px;text-align:center">
+        <div style="font-size:40px">♞</div>
+        <h3 style="font-family:var(--disp);font-size:30px;margin:6px 0">Diploma de participación</h3>
+        <p style="font-size:13px">Ajedrez en el Aula · Torneo interno</p>
+        <p style="margin:22px 0 6px;font-size:14px">Se entrega a:</p>
+        <div style="border-bottom:1.5px solid #333;max-width:340px;margin:0 auto 22px;height:30px"></div>
+        <p style="font-size:14px">por jugar con esfuerzo, respetar el turno y dar la mano al terminar.</p>
+        <p style="margin-top:26px;font-size:12px">Fecha: ____________   ·   Firma del docente: ____________________</p>
+        <p style="margin-top:14px;font-size:10.5px;color:#777">Recuerdo educativo, sin carácter oficial ni acreditación.</p>
+      </div>
     </div>
   </div>
 

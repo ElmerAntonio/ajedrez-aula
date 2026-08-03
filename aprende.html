@@ -114,9 +114,17 @@
 
   <!-- PANEL 4: MEMORIA -->
   <div class="panel" id="p-memoria">
-    <p class="lead">Encuentra las parejas: cada pieza tiene su nombre escondido. Toca dos cartas para voltearlas.</p>
-    <div style="text-align:center;margin:10px 0"><button class="btn" id="memReset">↻ Barajar de nuevo</button>
-      <span class="mono" style="margin-left:14px;color:var(--ambar)">Parejas: <span id="memPairs">0</span> / 6</span></div>
+    <p class="lead">Encuentra las parejas. Toca dos cartas para voltearlas. En <strong>Difícil</strong> tienes que emparejar cada pieza con <strong>cómo se mueve</strong>: ¡hay que saber jugar!</p>
+    <div class="tabs2" id="memMode" style="margin:6px 0 12px">
+      <button data-m="nombres" class="on">🟢 Nombres</button>
+      <button data-m="mueve">🔴 Movimientos (difícil)</button>
+      <button data-m="ocho">🟣 8 parejas</button>
+    </div>
+    <div style="text-align:center;margin:10px 0">
+      <button class="btn" id="memReset">↻ Barajar de nuevo</button>
+      <span class="mono" style="margin-left:14px;color:var(--ambar)">Parejas: <span id="memPairs">0</span> / <span id="memTotal">6</span></span>
+      <span class="mono" style="margin-left:14px;color:#9DAFA2">Intentos: <span id="memTries">0</span></span>
+    </div>
     <div class="mem" id="memGrid"></div>
     <div class="big-fb" id="memFb" style="margin-top:12px">&nbsp;</div>
   </div>
@@ -232,21 +240,35 @@ function answerQuiz(o,btn){
   setTimeout(newQuiz,1200);
 }
 
-/* ---- PANEL 4: MEMORIA ---- */
-var memGrid=document.getElementById('memGrid'), memPairs=document.getElementById('memPairs'), memFb=document.getElementById('memFb');
-var flipped=[], lock=false, pairs=0;
+/* ---- PANEL 4: MEMORIA (con dificultad) ---- */
+var MOVE_DESC={k:'Un pasito',q:'Recto y diagonal',r:'En línea recta',b:'En diagonal',n:'Salta en L',p:'Recto, come de lado'};
+var memGrid=document.getElementById('memGrid'), memPairs=document.getElementById('memPairs'),
+    memFb=document.getElementById('memFb'), memTotal=document.getElementById('memTotal'), memTries=document.getElementById('memTries');
+var flipped=[], lock=false, pairs=0, tries=0, memMode='nombres', memNeed=6;
+function memDefs(){
+  var defs=PIECES.map(function(p){
+    return {id:p.k, face:p.bg, label: memMode==='mueve'?MOVE_DESC[p.k]:p.nm};
+  });
+  if(memMode==='ocho'){
+    defs.push({id:'jaque', face:'+', label:'Jaque'});
+    defs.push({id:'mate', face:'#', label:'Mate'});
+  }
+  return defs;
+}
 function buildMem(){
-  pairs=0; memPairs.textContent='0'; memFb.innerHTML='&nbsp;'; flipped=[]; lock=false;
+  pairs=0; tries=0; flipped=[]; lock=false;
+  memPairs.textContent='0'; memTries.textContent='0'; memFb.innerHTML='&nbsp;'; memFb.style.color='';
+  var defs=memDefs(); memNeed=defs.length; memTotal.textContent=memNeed;
   var cards=[];
-  PIECES.forEach(function(p){
-    cards.push({id:p.k,type:'glyph',content:p.bg});
-    cards.push({id:p.k,type:'name',content:p.nm});
+  defs.forEach(function(p){
+    cards.push({id:p.id,type:'face',content:p.face});
+    cards.push({id:p.id,type:'label',content:p.label});
   });
   cards.sort(function(){return Math.random()-0.5;});
   memGrid.innerHTML='';
   cards.forEach(function(c){
     var d=document.createElement('div'); d.className='mcard'; d.dataset.id=c.id;
-    if(c.type==='name'){d.innerHTML='<span class="lbl">'+c.content+'</span>';}
+    if(c.type==='label'){d.innerHTML='<span class="lbl">'+c.content+'</span>';}
     else{d.textContent=c.content;}
     d.addEventListener('click',function(){flip(d);});
     memGrid.appendChild(d);
@@ -256,11 +278,11 @@ function flip(d){
   if(lock||d.classList.contains('up')||d.classList.contains('done'))return;
   d.classList.add('up'); flipped.push(d);
   if(flipped.length===2){
-    lock=true;
+    lock=true; tries++; memTries.textContent=tries;
     if(flipped[0].dataset.id===flipped[1].dataset.id){
       flipped.forEach(function(x){x.classList.add('done');x.classList.remove('up');});
       pairs++; memPairs.textContent=pairs; flipped=[]; lock=false;
-      if(pairs===6){memFb.textContent='¡Ganaste! 🏆'; memFb.style.color='var(--ambar)';
+      if(pairs===memNeed){memFb.textContent='¡Ganaste en '+tries+' intentos! 🏆'; memFb.style.color='var(--ambar)';
         if(window.celebrate) celebrate(document.getElementById('memGrid'));
         if(window.AA) AA.award('memoria');}
     } else {
@@ -269,6 +291,11 @@ function flip(d){
   }
 }
 document.getElementById('memReset').addEventListener('click',buildMem);
+document.getElementById('memMode').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  Array.prototype.slice.call(this.children).forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on'); memMode=b.dataset.m; buildMem();
+});
 
 /* ---- PANEL 5: EL CABALLO GLOTÓN ---- */
 var GLOTON_FEN='8/8/2p1p3/1p3p2/3N4/1p3p2/8/8 w - - 0 1';

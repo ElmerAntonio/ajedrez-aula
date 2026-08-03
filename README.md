@@ -26,14 +26,14 @@ celular.
 | **`index.html`** | Portal de inicio que reúne todo. | Todos |
 | **`aprende.html`** | Para los más pequeños que aún no saben jugar: conocer las piezas, ver cómo se mueven, juegos de adivinar la ficha, de memoria (cartas) y **El caballo glotón** (capturar todos los peones). Colorido y con celebraciones. | Niños pequeños |
 | **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
-| **`pedagogia.html`** | Cómo enseñar de **muchas maneras** (por pasos, cuento, mini-juegos, ajedrez humano, descubrimiento, entre pares, gamificación), los **estilos de aprendizaje** (VAK + social), **adaptaciones por contexto** (rural, escasos recursos, ciudad, multigrado, aula numerosa), **cómo se forma el propio maestro** y un **planificador de clase** interactivo. | Maestros |
+| **`pedagogia.html`** | **Once** maneras de enseñar (pasos, cuento, mini-juegos, ajedrez humano, descubrimiento, entre pares, gamificación, inteligencias múltiples, dificultad deseable, análisis de la partida, metacognición) con guion paso a paso, estilos de aprendizaje, **adaptaciones por contexto**, formación del maestro y un **planificador de clase** con plan imprimible. | Maestros |
 | **`reglas.html`** | Referencia completa de todas las reglas en un solo lugar, con diagramas: tablero, movimientos, enroque, al paso, coronación, jaque, mate, tablas y reglas de competencia. | Todos |
-| **`practicas.html`** | 15 ejercicios interactivos de **fácil a normal** (mover, capturar, tenedores, mate en una jugada) **más un modo de notación**. Con pistas, solución y verificación automática. | Alumnos |
-| **`estrategias.html`** | Estrategias y **ocho tácticas** (tenedor, clavada, brocheta, mate del pasillo, ataque doble, jaque descubierto, clavada ganadora, doble jaque), **nociones de final** (oposición, peón pasado) y una **prueba interactiva** de 7 retos. | Alumnos y maestros |
+| **`practicas.html`** | **36 ejercicios** en 3 niveles reales (fácil, medio, difícil) tomados de un banco verificado y **barajados** para que no se repitan, **más un modo de notación**. Con pistas, solución y verificación automática. | Alumnos |
+| **`estrategias.html`** | **Ocho tácticas**, **nociones de final** (oposición, peón pasado), **escuelas históricas** (romántica, clásica, hipermoderna, moderna) y planes de medio juego, más una **prueba interactiva con selector de dificultad** que baraja muchas posiciones. | Alumnos y maestros |
 | **`jugar.html`** | **Juega contra una IA** en tres niveles reales **o en modo 2 jugadores**. Con pistas, deshacer, lista de jugadas, capturas y **reloj**. | Todos |
-| **`arbitraje.html`** | Prácticas de **árbitro**: 8 casos reales de torneo escolar donde hay que decidir, con la regla FIDE que lo respalda y la adaptación para primaria. | Estudiantes de 7.º–9.º |
-| **`imprimibles.html`** | Materiales para **imprimir gratis**: tablero, fichas para recortar (cartas), planilla en blanco, hoja de actividad y **ficha del docente** (rúbrica + lista de cotejo). | Maestros |
-| **`nivel.html`** | Test de 8 preguntas que **verifica tu nivel** (principiante, intermedio o avanzado) y recomienda qué practicar. | Alumnos |
+| **`arbitraje.html`** | Prácticas de **árbitro**: banco de **17 casos** de torneo (8 al azar por sesión) con la regla FIDE que los respalda y la adaptación para primaria. | Estudiantes de 7.º–9.º |
+| **`imprimibles.html`** | Materiales para **imprimir gratis**: tablero, fichas/cartas, planilla, hoja de actividad, **ficha del docente** (rúbrica + cotejo), **hoja de mini-juegos** y **diploma de participación**. | Maestros |
+| **`nivel.html`** | Test **riguroso por áreas** (reglas, piezas, especiales, táctica, estrategia, finales, notación, competencia) con preguntas de dificultad creciente y retos en el tablero. Puntuación **ponderada** que ubica en **cinco niveles** (Principiante → Experto) con **desglose por área** y recomendaciones. | Alumnos |
 
 ---
 
@@ -82,7 +82,9 @@ ajedrez-aula/
 ├── assets/
 │   ├── theme.css       Tema visual compartido + animaciones
 │   ├── chess.js        Motor de ajedrez + IA (sin dependencias)
-│   └── board.js        Tablero interactivo + confeti
+│   ├── puzzles.js      Banco de 36 ejercicios verificados con el motor
+│   ├── board.js        Tablero interactivo + confeti
+│   └── app.js          Rol, medallas, navegación y accesibilidad
 └── README.md
 ```
 

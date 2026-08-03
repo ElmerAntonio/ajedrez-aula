@@ -125,9 +125,60 @@ var CASES=[
   opts:['Gritar para llamar al árbitro','Detener el reloj, levantar la mano y esperar en silencio','Discutir con el rival hasta acordar','Seguir jugando y reclamar al final'],
   correct:1,
   ex:'El protocolo: detener el reloj, levantar la mano y esperar al árbitro sin discutir con el rival. Luego explicar el hecho y acatar la decisión. Enseña este protocolo el mismo día que enseñas el reloj.',
-  art:'Procedimiento de reclamo'}
+  art:'Procedimiento de reclamo'},
+ {t:'Ahogado en el tablero',
+  s:'Un jugador con dama y rey contra un rey solo mueve y deja al rey rival sin ninguna jugada legal, pero SIN estar en jaque. ¿Cuál es el resultado?',
+  opts:['Gana quien tiene la dama','Tablas por rey ahogado','Sigue la partida','Pierde el rey solo'],
+  correct:1,
+  ex:'Sin jaque y sin jugada legal es <strong>rey ahogado</strong>: tablas, aunque un bando tenga muchísimo más material. Enseña a dejar siempre una casilla al rey rival mientras buscas el mate.',
+  art:'FIDE, Art. 5.2'},
+ {t:'Coronar y tocar',
+  s:'Un jugador lleva su peón a la última fila, lo suelta, pero aún no coloca la pieza nueva. ¿Qué pasa?',
+  opts:['La jugada no cuenta','El peón debe promocionar; elige la pieza y recién ahí termina la jugada','Se queda como peón','Pierde el turno'],
+  correct:1,
+  ex:'La promoción es obligatoria al llegar a la última fila: el peón no puede seguir siendo peón. La jugada se completa cuando la <strong>pieza nueva</strong> se coloca y se suelta. Debe haber piezas de repuesto disponibles.',
+  art:'FIDE, Art. 3.7e / 4.4d'},
+ {t:'Dos manos en el enroque',
+  s:'Un jugador enroca usando las dos manos (una para el rey y otra para la torre) a la vez. ¿Es correcto?',
+  opts:['Sí, mientras el enroque sea legal','No: la jugada se hace con una sola mano','Da igual','Pierde la partida'],
+  correct:1,
+  ex:'Toda jugada, incluido el enroque, se realiza con <strong>una sola mano</strong>. Se mueve primero el rey y luego la torre. En primaria conviene enseñarlo con paciencia y sin sancionar al inicio.',
+  art:'FIDE, Art. 4.1 / 4.7'},
+ {t:'El rey llega antes',
+  s:'En el enroque, un jugador toca primero la torre en vez del rey. El rival reclama. ¿Qué decides?',
+  opts:['Enroque anulado, pierde la partida','Debe mover esa torre (pieza tocada); si quería enrocar, debió tocar el rey primero','Se permite igual','Repite la jugada libremente'],
+  correct:1,
+  ex:'Si toca la torre primero, aplica «pieza tocada»: debe jugar esa torre y ya no puede enrocar en esa jugada. Para enrocar hay que <strong>tocar el rey primero</strong>. En primaria, avisa y deja repetir.',
+  art:'FIDE, Art. 4.3 / 4.4'},
+ {t:'Ofrecer tablas',
+  s:'Un jugador ofrece tablas. ¿Cuál es la forma correcta según la FIDE?',
+  opts:['Antes de mover su pieza','Después de mover su pieza y antes de apretar el reloj, diciéndolo una vez','Cuando quiera, las veces que quiera','Solo por escrito'],
+  correct:1,
+  ex:'La oferta correcta: haz tu jugada, ofrece tablas y aprieta el reloj. Ofrecer repetidamente para molestar al rival es conducta antideportiva y el árbitro puede sancionarla.',
+  art:'FIDE, Art. 9.1'},
+ {t:'Empieza con negras',
+  s:'Al iniciar la ronda, resulta que el reloj arrancó con el tiempo de las negras corriendo. ¿Qué corresponde?',
+  opts:['Se deja así','Se corrige: la partida empieza con el reloj de las blancas','Gana el que se dé cuenta','Se reinicia el torneo'],
+  correct:1,
+  ex:'Las blancas siempre mueven primero, así que al comenzar debe correr el reloj de las <strong>blancas</strong>. Si se detecta el error, el árbitro corrige el reloj y ajusta los tiempos con criterio.',
+  art:'FIDE, Art. 6.1 / 6.8'},
+ {t:'Anotar la partida',
+  s:'En una partida con ritmo largo, un niño de premedia no anota sus jugadas. ¿Qué dice el reglamento?',
+  opts:['No importa nunca','Debe anotar ambas jugadas de forma legible mientras tenga más de 5 minutos','Solo anota las blancas','Solo si va ganando'],
+  correct:1,
+  ex:'Con ritmo largo es obligatorio anotar de forma legible las jugadas de ambos bandos, salvo que queden menos de 5 minutos sin incremento. La planilla es la prueba para reclamar repetición o las 50 jugadas.',
+  art:'FIDE, Art. 8.1'},
+ {t:'Material insuficiente y tiempo',
+  s:'A un jugador se le cae la bandera, pero a su rival solo le queda el rey y un alfil. ¿Resultado?',
+  opts:['Gana el del alfil por tiempo','Tablas: rey y alfil no pueden dar mate a un rey solo','Sigue la partida','Gana el que reclame'],
+  correct:1,
+  ex:'Rey y alfil (o rey y caballo) contra rey solo es <strong>material insuficiente</strong> para dar mate, así que la caída de bandera es tablas, no derrota.',
+  art:'FIDE, Art. 6.9'}
 ];
 
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var POOL=CASES, SET=8;             // 17 casos; se presentan 8 al azar cada vez
+CASES=shuffle(POOL).slice(0,SET);
 var i=0, score=0, answered=false;
 var cnum=document.getElementById('cnum'), ctitle=document.getElementById('ctitle'), cscene=document.getElementById('cscene'),
     optsEl=document.getElementById('opts'), explain=document.getElementById('explain'), nextBtn=document.getElementById('next'),
@@ -169,6 +220,7 @@ function finish(){
 }
 document.getElementById('retry').addEventListener('click',function(){
   i=0;score=0;scoreEl.textContent='0';
+  CASES=shuffle(POOL).slice(0,SET);   // set nuevo de casos
   document.getElementById('done').style.display='none';
   document.querySelector('.card').style.display='';
   document.querySelector('.bar').style.display='';
