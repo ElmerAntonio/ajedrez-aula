@@ -112,9 +112,45 @@
   </div>
   <div class="card warm" style="margin-bottom:40px"><p><em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Mates elementales:</em> para ganar cuando te sobra material, aprende los mates básicos — rey+dama, rey+dos torres y rey+torre contra rey solo. Practícalos en la sección de <a href="practicas.html">Prácticas</a> (nivel Normal) y contra la IA en <a href="jugar.html">Jugar</a>.</p></div>
 
+  <!-- ESCUELAS Y PLANES -->
+  <h2>4 · Escuelas y planes de medio juego</h2>
+  <p class="lead" style="margin:.4em 0 16px">La forma de entender el ajedrez fue cambiando con la historia. Conocer estas ideas te da un <strong>plan</strong> cuando ya no hay tácticas obvias.</p>
+  <div class="grid g2" style="margin-bottom:22px">
+    <div class="card"><span class="tag r">1500–1880</span><h3 style="margin:.3em 0">Escuela Romántica</h3>
+      <p>Ataque directo al rey, sacrificios y tácticas fulgurantes. Rechazar un sacrificio se veía como falta de honor. No se valoraba la estructura de peones ni el centro.</p></div>
+    <div class="card"><span class="tag">1880–1920</span><h3 style="margin:.3em 0">Escuela Clásica</h3>
+      <p>Steinitz y Tarrasch: el ajedrez tiene leyes. Ocupa y defiende el centro con peones, desarrolla las piezas y acumula <strong>pequeñas ventajas</strong> que suman.</p></div>
+    <div class="card"><span class="tag b">1920–…</span><h3 style="margin:.3em 0">Hipermodernismo</h3>
+      <p>Nimzowitsch y Réti: el centro se puede controlar <strong>a distancia</strong> con piezas en vez de ocuparlo. Nace el <em>fianchetto</em>: el alfil en la diagonal larga (b2, g2, b7, g7) como francotirador.</p></div>
+    <div class="card"><span class="tag g">Hoy</span><h3 style="margin:.3em 0">Estilo universal</h3>
+      <p>Con ayuda de los motores (Stockfish) y campeones como Carlsen, se mezcla todo: buscar ventajas mínimas, defender con precisión y crear problemas prácticos al rival.</p></div>
+  </div>
+  <div class="grid g2" style="margin-bottom:40px">
+    <div class="card cool"><h3>Planes que casi siempre sirven</h3>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:.4em;margin-top:.4em">
+        <li>♜ Coloca las torres en <strong>columnas abiertas</strong> o semiabiertas.</li>
+        <li>♝ Cuida tu <strong>pareja de alfiles</strong>: valen más con el tablero abierto.</li>
+        <li>🎯 Ataca los <strong>peones débiles</strong> del rival (aislados, doblados, retrasados).</li>
+        <li>👑 Si los reyes enrocaron en lados distintos, <strong>ataca con los peones</strong>.</li>
+        <li>🐴 Busca <strong>casillas fuertes</strong> (que ningún peón rival puede atacar) para tu caballo.</li>
+      </ul></div>
+    <div class="card warm"><h3>Cómo mejorar de verdad</h3>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:.4em;margin-top:.4em">
+        <li>🧩 Resuelve <a href="practicas.html">problemas</a> despacio: reconoce el patrón, no corras.</li>
+        <li>⏱ Entrena con ritmo pausado, no solo partidas rápidas.</li>
+        <li>🔍 Analiza tus propias partidas: ¿dónde cambió la evaluación y por qué?</li>
+        <li>📈 Una partida bien estudiada enseña más que diez jugadas sin pensar.</li>
+      </ul></div>
+  </div>
+
   <!-- PRUEBA INTERACTIVA -->
-  <h2 style="margin-top:.4em">4 · Prueba: juega la estrategia</h2>
-  <p class="lead" style="margin:.4em 0 18px">Ahora te toca a ti. En cada posición hay una jugada que aplica la idea que acabas de leer. Muévela en el tablero.</p>
+  <h2 style="margin-top:.4em">5 · Prueba: juega la estrategia</h2>
+  <p class="lead" style="margin:.4em 0 14px">Ahora te toca a ti. En cada posición hay una jugada que aplica una idea táctica. Elige la dificultad; las posiciones se barajan para que nunca te toque la misma tanda.</p>
+  <div class="seg" id="diff" style="margin-bottom:16px">
+    <button data-d="todas" class="on">Todas</button>
+    <button data-d="medio">🟡 Medio</button>
+    <button data-d="dificil">🔴 Difícil</button>
+  </div>
 
   <div class="game">
     <div class="board-wrap">
@@ -145,6 +181,7 @@
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
 <script src="assets/chess.js"></script>
+<script src="assets/puzzles.js"></script>
 <script src="assets/board.js"></script>
 <script>
 (function(){
@@ -157,24 +194,18 @@ Array.prototype.slice.call(document.querySelectorAll('.mini.cb')).forEach(functi
 });
 
 var C=window.Chess;
-// retos interactivos (verificados con el motor)
-var CH=[
-  {fen:C.START_FEN, sol:[['e2','e4'],['d2','d4']],
-   t:'Domina el centro', d:'Es la primera jugada de la partida. Ocupa el centro con un peón.', h:'Adelanta el peón de rey o el de dama dos casillas.'},
-  {fen:'2q3k1/8/2N5/8/8/8/8/6K1 w - - 0 1', sol:[['c6','e7']],
-   t:'El tenedor de caballo', d:'Salta con el caballo a una casilla desde donde ataques al rey y a la dama a la vez.', h:'Busca la casilla que da jaque y toca la dama al mismo tiempo.'},
-  {fen:'q7/8/8/8/k7/6K1/8/7R w - - 0 1', sol:[['h1','a1']],
-   t:'La brocheta', d:'Da jaque en la columna del rey. Detrás de él está la dama.', h:'Lleva la torre a la columna a y da jaque.'},
-  {fen:'6k1/5ppp/8/8/8/8/8/R6K w - - 0 1', sol:[['a1','a8']],
-   t:'Mate del pasillo', d:'Aprovecha que el rey está encerrado por sus peones. Da mate en una jugada.', h:'La torre entra por la última fila.'},
-  {fen:'8/6k1/8/8/8/8/1r6/K3Q3 w - - 0 1', sol:[['e1','e5']],
-   t:'Ataque doble', d:'Mueve la dama a una casilla desde donde des jaque al rey y ataques la torre a la vez.', h:'Busca una casilla que toque al rey por una línea y a la torre por otra.'},
-  {fen:'4k3/8/8/2q5/4N3/8/8/4R2K w - - 0 1', sol:[['e4','c5']],
-   t:'Jaque descubierto', d:'Mueve el caballo capturando la dama y descubre el jaque de tu torre.', h:'El caballo se quita de en medio y captura; detrás aparece la torre dando jaque.'},
-  {fen:'3qk3/8/5n2/6B1/4P3/8/8/6K1 w - - 0 1', sol:[['e4','e5']],
-   t:'Explota la clavada', d:'El caballo está clavado contra la dama. Atácalo con el peón: no puede escapar.', h:'Avanza el peón para amenazar la casilla del caballo clavado.'}
-];
-var idx=0, done={};
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var BANK=window.CHESS_PUZZLES;
+// reto de apertura (estratégico) que se suma a las tácticas del banco
+var EXTRA=[{fen:C.START_FEN, sol:[['e2','e4'],['d2','d4']], lv:'medio',
+   t:'Domina el centro', d:'Primera jugada de la partida: ocupa el centro con un peón.', h:'Adelanta el peón de rey o el de dama dos casillas.'}];
+var diff='todas', correct=0, idx=0, DECK=[];
+function buildDeck(){
+  var src = diff==='dificil' ? BANK.byLevel.dificil
+          : diff==='medio'   ? EXTRA.concat(BANK.byLevel.medio)
+          :                    EXTRA.concat(BANK.tactic);
+  return shuffle(src);
+}
 var board=new ChessBoard(document.getElementById('board'),{onDrop:function(mv){return validate(mv);}});
 var statusEl=document.getElementById('status');
 var cnum=document.getElementById('cnum'),ctitle=document.getElementById('ctitle'),
@@ -183,11 +214,11 @@ var cnum=document.getElementById('cnum'),ctitle=document.getElementById('ctitle'
 var cur;
 
 function load(){
-  cur=CH[idx];
+  cur=DECK[idx];
   board.setState(cur.fen);
   board.lock(false);
   statusEl.textContent='Las blancas mueven.'; statusEl.className='status';
-  cnum.textContent=(idx+1)+' / '+CH.length;
+  cnum.textContent=(idx+1)+' / '+DECK.length;
   ctitle.textContent=cur.t; cdesc.textContent=cur.d;
   chint.style.display='none'; chint.textContent='';
 }
@@ -195,7 +226,7 @@ function validate(mv){
   var from=C.rcToSq(mv.from[0],mv.from[1]), to=C.rcToSq(mv.to[0],mv.to[1]);
   var ok=cur.sol.some(function(s){ return s[0]===from&&s[1]===to&&(!s[2]||mv.promotion===s[2]); });
   if(ok){
-    done[idx]=true; cscore.textContent=Object.keys(done).length+' / '+CH.length;
+    correct++; cscore.textContent=correct;
     statusEl.textContent='✅ ¡Estrategia aplicada!'; statusEl.className='status win';
     board.lock(true);
     if(window.AA) AA.award('estrategia');
@@ -205,7 +236,12 @@ function validate(mv){
   statusEl.textContent='🔁 Esa no logra la idea. Prueba otra.'; statusEl.className='status lose';
   return false;
 }
-function next(){ idx=(idx+1)%CH.length; load(); }
+function next(){ idx++; if(idx>=DECK.length){ DECK=buildDeck(); idx=0; } load(); }
+document.getElementById('diff').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  Array.prototype.slice.call(this.children).forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on'); diff=b.dataset.d; DECK=buildDeck(); idx=0; load();
+});
 document.getElementById('next').addEventListener('click',next);
 document.getElementById('hint').addEventListener('click',function(){ chint.style.display='block'; chint.textContent='💡 '+cur.h; });
 document.getElementById('show').addEventListener('click',function(){
@@ -216,7 +252,7 @@ document.getElementById('show').addEventListener('click',function(){
   var to=C.sqToRC(s[1]); var cell=board.cells[to[0]+'-'+to[1]]; if(cell) cell.classList.add('sel');
   statusEl.textContent='La jugada correcta está marcada.'; statusEl.className='status check';
 });
-load();
+DECK=buildDeck(); load();
 })();
 </script>
 <script src="assets/app.js"></script>

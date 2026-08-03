@@ -4,26 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>¿Cuál es mi nivel? · Ajedrez en el Aula</title>
-<meta name="description" content="Test rápido que verifica tu nivel de ajedrez (principiante, intermedio o avanzado) mezclando preguntas de reglas y retos en el tablero, con recomendaciones de qué estudiar.">
+<meta name="description" content="Test riguroso que evalúa tu nivel real de ajedrez por áreas (reglas, piezas, táctica, estrategia, finales, notación y competencia) y te ubica en uno de cinco niveles, con un desglose de tus fortalezas y qué practicar.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/theme.css">
 <style>
-.q-wrap{max-width:720px;margin:0 auto}
-.bar{height:8px;background:var(--tinta3);border-radius:99px;overflow:hidden;margin-bottom:22px}
-.bar > i{display:block;height:100%;background:var(--ambar);width:0;transition:width .3s}
+.q-wrap{max-width:760px;margin:0 auto}
+.bar{height:8px;background:var(--tinta3);border-radius:99px;overflow:hidden;margin-bottom:20px}
+.bar>i{display:block;height:100%;background:var(--ambar);width:0;transition:width .3s}
 .opt{display:block;width:100%;text-align:left;background:var(--tinta2);color:var(--marfil);
-  border:1px solid #33473C;border-radius:12px;padding:14px 18px;margin-bottom:10px;cursor:pointer;
-  font-family:var(--body);font-size:16px;transition:background .15s,border-color .15s}
+  border:1px solid #33473C;border-radius:12px;padding:13px 18px;margin-bottom:10px;cursor:pointer;
+  font-family:var(--body);font-size:15.5px;transition:.15s}
 .opt:hover{background:var(--tinta3)}
 .opt.correct{background:#26402C;border-color:var(--selva-cl)}
 .opt.wrong{background:#3A211C;border-color:var(--fuego)}
 .opt:disabled{cursor:default}
-.qboard{max-width:340px;margin:6px auto 0}
-.result{display:none}
-.result.on{display:block}
-.level-badge{font-family:var(--disp);font-weight:900;font-size:clamp(28px,6vw,52px);color:var(--ambar)}
+.qboard{max-width:330px;margin:6px auto 0}
+.chipmini{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  background:var(--tinta3);color:#CFEBD8;padding:3px 9px;border-radius:999px}
+.result{display:none} .result.on{display:block}
+.level-badge{font-family:var(--disp);font-weight:900;font-size:clamp(30px,7vw,58px);color:var(--ambar);line-height:1}
+.gauge{height:12px;border-radius:99px;background:linear-gradient(90deg,#C8503C,#E9A73C,#6FA37C);position:relative;margin:14px 0 6px}
+.gauge .pin{position:absolute;top:-5px;width:4px;height:22px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 0 2px var(--tinta)}
+.area{display:flex;align-items:center;gap:10px;margin:7px 0}
+.area .nm{width:118px;font-size:13.5px;flex:none}
+.area .track{flex:1;height:9px;background:var(--tinta3);border-radius:99px;overflow:hidden}
+.area .fill{height:100%;background:var(--selva-cl);border-radius:99px}
+.area .pct{width:42px;text-align:right;font-family:var(--mono);font-size:12px;color:#9DAFA2;flex:none}
 </style>
 </head>
 <body>
@@ -42,16 +50,16 @@
 </div></nav>
 
 <div class="wrap q-wrap">
-  <div class="eyebrow">Mi nivel · test de 8 preguntas</div>
-  <h1>¿Cuál es tu nivel?</h1>
-  <p class="lead" style="margin:.6em 0 1.6em">Ocho preguntas, de fáciles a difíciles. Al final te decimos si vas empezando, si ya juegas o si dominas las reglas — y qué te conviene practicar. No es un examen: nadie ve tus respuestas y no se guarda nada.</p>
+  <div class="eyebrow">Mi nivel · evaluación por áreas</div>
+  <h1>¿Cuál es tu nivel real?</h1>
+  <p class="lead" style="margin:.6em 0 1.4em">Una evaluación seria: preguntas de dificultad creciente sobre reglas, piezas, táctica, estrategia, finales, notación y competencia, más retos en el tablero. Al final te ubicamos en uno de <strong>cinco niveles</strong> con un desglose honesto de tus fortalezas y qué te conviene practicar. No es un examen escolar y no se guarda nada.</p>
 
-  <!-- CUESTIONARIO -->
   <div id="quiz">
     <div class="bar"><i id="prog"></i></div>
     <div class="card" style="padding:clamp(18px,3vw,28px)">
-      <div class="note mono" id="qcount">Pregunta 1 de 8</div>
-      <h3 id="qtitle" style="margin:.4em 0 .2em;font-size:clamp(18px,2.2vw,26px)">—</h3>
+      <div class="note mono" id="qcount">Pregunta 1</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:.4em 0 .2em"><span class="chipmini" id="qarea">Área</span><span class="chipmini" id="qdiff">Dificultad</span></div>
+      <h3 id="qtitle" style="margin:.2em 0;font-size:clamp(18px,2.2vw,25px)">—</h3>
       <p id="qsub" class="note" style="margin-bottom:14px"></p>
       <div id="qboard-holder"></div>
       <div id="opts"></div>
@@ -62,15 +70,22 @@
     </div>
   </div>
 
-  <!-- RESULTADO -->
   <div id="result" class="result">
     <div class="card" style="text-align:center;padding:clamp(22px,4vw,40px)">
-      <div class="note mono">Tu resultado</div>
+      <div class="note mono">Tu nivel estimado</div>
       <div class="level-badge" id="levelName">—</div>
-      <p id="levelDesc" class="lead" style="margin:.6em auto 1em"></p>
-      <p class="mono" style="color:var(--selva-cl)">Puntaje: <span id="finalScore">0</span> / 8</p>
-      <div class="card cool" style="text-align:left;margin-top:20px">
-        <h3>Te recomendamos</h3>
+      <div class="gauge"><div class="pin" id="gaugePin" style="left:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:#7E9086">
+        <span>Principiante</span><span>Iniciado</span><span>Intermedio</span><span>Avanzado</span><span>Experto</span>
+      </div>
+      <p id="levelDesc" class="lead" style="margin:1em auto"></p>
+      <p class="mono" style="color:var(--selva-cl)">Puntaje ponderado: <span id="finalScore">0</span> / <span id="maxScore">0</span> (<span id="finalPct">0</span>%)</p>
+      <div class="card" style="text-align:left;margin-top:18px">
+        <h3>Tu desempeño por área</h3>
+        <div id="areas" style="margin-top:.5em"></div>
+      </div>
+      <div class="card cool" style="text-align:left;margin-top:14px">
+        <h3>Qué te conviene practicar</h3>
         <div id="recs"></div>
       </div>
       <button class="btn" id="retry" style="margin-top:20px">↻ Hacer el test otra vez</button>
@@ -78,133 +93,186 @@
   </div>
 
   <div class="disclaimer" style="margin-top:26px">
-    <strong>Solo para enseñar y aprender.</strong> Este test es orientativo y educativo. <strong>No otorga certificados, títulos ni acreditación</strong> de ningún tipo. Publicado gratuitamente con GitHub Pages.
+    <strong>Solo para enseñar y aprender.</strong> El resultado es orientativo y educativo. <strong>No otorga certificados, títulos ni acreditación</strong> ni equivale a un Elo oficial. Publicado con GitHub Pages.
   </div>
 </div>
 
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
 <script src="assets/chess.js"></script>
+<script src="assets/puzzles.js"></script>
 <script src="assets/board.js"></script>
 <script>
 (function(){
 'use strict';
-var C=window.Chess;
-// tipo 'mc': opciones, correcta=índice. tipo 'board': fen + solución from-to.
-var Q=[
-  {type:'mc', t:'¿Cuántas casillas tiene el tablero de ajedrez?',
-   opts:['32 casillas','64 casillas','100 casillas','48 casillas'], correct:1},
-  {type:'mc', t:'¿Cómo se mueve la torre?',
-   opts:['Solo en diagonal','En forma de L','En línea recta: filas y columnas','Una casilla en cualquier dirección'], correct:2},
-  {type:'mc', t:'¿Cuál es la única pieza que puede saltar por encima de otras?',
-   opts:['El alfil','La torre','La dama','El caballo'], correct:3},
-  {type:'mc', t:'Al armar el tablero, la casilla de la esquina derecha de cada jugador debe ser…',
-   opts:['Oscura','Clara','No importa el color','Siempre la del rey'], correct:1},
-  {type:'board', t:'Muestra un movimiento del caballo.',
-   sub:'Toca el caballo blanco del centro y llévalo a cualquiera de sus casillas legales.',
-   fen:'7k/8/8/8/3N4/8/8/7K w - - 0 1',
-   check:function(mv){ return C.colorOf(mv.piece)==='w' && mv.piece.toLowerCase()==='n'; }},
-  {type:'mc', t:'¿Qué significa "coronar" un peón?',
-   opts:['Ponerle una corona de adorno','Que llega a la última fila y se convierte en otra pieza (casi siempre dama)','Que captura a la dama','Que da jaque al rey'], correct:1},
-  {type:'mc', t:'En la captura al paso (en passant), ¿qué pieza puede capturar y a cuál?',
-   opts:['Cualquier pieza a un peón','Un peón a otro peón que acaba de avanzar dos casillas','La torre a un peón','El rey a la dama'], correct:1},
-  {type:'board', t:'Da jaque mate en una jugada.',
-   sub:'Las blancas juegan. Encuentra el mate del pasillo con la torre.',
-   fen:'6k1/5ppp/8/8/8/8/8/R6K w - - 0 1',
-   check:function(mv,state){ var st=C.status(C.makeMove(state,mv)); return st.result==='checkmate'; }}
+var C=window.Chess, BANK=window.CHESS_PUZZLES;
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+
+// Banco de preguntas de opción múltiple. area, d (dificultad 1-3), t, opts, correct.
+var MC=[
+ // Reglas básicas
+ {area:'Reglas',d:1,t:'¿Cuántas casillas tiene el tablero?',opts:['48','64','81','100'],correct:1},
+ {area:'Reglas',d:1,t:'¿Quién mueve primero?',opts:['Las negras','Las blancas','Se sortea','El que tenga la dama'],correct:1},
+ {area:'Reglas',d:1,t:'Al armar el tablero, la esquina derecha de cada jugador debe ser…',opts:['Oscura','Clara','Cualquiera','La del rey'],correct:1},
+ {area:'Reglas',d:2,t:'¿Cuántas piezas tiene cada bando al inicio?',opts:['8','12','16','20'],correct:2},
+ // Piezas y movimiento
+ {area:'Piezas',d:1,t:'¿Cuál es la única pieza que salta sobre otras?',opts:['Alfil','Torre','Caballo','Dama'],correct:2},
+ {area:'Piezas',d:1,t:'¿Cómo captura el peón?',opts:['Recto hacia adelante','En diagonal, una casilla','En forma de L','Como quiera'],correct:1},
+ {area:'Piezas',d:2,t:'¿Cuánto vale aproximadamente la dama?',opts:['3 puntos','5 puntos','9 puntos','Sin valor'],correct:2},
+ {area:'Piezas',d:2,t:'Un alfil que empieza en casilla clara…',opts:['Puede ir a casillas oscuras','Vive siempre en casillas claras','Cambia de color al capturar','Salta como el caballo'],correct:1},
+ {area:'Piezas',d:2,t:'¿Cuál de estos finales SÍ permite dar mate a un rey solo?',opts:['Rey y alfil solo','Rey y caballo solo','Rey y torre','Rey solo'],correct:2},
+ // Reglas especiales
+ {area:'Especiales',d:2,t:'¿Qué es coronar (promocionar)?',opts:['Poner una corona de adorno','Un peón llega a la última fila y se vuelve otra pieza','Capturar la dama','Dar jaque'],correct:1},
+ {area:'Especiales',d:2,t:'La captura al paso ocurre cuando…',opts:['Cualquier pieza pasa al lado','Un peón enemigo avanza dos casillas y queda al lado del tuyo','El rey pasa por una casilla','Se corona un peón'],correct:1},
+ {area:'Especiales',d:3,t:'¿Se puede enrocar estando en jaque?',opts:['Sí, siempre','No, nunca estando en jaque','Solo del lado corto','Solo si la torre no se movió'],correct:1},
+ {area:'Especiales',d:3,t:'Si la torre del enroque está atacada, pero el rey no pasa por casillas atacadas…',opts:['No se puede enrocar','Sí se puede enrocar','Solo enroque largo','Se pierde la torre'],correct:1},
+ // Táctica
+ {area:'Táctica',d:2,t:'Un "tenedor" es…',opts:['Un empate','Una pieza que ataca dos objetivos a la vez','Mover dos piezas','Un tipo de enroque'],correct:1},
+ {area:'Táctica',d:2,t:'Una "clavada" es cuando…',opts:['Una pieza no puede moverse porque detrás hay algo más valioso','El rey no puede moverse','Se acaba el tiempo','Coronas un peón'],correct:0},
+ {area:'Táctica',d:3,t:'Ante un DOBLE JAQUE, el rey…',opts:['Puede taparlo con una pieza','Puede capturar una de las que dan jaque','Está obligado a moverse','Puede ignorarlo'],correct:2},
+ // Estrategia
+ {area:'Estrategia',d:2,t:'¿Por qué es bueno controlar el centro?',opts:['Se ve más bonito','Desde el centro las piezas alcanzan más casillas','Es obligatorio','Protege la dama'],correct:1},
+ {area:'Estrategia',d:3,t:'El "fianchetto" consiste en…',opts:['Sacar la dama pronto','Poner un alfil en la diagonal larga (b2, g2, b7 o g7)','Doblar las torres','Cambiar todos los peones'],correct:1},
+ {area:'Estrategia',d:2,t:'En la apertura, sacar la dama muy temprano…',opts:['Es lo mejor','Suele ser malo: la persiguen y pierdes tiempo','No cambia nada','Es obligatorio'],correct:1},
+ // Finales
+ {area:'Finales',d:3,t:'La "oposición" (reyes enfrentados con una casilla en medio) favorece a…',opts:['El que le toca mover','El que NO le toca mover','Siempre las blancas','El que tiene más peones'],correct:1},
+ {area:'Finales',d:3,t:'Un "peón pasado" es…',opts:['Un peón capturado','Un peón sin peones enemigos que lo detengan camino a coronar','Un peón doblado','El peón del rey'],correct:1},
+ {area:'Finales',d:2,t:'Si el jugador de turno no está en jaque pero no tiene jugada legal, es…',opts:['Jaque mate','Rey ahogado: tablas','Victoria','Jugada ilegal'],correct:1},
+ // Notación
+ {area:'Notación',d:2,t:'¿Qué significa 0-0?',opts:['Empate','Enroque corto','Coronación','Jaque'],correct:1},
+ {area:'Notación',d:3,t:'¿Qué quiere decir "Dxf7#"?',opts:['Dama a f7','La dama captura en f7 y da jaque mate','Peón a f7','Enroque'],correct:1},
+ {area:'Notación',d:2,t:'En notación española, la inicial del caballo es…',opts:['K','N','C','A'],correct:2},
+ // Competencia / FIDE
+ {area:'Competencia',d:2,t:'La regla de "pieza tocada" dice que…',opts:['Puedes cambiar de idea','Si tocas tu pieza, debes moverla si es legal','Solo cuenta si aprietas el reloj','No existe'],correct:1},
+ {area:'Competencia',d:3,t:'El Sistema Suizo empareja en cada ronda a jugadores…',opts:['Al azar','Con puntaje parecido','Por edad','Por país'],correct:1},
+ {area:'Competencia',d:3,t:'El desempate Buchholz suma…',opts:['Tus propios puntos','Los puntos de todos tus rivales','Las piezas capturadas','El tiempo usado'],correct:1},
+ {area:'Competencia',d:3,t:'¿Qué pasa con la SEGUNDA jugada ilegal del mismo jugador?',opts:['Nada','Pierde la partida','Dos minutos más','Repite la jugada'],correct:1}
 ];
 
-var i=0, score=0, answered=false;
-var qboardObj=null;
-var qcount=document.getElementById('qcount'), qtitle=document.getElementById('qtitle'),
-    qsub=document.getElementById('qsub'), optsEl=document.getElementById('opts'),
-    fb=document.getElementById('feedback'), nextBtn=document.getElementById('next'),
-    prog=document.getElementById('prog'), holder=document.getElementById('qboard-holder');
+// Retos de tablero por dificultad (del banco verificado)
+function boardQ(level, area, sub){
+  var p=pick(BANK.byLevel[level]);
+  return {type:'board', area:area, d:(level==='facil'?1:level==='medio'?2:3), t:p.t, sub:sub||p.d, fen:p.fen,
+    check:function(mv){ var from=C.rcToSq(mv.from[0],mv.from[1]), to=C.rcToSq(mv.to[0],mv.to[1]);
+      return p.sol.some(function(s){return s[0]===from&&s[1]===to&&(!s[2]||mv.promotion===s[2]);}); }};
+}
+
+// Construye un test equilibrado: cubre todas las áreas y sube en dificultad.
+function buildTest(){
+  var byArea={};
+  MC.forEach(function(q){ (byArea[q.area]=byArea[q.area]||[]).push(q); });
+  var Q=[];
+  // una de cada área (fácil-media), priorizando variedad
+  ['Reglas','Piezas','Especiales','Táctica','Estrategia','Finales','Notación','Competencia'].forEach(function(a){
+    var easy=byArea[a].filter(function(q){return q.d<=2;});
+    Q.push(pick(easy.length?easy:byArea[a]));
+  });
+  // varias difíciles de áreas al azar
+  var hard=MC.filter(function(q){return q.d===3;});
+  shuffle(hard).slice(0,4).forEach(function(q){ if(Q.indexOf(q)<0) Q.push(q); });
+  // tres retos de tablero: fácil, medio, difícil
+  Q.push(boardQ('facil','Táctica','Toca la pieza y llévala a una casilla que resuelva el ejercicio.'));
+  Q.push(boardQ('medio','Táctica'));
+  Q.push(boardQ('dificil','Táctica'));
+  // ordena por dificultad ascendente y mezcla dentro de cada nivel
+  var g={1:[],2:[],3:[]}; Q.forEach(function(q){g[q.d].push(q);});
+  return shuffle(g[1]).concat(shuffle(g[2])).concat(shuffle(g[3]));
+}
+
+var Q=buildTest(), i=0, answered=false, qboardObj=null;
+var maxPts=Q.reduce(function(s,q){return s+q.d;},0);
+var pts=0;
+var areaScore={}, areaMax={};
+Q.forEach(function(q){ areaMax[q.area]=(areaMax[q.area]||0)+q.d; areaScore[q.area]=areaScore[q.area]||0; });
+
+var el=function(id){return document.getElementById(id);};
+var qcount=el('qcount'),qtitle=el('qtitle'),qsub=el('qsub'),optsEl=el('opts'),fb=el('feedback'),
+    nextBtn=el('next'),prog=el('prog'),holder=el('qboard-holder'),qarea=el('qarea'),qdiff=el('qdiff');
+var DIFF=['','Fácil','Media','Difícil'];
 
 function render(){
-  answered=false; nextBtn.disabled=true; fb.textContent=''; fb.className='status';
-  optsEl.innerHTML=''; holder.innerHTML='';
-  prog.style.width=((i)/Q.length*100)+'%';
+  answered=false; nextBtn.disabled=true; fb.textContent=''; fb.className='status'; optsEl.innerHTML=''; holder.innerHTML='';
+  prog.style.width=(i/Q.length*100)+'%';
+  var q=Q[i];
   qcount.textContent='Pregunta '+(i+1)+' de '+Q.length;
-  var q=Q[i]; qtitle.textContent=q.t; qsub.textContent=q.sub||'';
-  if(q.type==='mc'){
+  qarea.textContent=q.area; qdiff.textContent=DIFF[q.d];
+  qtitle.textContent=q.t; qsub.textContent=q.sub||'';
+  if(q.type==='board'){
+    var box=document.createElement('div'); box.className='cb qboard'; holder.appendChild(box);
+    qboardObj=new ChessBoard(box,{fen:q.fen, onDrop:function(mv){ return answerBoard(q,mv); }});
+  } else {
     q.opts.forEach(function(text,idx){
       var b=document.createElement('button'); b.className='opt'; b.type='button'; b.textContent=text;
       b.addEventListener('click',function(){ answerMC(q,idx,b); });
       optsEl.appendChild(b);
     });
-  } else {
-    var box=document.createElement('div'); box.className='cb qboard'; holder.appendChild(box);
-    qboardObj=new ChessBoard(box,{fen:q.fen, onDrop:function(mv,state){ return answerBoard(q,mv,state); }});
   }
 }
-
+function credit(q){ pts+=q.d; areaScore[q.area]+=q.d; }
 function answerMC(q,idx,btn){
   if(answered) return; answered=true;
-  var buttons=optsEl.querySelectorAll('.opt');
-  buttons.forEach(function(b){b.disabled=true;});
-  if(idx===q.correct){ btn.classList.add('correct'); score++; fb.textContent='✅ ¡Correcto!'; fb.className='status win'; }
-  else { btn.classList.add('wrong'); buttons[q.correct].classList.add('correct');
-    fb.textContent='La respuesta correcta está marcada en verde.'; fb.className='status lose'; }
+  var buttons=optsEl.querySelectorAll('.opt'); buttons.forEach(function(b){b.disabled=true;});
+  if(idx===q.correct){ btn.classList.add('correct'); credit(q); fb.textContent='✅ Correcto'; fb.className='status win'; }
+  else { btn.classList.add('wrong'); buttons[q.correct].classList.add('correct'); fb.textContent='La respuesta correcta está en verde.'; fb.className='status lose'; }
   nextBtn.disabled=false;
 }
-
-function answerBoard(q,mv,state){
+function answerBoard(q,mv){
   if(answered) return false;
-  var ok=q.check(mv,state);
-  if(ok){ answered=true; score++; fb.textContent='✅ ¡Bien hecho!'; fb.className='status win';
-    nextBtn.disabled=false; qboardObj.lock(true); return true; }
-  fb.textContent='🔁 Esa no. Inténtalo otra vez.'; fb.className='status lose';
-  return false;
+  if(q.check(mv)){ answered=true; credit(q); fb.textContent='✅ ¡Bien jugado!'; fb.className='status win'; nextBtn.disabled=false; qboardObj.lock(true); return true; }
+  fb.textContent='🔁 Esa no. Inténtalo otra vez.'; fb.className='status lose'; return false;
 }
+nextBtn.addEventListener('click',function(){ i++; if(i>=Q.length) finish(); else render(); });
 
-nextBtn.addEventListener('click',function(){
-  i++;
-  if(i>=Q.length) finish(); else render();
-});
-
+var LEVELS=[
+ {min:0,  name:'Principiante', desc:'Estás dando tus primeros pasos. Ya reconoces el tablero y algunas piezas; ahora toca afianzar cómo se mueve cada una y las capturas.'},
+ {min:25, name:'Iniciado',     desc:'Conoces lo básico y mueves casi todas las piezas. El siguiente paso son las reglas especiales (enroque, al paso, coronación) y el jaque mate.'},
+ {min:45, name:'Intermedio',   desc:'Ya juegas con criterio: dominas las reglas y empiezas a ver tácticas. Es momento de tenedores, clavadas y mates básicos.'},
+ {min:65, name:'Avanzado',     desc:'Manejas reglas, táctica y notación con soltura. Trabaja estrategia de medio juego, finales y ritmo de competencia.'},
+ {min:85, name:'Experto',      desc:'Dominas reglas, táctica, estrategia y competencia. Estás listo para torneos, para arbitrar y para enseñar a otros.'}
+];
 function finish(){
-  document.getElementById('quiz').style.display='none';
-  var res=document.getElementById('result'); res.classList.add('on');
-  document.getElementById('finalScore').textContent=score;
-  var name,desc,recs;
-  if(score<=3){
-    name='Principiante';
-    desc='Estás empezando y eso es genial. Ya reconoces el tablero y algunas piezas; ahora toca afianzar cómo se mueve cada una.';
-    recs='<ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">'+
-      '<li>📖 Repasa la <a href="guia.html">Guía</a> — bloques 1 y 2 (el tablero y las piezas).</li>'+
-      '<li>🟢 Haz las <a href="practicas.html">Prácticas fáciles</a> hasta resolverlas sin pistas.</li>'+
-      '<li>🤖 Juega contra la IA en nivel <a href="jugar.html">Fácil</a>: te deja ganar para agarrar confianza.</li></ul>';
-  } else if(score<=6){
-    name='Intermedio';
-    desc='¡Ya juegas! Conoces las reglas y las piezas. El siguiente paso es aprender a atacar con ideas: tácticas y mates básicos.';
-    recs='<ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">'+
-      '<li>♟ Estudia las <a href="estrategias.html">Estrategias</a>: tenedor, clavada y brocheta.</li>'+
-      '<li>🟡 Sube a las <a href="practicas.html">Prácticas de nivel medio y normal</a>.</li>'+
-      '<li>🤖 Juega contra la IA en nivel <a href="jugar.html">Medio</a>.</li>'+
-      '<li>📖 Guía — bloques 3 y 4 (reglas especiales y fin de la partida).</li></ul>';
+  el('quiz').style.display='none';
+  var res=el('result'); res.classList.add('on');
+  var pct=Math.round(pts/maxPts*100);
+  el('finalScore').textContent=pts; el('maxScore').textContent=maxPts; el('finalPct').textContent=pct;
+  var lvl=LEVELS[0]; LEVELS.forEach(function(L){ if(pct>=L.min) lvl=L; });
+  el('levelName').textContent=lvl.name; el('levelDesc').textContent=lvl.desc;
+  el('gaugePin').style.left=Math.max(2,Math.min(98,pct))+'%';
+  // desglose por área
+  var areasEl=el('areas'); areasEl.innerHTML='';
+  var weak=[];
+  Object.keys(areaMax).forEach(function(a){
+    var p=Math.round((areaScore[a]/areaMax[a])*100);
+    if(p<60) weak.push({a:a,p:p});
+    var row=document.createElement('div'); row.className='area';
+    row.innerHTML='<span class="nm">'+a+'</span><span class="track"><span class="fill" style="width:'+p+'%;background:'+(p>=60?'var(--selva-cl)':p>=34?'var(--ambar)':'var(--fuego)')+'"></span></span><span class="pct">'+p+'%</span>';
+    areasEl.appendChild(row);
+  });
+  // recomendaciones según áreas débiles
+  weak.sort(function(x,y){return x.p-y.p;});
+  var LINKS={Reglas:'<a href="reglas.html">Reglas</a>',Piezas:'<a href="aprende.html">Aprende jugando</a>',
+    Especiales:'<a href="reglas.html">Reglas</a> (enroque, al paso, coronación)',Táctica:'<a href="estrategias.html">Estrategias</a> y <a href="practicas.html">Prácticas</a>',
+    Estrategia:'<a href="estrategias.html">Estrategias</a> (escuelas y planes)',Finales:'<a href="estrategias.html">Estrategias</a> (nociones de final)',
+    Notación:'<a href="practicas.html">Prácticas</a> → modo Notación',Competencia:'<a href="reglas.html">Reglas</a> y <a href="arbitraje.html">Árbitro</a>'};
+  var recs=el('recs');
+  if(weak.length===0){
+    recs.innerHTML='<p>¡Muy parejo en todas las áreas! Reta a la IA en nivel <a href="jugar.html">Difícil</a> y ayuda a otros a aprender.</p>';
   } else {
-    name='Avanzado';
-    desc='Dominas las reglas, las tácticas y el mate. Estás listo para la competencia y para ayudar a otros a aprender.';
-    recs='<ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">'+
-      '<li>🏆 Reta a la IA en nivel <a href="jugar.html">Difícil</a> y trata de ganarle.</li>'+
-      '<li>📖 Guía — bloque 5 (Reglamento FIDE): planilla, reloj, sistema suizo.</li>'+
-      '<li>🧑‍🏫 Conviértete en monitor: enseña y arbitra a los que van empezando.</li></ul>';
+    var html='<p>Refuerza sobre todo estas áreas:</p><ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">';
+    weak.slice(0,3).forEach(function(w){ html+='<li>📌 <strong>'+w.a+'</strong> ('+w.p+'%): '+(LINKS[w.a]||'')+'</li>'; });
+    html+='</ul>';
+    recs.innerHTML=html;
   }
-  document.getElementById('levelName').textContent=name;
-  document.getElementById('levelDesc').textContent=desc;
-  document.getElementById('recs').innerHTML=recs;
   if(window.AA) AA.award('nivel');
-  if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('levelName'));},200);
+  if(window.celebrate) setTimeout(function(){celebrate(el('levelName'));},200);
 }
-
-document.getElementById('retry').addEventListener('click',function(){
-  i=0; score=0;
-  document.getElementById('result').classList.remove('on');
-  document.getElementById('quiz').style.display='';
+el('retry').addEventListener('click',function(){
+  Q=buildTest(); i=0; pts=0; maxPts=Q.reduce(function(s,q){return s+q.d;},0);
+  areaScore={}; areaMax={}; Q.forEach(function(q){ areaMax[q.area]=(areaMax[q.area]||0)+q.d; areaScore[q.area]=areaScore[q.area]||0; });
+  el('result').classList.remove('on'); el('quiz').style.display='';
   render();
 });
-
 render();
 })();
 </script>

@@ -33,7 +33,7 @@
   <div class="seg" id="tabs" style="margin-bottom:16px">
     <button data-lv="facil" class="on">🟢 Fácil</button>
     <button data-lv="medio">🟡 Medio</button>
-    <button data-lv="normal">🔴 Normal</button>
+    <button data-lv="dificil">🔴 Difícil</button>
     <button data-lv="notacion">🔤 Notación</button>
   </div>
 
@@ -76,49 +76,16 @@
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
 <script src="assets/chess.js"></script>
+<script src="assets/puzzles.js"></script>
 <script src="assets/board.js"></script>
 <script>
 (function(){
 'use strict';
-// Todos los ejercicios fueron verificados con el motor (from-to, resultado esperado).
-var PUZZLES={
-  facil:[
-    {fen:'7k/8/8/3p4/8/8/3R4/7K w - - 0 1', sol:[['d2','d5']],
-     t:'La torre captura', d:'Las blancas mueven. Captura el peón negro con la torre.', h:'La torre va en línea recta: sube por su columna.'},
-    {fen:'7k/8/4q3/8/3N4/8/8/7K w - - 0 1', sol:[['d4','e6']],
-     t:'El caballo captura la dama', d:'Las blancas mueven. Come la dama negra con el caballo.', h:'El caballo salta en forma de L: dos y una.'},
-    {fen:'7k/8/5r2/8/8/2B5/8/7K w - - 0 1', sol:[['c3','f6']],
-     t:'El alfil por la diagonal', d:'Las blancas mueven. Captura la torre negra con el alfil.', h:'El alfil viaja en diagonal, sin cambiar de color de casilla.'},
-    {fen:'7k/P7/8/8/8/8/8/7K w - - 0 1', sol:[['a7','a8','q']],
-     t:'Corona el peón', d:'Las blancas mueven. Lleva el peón hasta el final y conviértelo en dama.', h:'Un peón que llega a la última fila se transforma.'},
-    {fen:'7k/8/8/8/8/8/6Q1/K7 w - - 0 1', sol:[['g2','g7'],['g2','g8']],
-     t:'Da jaque con la dama', d:'Las blancas mueven. Ataca al rey negro con la dama (dale jaque).', h:'La dama se mueve recto y en diagonal, todo lo lejos que quiera.'}
-  ],
-  medio:[
-    {fen:'7k/8/8/3q4/4P3/8/8/7K w - - 0 1', sol:[['e4','d5']],
-     t:'El peón come de lado', d:'Las blancas mueven. Captura la dama negra con el peón.', h:'El peón avanza recto, pero captura en diagonal.'},
-    {fen:'4k3/8/8/5r2/4N3/8/8/7K w - - 0 1', sol:[['e4','d6']],
-     t:'Tenedor de caballo', d:'Las blancas mueven. Con un salto, ataca a la vez al rey y a la torre.', h:'Busca una casilla desde donde el caballo amenace dos piezas.'},
-    {fen:'6k1/8/8/8/8/8/8/R3K2R w KQ - 0 1', sol:[['e1','g1']],
-     t:'Haz el enroque corto', d:'Las blancas mueven. Pon a salvo al rey enrocando del lado corto.', h:'El rey se mueve dos casillas hacia la torre de la derecha.'},
-    {fen:'7k/6pp/8/8/8/8/1r6/R6K w - - 0 1', sol:[['a1','a8']],
-     t:'Amenaza el mate del pasillo', d:'Las blancas mueven. Lleva la torre a la última fila y da jaque.', h:'La primera fila del rival puede ser su tumba.'},
-    {fen:'r3k3/8/8/8/8/8/8/4K2R w Kq - 0 1', sol:[['h1','h8']],
-     t:'Torre a la fila del rey', d:'Las blancas mueven. Da jaque metiendo la torre en la fila del rey negro.', h:'La torre por la columna h llega hasta arriba.'}
-  ],
-  normal:[
-    {fen:'6k1/5ppp/8/8/8/8/8/R6K w - - 0 1', sol:[['a1','a8']],
-     t:'Mate del pasillo', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'El rey está encerrado por sus propios peones.'},
-    {fen:'6k1/8/6K1/8/8/8/8/1Q6 w - - 0 1', sol:[['b1','b8']],
-     t:'Mate con dama y rey', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'Tu rey ya cuida las casillas de escape. Falta el ataque.'},
-    {fen:'k7/8/1K6/8/8/8/8/7R w - - 0 1', sol:[['h1','h8']],
-     t:'Mate en la esquina', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'Empuja al rey contra el borde con la torre.'},
-    {fen:'6k1/R7/6K1/8/8/8/8/8 w - - 0 1', sol:[['a7','a8']],
-     t:'Mate de torre y rey', d:'Las blancas mueven y dan JAQUE MATE en una jugada.', h:'El rey blanco quita las casillas de escape; la torre remata.'},
-    {fen:'6k1/4Pp1p/5K2/8/8/8/8/8 w - - 0 1', sol:[['e7','e8','q']],
-     t:'Corona con mate', d:'Las blancas mueven y dan JAQUE MATE coronando el peón.', h:'Al llegar a la última fila, el peón se vuelve dama y remata.'}
-  ]
-};
+// Ejercicios verificados con el motor, tomados del banco compartido y
+// barajados para que la tanda cambie en cada visita.
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var BANK=window.CHESS_PUZZLES.byLevel;
+var PUZZLES={ facil:shuffle(BANK.facil), medio:shuffle(BANK.medio), dificil:shuffle(BANK.dificil) };
 
 var level='facil';
 var idx=0;
@@ -241,7 +208,8 @@ function countSolved(){ return Object.keys(solved).filter(function(k){return k.i
 
 function next(){
   if(level==='notacion'){ loadNotation(); return; }
-  idx=(idx+1)%PUZZLES[level].length;
+  idx++;
+  if(idx>=PUZZLES[level].length){ PUZZLES[level]=shuffle(PUZZLES[level]); idx=0; } // rebaraja
   load();
 }
 
