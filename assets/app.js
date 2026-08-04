@@ -17,19 +17,19 @@ function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 /* ---------- ROL ---------- */
 var ROLES={
   maestro:{icon:'👩‍🏫', label:'Maestro',
-    nav:['guia','pedagogia','reglas','imprimibles','arbitraje','practicas','estrategias','jugar','nivel','aprende'],
+    nav:['guia','pedagogia','reglas','imprimibles','arbitraje','practicas','estrategias','jugar','ruta','nivel','aprende'],
     // el maestro ve todo
     allow:null,
     hero:'Bienvenido, maestro. Aquí tienes la guía, la pedagogía, el reglamento, los imprimibles y las prácticas para llevar el ajedrez a tu aula, aunque nunca hayas jugado.'},
   estudiante:{icon:'🧒', label:'Estudiante',
-    nav:['aprende','practicas','jugar','estrategias','nivel','reglas','arbitraje'],
+    nav:['aprende','practicas','jugar','ruta','estrategias','nivel','reglas','arbitraje'],
     // el estudiante no ve material docente (guía, pedagogía, imprimibles)
-    allow:['aprende','practicas','jugar','estrategias','nivel','reglas','arbitraje'],
-    hero:'¡Hola! Aprende, practica, juega contra la computadora y descubre tu nivel. Todo es como un juego: gana medallas mientras avanzas.'},
+    allow:['aprende','practicas','jugar','ruta','estrategias','nivel','reglas','arbitraje'],
+    hero:'¡Hola! Aprende, practica, juega contra la computadora y descubre tu nivel. Todo es como un juego: gana medallas y avanza en tu ruta.'},
   nino:{icon:'🧸', label:'Niño pequeño',
-    nav:['aprende','jugar','practicas','reglas'],
+    nav:['aprende','jugar','practicas','ruta','reglas'],
     // para los pequeños, solo lo esencial y divertido
-    allow:['aprende','jugar','practicas','reglas'],
+    allow:['aprende','jugar','practicas','ruta','reglas'],
     hero:'¡Vamos a jugar! Conoce las piezas, mira cómo se mueven y diviértete con los juegos. No necesitas saber nada todavía.'}
 };
 function getRole(){ var r=lsGet(LS_ROLE); return ROLES[r]?r:null; }
@@ -277,7 +277,7 @@ function setupReveal(){
 var LS_LANG='aa_lang';
 var DICT={
   'Aprende':'Learn','Guía':'Guide','Pedagogía':'Pedagogy','Reglas':'Rules','Prácticas':'Practice',
-  'Estrategias':'Strategies','Jugar':'Play','Árbitro':'Referee','Imprimibles':'Printables','Nivel':'Level',
+  'Estrategias':'Strategies','Jugar':'Play','Ruta':'Path','Árbitro':'Referee','Imprimibles':'Printables','Nivel':'Level',
   'Saltar al contenido':'Skip to content','Elegir rol':'Choose role','Ahora no':'Not now',
   '¿Quién eres?':'Who are you?','Maestro':'Teacher','Estudiante':'Student','Niño pequeño':'Young child',
   'Guía, reglamento e imprimibles':'Guide, rules and printables','Practica, juega y sube de nivel':'Practice, play and level up',
@@ -298,9 +298,9 @@ function applyLang(){
   Array.prototype.slice.call(document.querySelectorAll('.nav-in a.lnk')).forEach(function(a){
     var k=a.textContent.trim(); if(DICT[k]) a.textContent=DICT[k];
   });
-  // marca
-  var bs=document.querySelector('.brand span'); if(bs) bs.textContent='in the Classroom';
-  var bt=document.querySelector('.brand'); // "Ajedrez in the Classroom" → "Chess in the Classroom"
+  // marca: NO tocar el span del logo, solo el de "en el Aula"
+  var bs=document.querySelector('.brand span:not(.logo)'); if(bs) bs.textContent='in the Classroom';
+  var bt=document.querySelector('.brand');
   if(bt) Array.prototype.slice.call(bt.childNodes).forEach(function(n){ if(n.nodeType===3 && /Ajedrez/.test(n.textContent)) n.textContent=n.textContent.replace('Ajedrez','Chess'); });
   // elementos marcados con data-i18n (traducción por página, p. ej. el inicio)
   Array.prototype.slice.call(document.querySelectorAll('[data-en]')).forEach(function(el){

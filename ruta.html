@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi ruta · Ajedrez en el Aula</title>
+<meta name="description" content="Tu árbol de habilidades: avanza de la iniciación a la competencia desbloqueando ramas de táctica, estrategia, juego y arbitraje a medida que ganas medallas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+.tree{max-width:880px;margin:0 auto}
+.tier{position:relative;text-align:center;padding:26px 0}
+.tier:not(:first-child)::before{content:'';position:absolute;top:-2px;left:50%;width:3px;height:28px;
+  background:#33473C;transform:translateX(-50%)}
+.tier-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--selva-cl);margin-bottom:14px}
+.nodes{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.node{width:150px;background:var(--tinta2);border:2px solid #33473C;border-radius:16px;padding:16px 12px;
+  position:relative;transition:transform .2s,border-color .2s;filter:grayscale(.7);opacity:.6}
+.node .ic{font-size:34px;line-height:1}
+.node h3{font-size:16px;margin:.35em 0 .2em}
+.node p{font-size:12px;color:#9DAFA2}
+.node .state{position:absolute;top:8px;right:10px;font-size:15px}
+.node.done{opacity:1;filter:none;border-color:var(--selva-cl);background:#20301F}
+.node.open{opacity:1;filter:none;border-color:var(--ambar)}
+.node.done:hover,.node.open:hover{transform:translateY(-4px)}
+.node .go{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--ambar)}
+.rank{text-align:center;background:linear-gradient(180deg,#22312a,#1b2721);border:1px solid #33473C;border-radius:18px;padding:22px;margin-bottom:24px}
+.rank .name{font-family:var(--disp);font-weight:900;font-size:clamp(26px,5vw,44px);color:var(--ambar)}
+.xpbar{height:12px;background:var(--tinta3);border-radius:99px;overflow:hidden;margin:12px auto 6px;max-width:420px}
+.xpbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--selva),var(--ambar));width:0;transition:width .6s}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">♞ Ajedrez <span>en el Aula</span></a>
+  <a class="lnk" href="aprende.html">Aprende</a>
+  <a class="lnk" href="guia.html">Guía</a>
+  <a class="lnk" href="pedagogia.html">Pedagogía</a>
+  <a class="lnk" href="reglas.html">Reglas</a>
+  <a class="lnk" href="practicas.html">Prácticas</a>
+  <a class="lnk" href="estrategias.html">Estrategias</a>
+  <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk on" href="ruta.html">Ruta</a>
+  <a class="lnk" href="arbitraje.html">Árbitro</a>
+  <a class="lnk" href="imprimibles.html">Imprimibles</a>
+  <a class="lnk" href="nivel.html">Nivel</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Mi ruta · árbol de habilidades</div>
+  <h1>Tu camino en el ajedrez</h1>
+  <p class="lead" style="margin:.6em 0 1.4em">Como en un videojuego: avanza de la iniciación a la competencia. Cada habilidad se <strong>ilumina</strong> cuando ganas su medalla practicando, jugando y aprendiendo. Todo se guarda en tu dispositivo.</p>
+
+  <div class="rank">
+    <div class="note mono">Tu rango</div>
+    <div class="name" id="rankName">—</div>
+    <div class="xpbar"><i id="xp"></i></div>
+    <div class="mono" style="color:var(--selva-cl)">Habilidades: <span id="xpCount">0</span> / 8</div>
+  </div>
+
+  <div class="tree" id="tree"></div>
+
+  <div class="disclaimer" style="margin-top:26px">
+    <strong>Solo para enseñar y aprender.</strong> El progreso es un juego motivador; no otorga certificados ni acreditación. Publicado con GitHub Pages.
+  </div>
+</div>
+
+<div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
+
+<script src="assets/app.js"></script>
+<script>
+(function(){
+'use strict';
+// tiers → nodos. cada nodo se desbloquea con su medalla (id de AA.badges).
+var TIERS=[
+  {lbl:'1 · Iniciación', nodes:[
+    {b:'aprende', ic:'🧸', t:'Conoce las piezas', d:'Reconoces las 6 piezas', go:'aprende.html'},
+    {b:'memoria', ic:'🃏', t:'Buena memoria', d:'Ganas el juego de memoria', go:'aprende.html'}
+  ]},
+  {lbl:'2 · Táctica', nodes:[
+    {b:'practica', ic:'🧩', t:'Primer acierto', d:'Resuelves un ejercicio', go:'practicas.html'},
+    {b:'notacion', ic:'🔤', t:'Sé anotar', d:'Aciertas una notación', go:'practicas.html'}
+  ]},
+  {lbl:'3 · Estrategia', nodes:[
+    {b:'estrategia', ic:'♟️', t:'Estratega', d:'Aplicas una estrategia', go:'estrategias.html'}
+  ]},
+  {lbl:'4 · Juego', nodes:[
+    {b:'gana', ic:'🏆', t:'Ganador', d:'Le ganas a la IA', go:'jugar.html'}
+  ]},
+  {lbl:'5 · Competencia', nodes:[
+    {b:'nivel', ic:'🎯', t:'Me conozco', d:'Completas el test de nivel', go:'nivel.html'},
+    {b:'arbitro', ic:'⚖️', t:'Juez justo', d:'Apruebas las prácticas de árbitro', go:'arbitraje.html'}
+  ]}
+];
+var RANKS=['Aprendiz','Peón valiente','Escudero','Caballero','Maestro del tablero','Gran maestro escolar'];
+var prog = (window.AA && AA.getProgress) ? AA.getProgress() : {};
+var earned=0, total=0, prevTierDone=true;
+var tree=document.getElementById('tree');
+TIERS.forEach(function(tier,ti){
+  var tierDone=true;
+  var sec=document.createElement('div'); sec.className='tier';
+  sec.innerHTML='<div class="tier-lbl">'+tier.lbl+'</div>';
+  var nodes=document.createElement('div'); nodes.className='nodes';
+  tier.nodes.forEach(function(n){
+    total++;
+    var done=!!prog[n.b];
+    if(done) earned++; else tierDone=false;
+    var open = !done && prevTierDone;         // disponible si el nivel anterior está completo
+    var cls = done?'done':(open?'open':'locked');
+    var a=document.createElement('a'); a.className='node '+cls; a.href=n.go;
+    a.innerHTML='<span class="state">'+(done?'✅':(open?'▶':'🔒'))+'</span>'+
+      '<div class="ic">'+n.ic+'</div><h3>'+n.t+'</h3><p>'+n.d+'</p>'+
+      '<span class="go">'+(done?'repasar':'ir a ganarla →')+'</span>';
+    nodes.appendChild(a);
+  });
+  sec.appendChild(nodes); tree.appendChild(sec);
+  prevTierDone = prevTierDone && tierDone;
+});
+document.getElementById('xpCount').textContent=earned;
+document.getElementById('xp').style.width=Math.round(earned/total*100)+'%';
+var rank=RANKS[Math.min(RANKS.length-1, Math.round(earned/total*(RANKS.length-1)))];
+document.getElementById('rankName').textContent=rank;
+})();
+</script>
+</body>
+</html>

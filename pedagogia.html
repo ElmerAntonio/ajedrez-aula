@@ -30,7 +30,7 @@
 .out .line{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #24332b;align-items:flex-start}
 .out .line:last-child{border-bottom:0}
 .out .line b{min-width:104px;color:#CFEBD8;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;flex:none;padding-top:2px}
-/* guiones desplegables */
+/* guiones (fallback si no hay JS) */
 .guion{margin-top:10px;border-top:1px solid #2E3F36;padding-top:8px}
 .guion summary{cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ambar);list-style:none}
 .guion summary::-webkit-details-marker{display:none}
@@ -39,6 +39,21 @@
 .guion summary:focus-visible{outline:2px solid var(--cielo);outline-offset:2px;border-radius:3px}
 .guion ol{margin-top:8px}
 .guion li{font-size:13.5px}
+/* tarjetas de método que GIRAN para mostrar el guion completo */
+.method-flip{min-height:360px}
+.method-flip .flip-inner{min-height:360px}
+.method-flip .flip-face{align-items:stretch;justify-content:flex-start;text-align:left;padding:20px 20px 34px;
+  gap:0;overflow:auto}
+.method-flip .flip-face .ic{font-size:38px;line-height:1;margin-bottom:8px}
+.method-flip .flip-face .tag{align-self:flex-start}
+.method-flip .flip-face h3{margin:.18em 0 .4em;font-size:21px}
+.method-flip .flip-face .front-p{font-size:15px;line-height:1.58;margin:0}
+.method-flip .flip-face.back{background:#2A2119;border-color:var(--ambar)}
+.method-flip .flip-face.back h4{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--ambar);
+  text-transform:uppercase;margin:0 0 12px}
+.method-flip .flip-face.back ol{margin:0;padding-left:1.35em;display:flex;flex-direction:column;gap:.62em}
+.method-flip .flip-face.back li{font-size:15.5px;line-height:1.5;color:#EAF3EC}
+.method-flip .flip-hint{position:absolute;bottom:9px;left:20px;right:20px;text-align:left;font-size:11px}
 /* plan de clase imprimible */
 #planPrint{display:none}
 #planPrint{background:#fff;color:#111;padding:26px;font-family:var(--body)}
@@ -64,6 +79,7 @@
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk" href="estrategias.html">Estrategias</a>
   <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk" href="ruta.html">Ruta</a>
   <a class="lnk" href="arbitraje.html">Árbitro</a>
   <a class="lnk" href="imprimibles.html">Imprimibles</a>
   <a class="lnk" href="nivel.html">Nivel</a>
@@ -451,13 +467,43 @@ seg('ctx',function(v){ctx=v;});
 seg('edad',function(v){edad=v;});
 render();
 
-// al pulsar una tarjeta de método se despliega/oculta su guion
+// Convierte cada tarjeta de método en una tarjeta que GIRA: el frente muestra el
+// método y su descripción; al tocarla se vira y aparece TODO el guion con letra legible.
 Array.prototype.slice.call(document.querySelectorAll('.card.method')).forEach(function(card){
-  var det=card.querySelector('details.guion'); if(!det) return;
-  card.style.cursor='pointer';
+  var ic=card.querySelector('.ic'),
+      tag=card.querySelector('.tag'),
+      h3=card.querySelector('h3'),
+      p=card.querySelector('p'),
+      ol=card.querySelector('details.guion ol');
+  if(!ic||!tag||!h3||!p||!ol) return;
+  var icHTML=ic.textContent, tagHTML=tag.outerHTML, titHTML=h3.innerHTML, pHTML=p.innerHTML, olHTML=ol.innerHTML;
+  card.className='flip-card method-flip';
+  card.setAttribute('role','button');
+  card.setAttribute('tabindex','0');
+  card.setAttribute('aria-label', h3.textContent+' · toca para ver el guion paso a paso');
+  card.innerHTML=
+    '<div class="flip-inner">'+
+      '<div class="flip-face front">'+
+        '<div class="ic">'+icHTML+'</div>'+
+        tagHTML+
+        '<h3>'+titHTML+'</h3>'+
+        '<p class="front-p">'+pHTML+'</p>'+
+        '<div class="flip-hint">🔄 Toca para ver el guion</div>'+
+      '</div>'+
+      '<div class="flip-face back">'+
+        '<h4>Guion paso a paso</h4>'+
+        '<ol>'+olHTML+'</ol>'+
+        '<div class="flip-hint">🔄 Toca para volver</div>'+
+      '</div>'+
+    '</div>';
+  function toggle(){ card.classList.toggle('flipped'); }
   card.addEventListener('click',function(e){
-    if(e.target.closest('summary')||e.target.closest('a')) return; // respeta el toggle nativo y los enlaces
-    det.open=!det.open;
+    if(e.target.closest('a')) return;           // deja pasar los enlaces del frente
+    toggle();
+  });
+  card.addEventListener('keydown',function(e){
+    if(e.target!==card) return;                 // no captures el teclado de un enlace enfocado
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
   });
 });
 </script>
