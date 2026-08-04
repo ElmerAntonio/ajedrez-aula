@@ -333,17 +333,27 @@ function applyLang(){
    diccionario de la página (global.PAGE_I18N). Se puede volver a llamar después
    de que el JS genere contenido nuevo (preguntas, planes, rangos…). */
 function normTxt(s){ return (s||'').replace(/\s+/g,' ').trim(); }
+/* texto de un elemento tratando <br> como espacio (para que los títulos con
+   salto de línea coincidan con claves escritas de forma natural) */
+function elText(el){
+  var s='';
+  Array.prototype.forEach.call(el.childNodes,function(n){
+    if(n.nodeType===3) s+=n.nodeValue;
+    else if(n.nodeType===1){ s+= (n.tagName==='BR') ? ' ' : elText(n); }
+  });
+  return s;
+}
 function translateEls(){
   if(getLang()!=='en') return;
   var dict=global.PAGE_I18N; if(!dict) return;
   if(dict.__title) document.title=dict.__title;
   var sel='p,li,h1,h2,h3,h4,h5,h6,summary,figcaption,caption,th,td,button,label,dt,dd,'+
-          'blockquote,span.tag,.eyebrow,.lead,.note,.disclaimer,.k,.foot,option,.pill,.chip-t,.toc a';
+          'blockquote,span.tag,.eyebrow,.lead,.note,.disclaimer,.k,.foot,option,.pill,.chip-t,.toc a,.say,.cap';
   Array.prototype.slice.call(document.querySelectorAll(sel)).forEach(function(el){
     if(el.closest('.nav')||el.closest('.rm-box')) return;      // barra y modal se traducen aparte
     if(el.hasAttribute('data-en')) return;                     // ya traducido a mano
     if(el.querySelector('p,li,ul,ol,h1,h2,h3,h4,h5,h6,table')) return; // no es una hoja de texto
-    var key=normTxt(el.textContent); if(!key) return;
+    var key=normTxt(elText(el)); if(!key) return;
     var en=dict[key];
     if(en==null) en=COMMON[key];
     if(en==null && global.I18N_EXTRA) en=global.I18N_EXTRA[key];
