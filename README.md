@@ -28,9 +28,10 @@ celular.
 | **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
 | **`pedagogia.html`** | **Once** maneras de enseñar (pasos, cuento, mini-juegos, ajedrez humano, descubrimiento, entre pares, gamificación, inteligencias múltiples, dificultad deseable, análisis de la partida, metacognición) con guion paso a paso, estilos de aprendizaje, **adaptaciones por contexto**, formación del maestro y un **planificador de clase** con plan imprimible. | Maestros |
 | **`reglas.html`** | Referencia completa de todas las reglas en un solo lugar, con diagramas: tablero, movimientos, enroque, al paso, coronación, jaque, mate, tablas y reglas de competencia. | Todos |
-| **`practicas.html`** | **36 ejercicios** en 3 niveles reales (fácil, medio, difícil) tomados de un banco verificado y **barajados** para que no se repitan, **más un modo de notación**. Con pistas, solución y verificación automática. | Alumnos |
-| **`estrategias.html`** | **Ocho tácticas**, **nociones de final** (oposición, peón pasado), **escuelas históricas** (romántica, clásica, hipermoderna, moderna) y planes de medio juego, más una **prueba interactiva con selector de dificultad** que baraja muchas posiciones. | Alumnos y maestros |
+| **`practicas.html`** | **36 ejercicios** en 3 niveles reales (fácil, medio, difícil) tomados de un banco verificado y **barajados** para que no se repitan, **más un modo de notación**. Con pistas, solución y verificación automática, y un **Modo Foco Socrático**. | Alumnos |
+| **`estrategias.html`** | **Ocho tácticas** (con **clips animados** del movimiento), **nociones de final** (oposición, peón pasado), **escuelas históricas** (romántica, clásica, hipermoderna, moderna) y planes de medio juego, más una **prueba interactiva con selector de dificultad**, clips y **Modo Foco Socrático**. | Alumnos y maestros |
 | **`jugar.html`** | **Juega contra una IA** en tres niveles reales **o en modo 2 jugadores**. Con pistas, deshacer, lista de jugadas, capturas y **reloj**. | Todos |
+| **`ruta.html`** | **Mi ruta:** un **árbol de habilidades tipo videojuego** que avanza de la iniciación a la competencia; cada nodo se ilumina al ganar su medalla, con **rango** y barra de progreso. | Alumnos |
 | **`arbitraje.html`** | Prácticas de **árbitro**: banco de **17 casos** de torneo (8 al azar por sesión) con la regla FIDE que los respalda y la adaptación para primaria. | Estudiantes de 7.º–9.º |
 | **`imprimibles.html`** | Materiales para **imprimir gratis**: tablero, fichas/cartas, planilla, hoja de actividad, **ficha del docente** (rúbrica + cotejo), **hoja de mini-juegos** y **diploma de participación**. | Maestros |
 | **`nivel.html`** | Test **riguroso por áreas** (reglas, piezas, especiales, táctica, estrategia, finales, notación, competencia) con preguntas de dificultad creciente y retos en el tablero. Puntuación **ponderada** que ubica en **cinco niveles** (Principiante → Experto) con **desglose por área** y recomendaciones. | Alumnos |
@@ -64,6 +65,24 @@ es la forma habitual de comprobar que la generación de movimientos es correcta.
 
 ---
 
+## 🦉 Modo Foco Socrático
+
+En **Prácticas** y **Estrategias** hay un **Modo Foco Socrático**: una pantalla
+sin distracciones (se ocultan la barra, los títulos y el resto de la página) con
+un **tutor basado en reglas** que, en lugar de dar la respuesta, hace
+**preguntas cada vez más concretas** hasta que el estudiante encuentra la jugada.
+
+- Las preguntas se escalonan según el **objetivo** del ejercicio (capturar, dar
+  jaque, dar mate, mejorar) y su **tema táctico** (tenedor, clavada, brocheta,
+  descubierto, ataque doble, pasillo, coronación, enroque…), leyendo la posición
+  con el motor. El último paso muestra la jugada resaltada en el tablero.
+- El tutor es un módulo reutilizable (`assets/socratic.js`) compartido por ambas
+  páginas. No usa internet ni un modelo de lenguaje: son reglas y el motor local.
+- En **Nivel** hay un **Modo concentración** (sin tutor ni pistas, a propósito):
+  quita las distracciones sin comprometer el rigor del test.
+
+---
+
 ## 📁 Estructura del proyecto
 
 ```
@@ -76,6 +95,7 @@ ajedrez-aula/
 ├── practicas.html      Ejercicios interactivos + notación
 ├── estrategias.html    Estrategias + prueba interactiva
 ├── jugar.html          Jugar contra la IA (con reloj)
+├── ruta.html           Mi ruta (árbol de habilidades tipo videojuego)
 ├── arbitraje.html      Prácticas de árbitro
 ├── imprimibles.html    Materiales para imprimir
 ├── nivel.html          Test de nivel
@@ -84,7 +104,10 @@ ajedrez-aula/
 │   ├── chess.js        Motor de ajedrez + IA (sin dependencias)
 │   ├── puzzles.js      Banco de 36 ejercicios verificados con el motor
 │   ├── board.js        Tablero interactivo + confeti
-│   └── app.js          Rol, medallas, navegación y accesibilidad
+│   ├── socratic.js     Tutor Socrático reutilizable (Prácticas y Estrategias)
+│   ├── i18n-puzzles.js Traducción EN del banco de ejercicios (compartida)
+│   ├── guia-i18n.js    Traducción EN de las 40 láminas de la guía
+│   └── app.js          Rol, medallas, navegación, idioma y accesibilidad
 └── README.md
 ```
 
@@ -116,19 +139,29 @@ HTML, CSS y JavaScript que se abren directamente.
 - Un sistema de **medallas** (gamificación) premia cada logro: resolver un
   ejercicio, acertar una notación, aplicar una estrategia, ganarle a la IA,
   completar el test de nivel, aprobar las prácticas de árbitro, etc.
+- **Mi ruta** (`ruta.html`) muestra esas medallas como un **árbol de habilidades
+  tipo videojuego**: cada nodo se ilumina al conseguir su medalla y el progreso
+  otorga un **rango** (de Aprendiz a Gran maestro escolar).
 - El rol y las medallas se guardan **solo en tu dispositivo** (almacenamiento
   local del navegador). **No se envía nada a ningún servidor** y no hace falta
   cuenta.
 
 ## 🌐 Idioma e interfaz
 
-- **Español / Inglés:** botón 🌐 en la barra que cambia la navegación y la
-  interfaz compartida (y el inicio) a inglés. La preferencia se recuerda.
+- **Español / Inglés (todo el sitio):** botón 🌐 en la barra que traduce **la
+  plataforma completa, página por página** —incluidos los textos que genera el
+  JavaScript (cuestionarios, planificador, rangos, estados de la partida)—.
+  Funciona con un **motor de traducción por diccionario** (`PAGE_I18N` por
+  página + diccionarios compartidos); el español sigue siendo el idioma por
+  defecto y la preferencia se recuerda.
 - **Logo propio** (caballo en un escudo verde) como favicon del navegador y
   marca en la barra.
-- **Animación de contenido** que aparece suavemente al desplazarse.
+- **Animación de contenido** que aparece suavemente al desplazarse, y **clips
+  animados** en Estrategias que muestran cómo se mueve la pieza de cada táctica
+  (siempre hacia adelante, partiendo de la casilla de origen).
 - **Tarjetas que giran**: en «Aprende» las piezas se voltean para mostrar su
-  nombre y valor; en «Pedagogía» las tarjetas de método despliegan su guion.
+  nombre y valor; en «Pedagogía» las tarjetas de método **se viran** y muestran
+  el guion paso a paso completo con letra legible.
 - **Avance automático**: en el test de nivel y en árbitro, una respuesta
   correcta pasa sola a la siguiente; una incorrecta se queda para que leas el
   porqué antes de continuar.

@@ -11,6 +11,14 @@
 <link rel="stylesheet" href="assets/theme.css">
 <style>
 .q-wrap{max-width:760px;margin:0 auto}
+/* modo concentración: sin distracciones (sin tutor: es un test) */
+.foco-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 16px}
+body.foco .nav,body.foco .foot,body.foco .disclaimer,
+body.foco .q-wrap>.eyebrow,body.foco .q-wrap>h1,body.foco .q-wrap>.lead,body.foco .foco-bar{display:none !important}
+body.foco{background:radial-gradient(1200px 700px at 50% -10%,rgba(76,122,88,.28),transparent 60%),var(--tinta)}
+body.foco .q-wrap{padding-top:26px}
+.foco-exit{position:fixed;top:14px;right:16px;z-index:60}
+body:not(.foco) .foco-exit{display:none}
 .bar{height:8px;background:var(--tinta3);border-radius:99px;overflow:hidden;margin-bottom:20px}
 .bar>i{display:block;height:100%;background:var(--ambar);width:0;transition:width .3s}
 .opt{display:block;width:100%;text-align:left;background:var(--tinta2);color:var(--marfil);
@@ -54,6 +62,12 @@
   <div class="eyebrow">Mi nivel · evaluación por áreas</div>
   <h1>¿Cuál es tu nivel real?</h1>
   <p class="lead" style="margin:.6em 0 1.4em">Una evaluación seria: preguntas de dificultad creciente sobre reglas, piezas, táctica, estrategia, finales, notación y competencia, más retos en el tablero. Al final te ubicamos en uno de <strong>cinco niveles</strong> con un desglose honesto de tus fortalezas y qué te conviene practicar. No es un examen escolar y no se guarda nada.</p>
+
+  <div class="foco-bar">
+    <button class="btn ghost sm" id="focoBtn" type="button">🧘 Modo concentración</button>
+    <span class="note" id="focoHint">Sin distracciones y sin pistas: aquí medimos tu nivel de verdad.</span>
+  </div>
+  <button class="btn foco-exit" id="focoExit" type="button">✕ Salir</button>
 
   <div id="quiz">
     <div class="bar"><i id="prog"></i></div>
@@ -111,6 +125,9 @@ window.PAGE_I18N={
   '¿Cuál es tu nivel real?':'What\'s your real level?',
   'Una evaluación seria: preguntas de dificultad creciente sobre reglas, piezas, táctica, estrategia, finales, notación y competencia, más retos en el tablero. Al final te ubicamos en uno de cinco niveles con un desglose honesto de tus fortalezas y qué te conviene practicar. No es un examen escolar y no se guarda nada.':
     'A serious assessment: questions of rising difficulty on rules, pieces, tactics, strategy, endgames, notation and competition, plus board challenges. At the end we place you in one of <strong>five levels</strong> with an honest breakdown of your strengths and what to practice. It\'s not a school exam and nothing is saved.',
+  '🧘 Modo concentración':'🧘 Concentration mode',
+  'Sin distracciones y sin pistas: aquí medimos tu nivel de verdad.':'No distractions and no hints: here we measure your real level.',
+  '✕ Salir':'✕ Exit',
   'Tu nivel estimado':'Your estimated level','Tu desempeño por área':'Your performance by area',
   'Qué te conviene practicar':'What you should practice','↻ Hacer el test otra vez':'↻ Take the test again',
   'Solo para enseñar y aprender. El resultado es orientativo y educativo. No otorga certificados, títulos ni acreditación ni equivale a un Elo oficial. Publicado con GitHub Pages.':
@@ -368,6 +385,11 @@ el('retry').addEventListener('click',function(){
   el('result').classList.remove('on'); el('quiz').style.display='';
   render();
 });
+// modo concentración (sin distracciones, sin pistas: es un test)
+document.getElementById('focoBtn').addEventListener('click',function(){ document.body.classList.add('foco'); window.scrollTo(0,0); });
+document.getElementById('focoExit').addEventListener('click',function(){ document.body.classList.remove('foco'); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&document.body.classList.contains('foco')) document.body.classList.remove('foco'); });
+
 render();
 })();
 </script>
