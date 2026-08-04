@@ -114,11 +114,38 @@
   <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a>
 </div>
 
+<script>
+window.PAGE_I18N={
+  __title:'Play the AI · Chess in the Classroom',
+  'Jugar · IA integrada':'Play · built-in AI',
+  'Juega contra la computadora':'Play against the computer',
+  'Una IA vive dentro de esta página: piensa tus jugadas y responde. Elige tu color y la dificultad. Todo pasa en tu navegador — no se envía nada a ningún servidor.':
+    'An AI lives inside this page: it thinks about your moves and responds. Choose your color and difficulty. Everything happens in your browser — nothing is sent to any server.',
+  'Modo de juego':'Game mode','Tu color':'Your color','Nivel de la IA':'AI level',
+  'Reloj (practica con el tiempo)':'Clock (practice with time)','Piezas capturadas':'Captured pieces','Jugadas':'Moves',
+  '🤖 Contra la IA':'🤖 Against the AI','👦👧 2 jugadores':'👦👧 2 players',
+  'Blancas ♔':'White ♔','Negras ♚':'Black ♚','Fácil':'Easy','Medio':'Medium','Difícil':'Hard',
+  'Sin reloj':'No clock','5 min':'5 min','10 min':'10 min','15+5':'15+5',
+  'Consejo docente: en Fácil la IA deja piezas a propósito, ideal para que un principiante gane sus primeras partidas y no se desanime.':
+    'Teacher tip: on <strong>Easy</strong> the AI leaves pieces on purpose, ideal for a beginner to win their first games and not get discouraged.',
+  '¿Cómo funciona esta IA? (para curiosos y maestros)':'How does this AI work? (for the curious and teachers)',
+  'No usa internet ni un modelo gigante. Es un programa clásico de ajedrez que hace dos cosas: (1) genera todas las jugadas legales y (2) mira unas jugadas hacia adelante calculando quién quedaría mejor, contando el valor de las piezas y su posición. En Difícil profundiza con límite de tiempo y usa «búsqueda de reposo» para no regalar piezas. Es el mismo principio de los primeros programas que vencieron a campeones humanos, solo que mucho más pequeño.':
+    'It uses no internet and no giant model. It\'s a classic chess program that does two things: (1) it generates <strong>all the legal moves</strong> and (2) it looks a few moves ahead, calculating who would be better off, counting the value of the pieces and their position. On <strong>Hard</strong> it goes deeper with a time limit and uses a «quiescence search» so it doesn\'t give away pieces. It\'s the same principle as the first programs that beat human champions, only much smaller.',
+  'Solo para enseñar y aprender. Esta herramienta es material educativo abierto. No otorga certificados, títulos ni acreditación de ningún tipo. Se publica gratuitamente con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> This tool is open educational material. It grants no certificates, degrees or accreditation of any kind. It\'s published free with GitHub Pages.',
+  'Tú juegas con blancas. Te toca mover.':'You play White. Your move.',
+  'Aún no hay jugadas.':'No moves yet.',
+  '↶ Deshacer':'↶ Undo','💡 Pista':'💡 Hint','↻ Nueva partida':'↻ New game'
+};
+</script>
 <script src="assets/chess.js"></script>
 <script src="assets/board.js"></script>
+<script src="assets/app.js"></script>
 <script>
 (function(){
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
+var EN=function(){return !!(window.AA&&AA.lang&&AA.lang()==='en');};
 var history=[];         // pila de estados para deshacer
 var sanList=[];         // notación
 var captured={w:[],b:[]}; // piezas que capturó cada bando
@@ -160,12 +187,14 @@ function addIncrement(who){ if(clockBase>0 && clockInc>0){ clocks[who]+=clockInc
 function flagFall(who){
   stopClocks(); gameOver=true; board.lock(true);
   if(mode==='2p'){
-    var ganan = who==='human' ? 'las negras' : 'las blancas'; // el del reloj caído pierde
-    statusEl.textContent='⏱ Se acabó el tiempo. Ganan '+ganan+'.'; statusEl.className='status win';
+    var winW = who!=='human'; // el del reloj caído pierde; human=blancas
+    statusEl.textContent = EN() ? ('⏱ Time\'s up. '+(winW?'White':'Black')+' wins.')
+                                : ('⏱ Se acabó el tiempo. Ganan '+(winW?'las blancas':'las negras')+'.');
+    statusEl.className='status win';
     if(window.celebrate) celebrate(document.getElementById('board')); return;
   }
-  if(who==='human'){ statusEl.textContent='⏱ Se te acabó el tiempo. Ganó la IA.'; statusEl.className='status lose'; }
-  else { statusEl.textContent='⏱ ¡A la IA se le acabó el tiempo! Ganaste 🏆'; statusEl.className='status win';
+  if(who==='human'){ statusEl.textContent=EN()?'⏱ You ran out of time. The AI won.':'⏱ Se te acabó el tiempo. Ganó la IA.'; statusEl.className='status lose'; }
+  else { statusEl.textContent=EN()?'⏱ The AI ran out of time! You won 🏆':'⏱ ¡A la IA se le acabó el tiempo! Ganaste 🏆'; statusEl.className='status win';
     if(window.AA) AA.award('gana'); if(window.celebrate) celebrate(document.getElementById('board')); }
 }
 
@@ -221,8 +250,9 @@ function afterHumanMove(mv,san){
 function updateTurnStatus2p(){
   var st=Chess.status(board.state);
   if(st.over) return;
-  var lado = board.state.turn==='w' ? 'las blancas' : 'las negras';
-  statusEl.textContent = (st.check?'¡Jaque! ':'') + 'Turno de '+lado+'.';
+  var w = board.state.turn==='w';
+  statusEl.textContent = EN() ? ((st.check?'Check! ':'')+(w?'White':'Black')+' to move.')
+                              : ((st.check?'¡Jaque! ':'')+'Turno de '+(w?'las blancas':'las negras')+'.');
   statusEl.className = 'status'+(st.check?' check':'');
 }
 
@@ -231,7 +261,7 @@ function aiMove(){
   var st=Chess.status(board.state);
   if(st.over) return;
   thinking=true;
-  statusEl.textContent='La IA está pensando…';
+  statusEl.textContent=EN()?'The AI is thinking…':'La IA está pensando…';
   statusEl.className='status';
   board.lock(true);
   setTimeout(function(){
@@ -256,10 +286,12 @@ function updateTurnStatus(){
   if(st.over) return;
   var yourTurn = board.state.turn===humanSide;
   if(st.check){
-    statusEl.textContent = yourTurn ? '¡Jaque! Debes proteger tu rey.' : 'Le das jaque a la IA.';
+    statusEl.textContent = EN() ? (yourTurn?'Check! Protect your king.':'You give check to the AI.')
+                                : (yourTurn?'¡Jaque! Debes proteger tu rey.':'Le das jaque a la IA.');
     statusEl.className='status check';
   } else {
-    statusEl.textContent = yourTurn ? 'Te toca mover.' : 'Turno de la IA.';
+    statusEl.textContent = EN() ? (yourTurn?'Your move.':'The AI\'s turn.')
+                                : (yourTurn?'Te toca mover.':'Turno de la IA.');
     statusEl.className='status';
   }
 }
@@ -271,20 +303,21 @@ function checkEnd(cont){
   board.lock(true);
   if(st.result==='checkmate'){
     if(mode==='2p'){
-      var g = st.winner==='w' ? 'las blancas' : 'las negras';
-      statusEl.textContent='¡Jaque mate! Ganan '+g+' 🏆'; statusEl.className='status win';
+      var gW = st.winner==='w';
+      statusEl.textContent=EN()?('Checkmate! '+(gW?'White':'Black')+' wins 🏆'):('¡Jaque mate! Ganan '+(gW?'las blancas':'las negras')+' 🏆'); statusEl.className='status win';
       if(window.celebrate) celebrate(document.getElementById('board'));
     } else {
       var humanWon = st.winner===humanSide;
-      statusEl.textContent = humanWon ? '¡Jaque mate! Ganaste 🏆' : 'Jaque mate. Ganó la IA.';
+      statusEl.textContent = EN() ? (humanWon?'Checkmate! You won 🏆':'Checkmate. The AI won.')
+                                  : (humanWon?'¡Jaque mate! Ganaste 🏆':'Jaque mate. Ganó la IA.');
       statusEl.className = 'status '+(humanWon?'win':'lose');
       if(humanWon){ if(window.AA) AA.award('gana'); if(window.celebrate) celebrate(document.getElementById('board')); }
     }
   } else if(st.result==='stalemate'){
-    statusEl.textContent='Rey ahogado: tablas (empate).';
+    statusEl.textContent=EN()?'Stalemate: a draw.':'Rey ahogado: tablas (empate).';
     statusEl.className='status check';
   } else if(st.result==='fifty'){
-    statusEl.textContent='Tablas por la regla de 50 jugadas.';
+    statusEl.textContent=EN()?'Draw by the 50-move rule.':'Tablas por la regla de 50 jugadas.';
     statusEl.className='status check';
   }
 }
@@ -296,7 +329,7 @@ function renderSide(){
     var n=(i/2)+1;
     html+='<div><b>'+n+'.</b> '+sanList[i]+(sanList[i+1]?' &nbsp; '+sanList[i+1]:'')+'</div>';
   }
-  movesEl.innerHTML = html || '<span style="color:#5E7568">Aún no hay jugadas.</span>';
+  movesEl.innerHTML = html || '<span style="color:#5E7568">'+T('Aún no hay jugadas.')+'</span>';
   movesEl.scrollTop=movesEl.scrollHeight;
   // capturas (las que TÚ capturaste = piezas del rival)
   capWEl.textContent = captured[humanSide].map(function(p){return GLYPH[p];}).join(' ');
@@ -338,15 +371,15 @@ function newGame(){
   history=[]; sanList=[]; captured={w:[],b:[]};
   gameOver=false;
   // etiquetas de reloj según el modo
-  document.getElementById('lblHuman').textContent = mode==='2p' ? 'BLANCAS' : 'TÚ';
-  document.getElementById('lblAI').textContent    = mode==='2p' ? 'NEGRAS' : 'IA';
+  document.getElementById('lblHuman').textContent = mode==='2p' ? (EN()?'WHITE':'BLANCAS') : (EN()?'YOU':'TÚ');
+  document.getElementById('lblAI').textContent    = mode==='2p' ? (EN()?'BLACK':'NEGRAS') : (EN()?'AI':'IA');
   if(mode==='2p'){
     board.allowedSide=null;      // ambos bandos pueden mover
     board.setFlip(false);
     board.lock(false);
     startClocks(); renderSide();
     statusEl.className='status';
-    statusEl.textContent='2 jugadores · turno de las blancas.';
+    statusEl.textContent=EN()?'2 players · White to move.':'2 jugadores · turno de las blancas.';
     return;
   }
   board.allowedSide=humanSide;
@@ -355,8 +388,8 @@ function newGame(){
   startClocks();
   renderSide();
   statusEl.className='status';
-  statusEl.textContent = humanSide==='w' ? 'Tú juegas con blancas. Te toca mover.'
-                                         : 'Tú juegas con negras. La IA abre.';
+  statusEl.textContent = EN() ? (humanSide==='w'?'You play White. Your move.':'You play Black. The AI opens.')
+                              : (humanSide==='w'?'Tú juegas con blancas. Te toca mover.':'Tú juegas con negras. La IA abre.');
   if(humanSide==='b') setTimeout(aiMove, 400);
 }
 
@@ -378,7 +411,7 @@ document.getElementById('hint').addEventListener('click',function(){
   if(thinking) return;
   var st=Chess.status(board.state);
   if(st.over || board.state.turn!==humanSide) return;
-  statusEl.textContent='Pensando una buena jugada para ti…';
+  statusEl.textContent=EN()?'Thinking of a good move for you…':'Pensando una buena jugada para ti…';
   setTimeout(function(){
     var mv=Chess.bestMove(board.state, 3);
     if(mv){
@@ -389,7 +422,7 @@ document.getElementById('hint').addEventListener('click',function(){
       // resalta destino sugerido
       var cell=board.cells[mv.to[0]+'-'+mv.to[1]];
       if(cell) cell.classList.add('sel');
-      statusEl.textContent='Pista: mueve la pieza marcada a la casilla resaltada.';
+      statusEl.textContent=EN()?'Hint: move the marked piece to the highlighted square.':'Pista: mueve la pieza marcada a la casilla resaltada.';
       statusEl.className='status check';
     }
   },30);
@@ -401,8 +434,8 @@ var origApply=board._apply.bind(board);
 board._apply=function(mv){ pushHistory(); origApply(mv); };
 
 renderSide();
+statusEl.textContent = EN() ? 'You play White. Your move.' : 'Tú juegas con blancas. Te toca mover.';
 })();
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>
