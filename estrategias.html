@@ -26,6 +26,7 @@
   <a class="lnk" href="practicas.html">Prácticas</a>
   <a class="lnk on" href="estrategias.html">Estrategias</a>
   <a class="lnk" href="jugar.html">Jugar</a>
+  <a class="lnk" href="ruta.html">Ruta</a>
   <a class="lnk" href="arbitraje.html">Árbitro</a>
   <a class="lnk" href="imprimibles.html">Imprimibles</a>
   <a class="lnk" href="nivel.html">Nivel</a>
@@ -54,7 +55,7 @@
 
   <div class="grid" style="grid-template-columns:1fr;gap:22px;margin-bottom:40px">
     <div class="card concept">
-      <div class="mini cb" data-fen="4k3/8/8/5r2/4N3/8/8/7K" data-mark="d6"></div>
+      <div class="mini cb" data-fen="4k3/8/8/5r2/4N3/8/8/7K" data-mark="d6" data-move="e4-d6"></div>
       <div><span class="tag u">Tenedor</span><h3 style="margin:.4em 0">El tenedor (o horquilla)</h3>
         <p>Una sola pieza ataca dos objetivos a la vez. El rival solo puede salvar uno. El caballo es el rey del tenedor porque salta y ataca desde ángulos inesperados. Aquí <span class="mono" style="color:var(--ambar)">Cd6+</span> ataca al rey y a la torre al mismo tiempo.</p></div>
     </div>
@@ -64,27 +65,27 @@
         <p>Atacas una pieza que no se puede mover porque detrás está algo más valioso —a menudo el rey—. La pieza queda «clavada» en su sitio. El alfil y la torre clavan muy bien. Una pieza clavada al rey <strong>no puede moverse</strong>: apílale ataques encima y cáela.</p></div>
     </div>
     <div class="card concept">
-      <div class="mini cb" data-fen="q7/8/8/8/k7/6K1/8/7R" data-mark="a1"></div>
+      <div class="mini cb" data-fen="q7/8/8/8/k7/6K1/8/7R" data-mark="a1" data-move="h1-a1"></div>
       <div><span class="tag u">Brocheta</span><h3 style="margin:.4em 0">La brocheta</h3>
         <p>Como la clavada, pero al revés: adelante está la pieza valiosa y detrás la menos valiosa. Das jaque, el rey se aparta y capturas lo que estaba detrás. Aquí <span class="mono" style="color:var(--ambar)">Ta1+</span> pincha al rey y detrás cae la dama.</p></div>
     </div>
     <div class="card concept">
-      <div class="mini cb" data-fen="6k1/5ppp/8/8/8/8/8/R6K" data-mark="a8"></div>
+      <div class="mini cb" data-fen="6k1/5ppp/8/8/8/8/8/R6K" data-mark="a8" data-move="a1-a8"></div>
       <div><span class="tag u">Mate del pasillo</span><h3 style="margin:.4em 0">El mate de la última fila</h3>
         <p>El rey enrocado queda encerrado por sus propios peones. Una torre o dama entra por la última fila y no hay escape. Es el mate que más partidas escolares decide. La defensa: hacerle un «respiradero» al rey adelantando un peón.</p></div>
     </div>
     <div class="card concept">
-      <div class="mini cb" data-fen="8/6k1/8/4Q3/8/8/1r6/K7" data-mark="e5"></div>
+      <div class="mini cb" data-fen="8/6k1/8/8/8/8/1r6/K3Q3" data-mark="e5" data-move="e1-e5"></div>
       <div><span class="tag u">Ataque doble</span><h3 style="margin:.4em 0">El ataque doble</h3>
         <p>Una pieza (a menudo la dama) amenaza dos cosas por líneas distintas. Aquí <span class="mono" style="color:var(--ambar)">De5+</span> da jaque al rey y a la vez ataca la torre: el rival salva al rey y pierde la torre.</p></div>
     </div>
     <div class="card concept">
-      <div class="mini cb" data-fen="4k3/8/8/2N5/8/8/8/4R2K" data-mark="c5"></div>
+      <div class="mini cb" data-fen="4k3/8/8/8/4N3/8/8/4R2K" data-mark="c5" data-move="e4-c5"></div>
       <div><span class="tag u">Descubierto</span><h3 style="margin:.4em 0">El jaque descubierto</h3>
         <p>Mueves una pieza y descubres el jaque de otra que estaba detrás. Como el jaque manda, tu pieza que se movió puede capturar «gratis». Aquí el caballo captura en c5 y descubre el jaque de la torre.</p></div>
     </div>
     <div class="card concept">
-      <div class="mini cb" data-fen="3qk3/8/5n2/6B1/4P3/8/8/6K1" data-mark="f6"></div>
+      <div class="mini cb" data-fen="3qk3/8/5n2/6B1/4P3/8/8/6K1" data-mark="f6" data-move="e4-e5"></div>
       <div><span class="tag u">Clavada ganadora</span><h3 style="margin:.4em 0">Explotar la clavada</h3>
         <p>Una pieza clavada no puede moverse sin perder algo mayor. Entonces la atacas otra vez con algo de menos valor (a menudo un peón) y la ganas. Aquí el caballo está clavado contra la dama: <span class="mono" style="color:var(--ambar)">e5</span> lo ataca y no puede huir.</p></div>
     </div>
@@ -186,12 +187,28 @@
 <script>
 (function(){
 'use strict';
-// diagramas ilustrativos (solo lectura)
+// diagramas ilustrativos con clip animado del movimiento
+var reduce = typeof matchMedia!=='undefined' && matchMedia('(prefers-reduced-motion:reduce)').matches;
 Array.prototype.slice.call(document.querySelectorAll('.mini.cb')).forEach(function(box){
   var b=new ChessBoard(box,{fen:box.dataset.fen+' w - - 0 1',interactive:false});
   var mk=box.dataset.mark;
   if(mk){ var rc=Chess.sqToRC(mk); var cell=b.cells[rc[0]+'-'+rc[1]]; if(cell) cell.classList.add('sel'); }
+  var mv=box.dataset.move;
+  if(mv && !reduce){ clip(b, mv); }
 });
+// desliza la pieza de "from" a "to" y de vuelta, en bucle: un clip del movimiento
+function clip(b, move){
+  var p=move.split('-'), from=Chess.sqToRC(p[0]), to=Chess.sqToRC(p[1]);
+  var el=b.pcEls && b.pcEls[from[0]+'-'+from[1]]; if(!el) return;
+  var fromL=from[1]*12.5, fromT=from[0]*12.5, toL=to[1]*12.5, toT=to[0]*12.5;
+  el.style.zIndex=6;
+  var at=false;
+  setInterval(function(){
+    at=!at;
+    el.style.left=(at?toL:fromL)+'%';
+    el.style.top =(at?toT:fromT)+'%';
+  }, 1600);
+}
 
 var C=window.Chess;
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
