@@ -299,18 +299,22 @@ Array.prototype.slice.call(document.querySelectorAll('.mini.cb')).forEach(functi
   var mv=box.dataset.move;
   if(mv && !reduce){ clip(b, mv); }
 });
-// desliza la pieza de "from" a "to" y de vuelta, en bucle: un clip del movimiento
+// Muestra el movimiento en bucle: la pieza SIEMPRE parte de su casilla de
+// origen y se desliza hacia el destino. El regreso al inicio es instantáneo
+// (sin animar), para que la única jugada visible sea la correcta, hacia adelante.
 function clip(b, move){
   var p=move.split('-'), from=Chess.sqToRC(p[0]), to=Chess.sqToRC(p[1]);
   var el=b.pcEls && b.pcEls[from[0]+'-'+from[1]]; if(!el) return;
   var fromL=from[1]*12.5, fromT=from[0]*12.5, toL=to[1]*12.5, toT=to[0]*12.5;
   el.style.zIndex=6;
-  var at=false;
-  setInterval(function(){
-    at=!at;
-    el.style.left=(at?toL:fromL)+'%';
-    el.style.top =(at?toT:fromT)+'%';
-  }, 1600);
+  // coloca la pieza en el origen sin animar (por si acaso no estuviera ahí)
+  function snap(l,t){ el.style.transition='none'; el.style.left=l+'%'; el.style.top=t+'%'; void el.offsetWidth; el.style.transition=''; }
+  snap(fromL,fromT);
+  function loop(){
+    el.style.left=toL+'%'; el.style.top=toT+'%';          // desliza hacia el destino (animado)
+    setTimeout(function(){ snap(fromL,fromT); setTimeout(loop, 900); }, 1500); // muestra el destino, vuelve de golpe y repite
+  }
+  setTimeout(loop, 900);
 }
 
 var C=window.Chess;
