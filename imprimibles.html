@@ -108,11 +108,11 @@
     <div class="printable" id="m-planilla">
       <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:12px">Planilla de partida</h3>
       <table class="psheet" style="margin-bottom:12px">
-        <tr class="meta"><td>Blancas: _______________</td><td>Negras: _______________</td></tr>
-        <tr class="meta"><td>Torneo: _______________</td><td>Fecha: ______  Mesa: ____</td></tr>
+        <tr class="meta"><td data-en="White: _______________">Blancas: _______________</td><td data-en="Black: _______________">Negras: _______________</td></tr>
+        <tr class="meta"><td data-en="Tournament: _______________">Torneo: _______________</td><td data-en="Date: ______  Table: ____">Fecha: ______  Mesa: ____</td></tr>
       </table>
       <table class="psheet" id="planilla"></table>
-      <p style="margin-top:10px;font-size:13px;font-family:var(--mono)">Resultado: 1–0 &nbsp; ½–½ &nbsp; 0–1 &nbsp;&nbsp;&nbsp; Firma blancas: ________ &nbsp; Firma negras: ________</p>
+      <p style="margin-top:10px;font-size:13px;font-family:var(--mono)" data-en="Result: 1–0 &nbsp; ½–½ &nbsp; 0–1 &nbsp;&nbsp;&nbsp; White signature: ________ &nbsp; Black signature: ________">Resultado: 1–0 &nbsp; ½–½ &nbsp; 0–1 &nbsp;&nbsp;&nbsp; Firma blancas: ________ &nbsp; Firma negras: ________</p>
     </div>
   </div>
 
@@ -124,7 +124,7 @@
     </div>
     <div class="printable" id="m-actividad">
       <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:6px">¿Cómo se llama cada pieza?</h3>
-      <p style="text-align:center;font-size:12px;margin-bottom:14px">Nombre: ________________________  Grado: ______</p>
+      <p style="text-align:center;font-size:12px;margin-bottom:14px" data-en="Name: ________________________  Grade: ______">Nombre: ________________________  Grado: ______</p>
       <div id="activity"></div>
       <p style="margin-top:14px;font-size:12px">Pinta las piezas de tu color favorito. ¡Buen trabajo! ⭐</p>
     </div>
@@ -138,7 +138,7 @@
     </div>
     <div class="printable" id="m-docente">
       <h3 style="text-align:center;font-family:var(--disp);font-size:22px;margin-bottom:6px">Evaluación de ajedrez · sin examen escrito</h3>
-      <p style="text-align:center;font-size:12px;margin-bottom:14px">Grupo: __________  Docente: __________  Fecha: ______</p>
+      <p style="text-align:center;font-size:12px;margin-bottom:14px" data-en="Group: __________  Teacher: __________  Date: ______">Grupo: __________  Docente: __________  Fecha: ______</p>
       <h4 style="font-family:var(--disp);margin:6px 0">Rúbrica (marca el nivel de cada estudiante)</h4>
       <table class="psheet" style="margin-bottom:14px">
         <tr><th style="width:34%">Estudiante</th><th>Inicial</th><th>En proceso</th><th>Logrado</th></tr>
@@ -196,7 +196,7 @@
         <p style="margin:22px 0 6px;font-size:14px">Se entrega a:</p>
         <div style="border-bottom:1.5px solid #333;max-width:340px;margin:0 auto 22px;height:30px"></div>
         <p style="font-size:14px">por jugar con esfuerzo, respetar el turno y dar la mano al terminar.</p>
-        <p style="margin-top:26px;font-size:12px">Fecha: ____________   ·   Firma del docente: ____________________</p>
+        <p style="margin-top:26px;font-size:12px" data-en="Date: ____________   ·   Teacher's signature: ____________________">Fecha: ____________   ·   Firma del docente: ____________________</p>
         <p style="margin-top:14px;font-size:10.5px;color:#777">Recuerdo educativo, sin carácter oficial ni acreditación.</p>
       </div>
     </div>
@@ -210,7 +210,58 @@
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
 <script>
+window.PAGE_I18N={
+  __title:'Printables · Chess in the Classroom',
+  'Imprimibles · para el aula sin presupuesto':'Printables · for the classroom on no budget',
+  'Materiales para imprimir':'Materials to print',
+  'Todo lo que necesitas en papel: un tablero, fichas para recortar (que sirven de cartas para reconocer las piezas), una planilla en blanco y hojas de actividad para los más pequeños. Usa el botón Imprimir de cada material. Consejo: plastifícalos con cinta y duran todo el año.':
+    'Everything you need on paper: a board, cut-out pieces (that double as cards to recognize the pieces), a blank scoresheet and activity sheets for the youngest. Use each material\'s <strong>Print</strong> button. Tip: laminate them with tape and they last all year.',
+  '🏁 Tablero de ajedrez':'🏁 Chess board','8 × 8 con coordenadas. Recórtalo y pégalo en cartulina.':'8 × 8 with coordinates. Cut it out and glue it on cardstock.',
+  '🖨 Imprimir tablero':'🖨 Print board','Tablero de ajedrez · Ajedrez en el Aula':'Chess board · Chess in the Classroom',
+  'Recuerda: la casilla clara siempre queda a tu derecha.':'Remember: the light square always goes on your right.',
+  '🃏 Fichas para recortar (cartas)':'🃏 Cut-out pieces (cards)','Sirven como piezas de repuesto y como cartas para el juego de «reconocer la ficha».':'They serve as spare pieces and as cards for the «recognize the piece» game.',
+  '🖨 Imprimir fichas':'🖨 Print pieces','Fichas de ajedrez para recortar':'Chess pieces to cut out',
+  'Recorta por la línea punteada. Juego de cartas: reparte, y cada quien dice el nombre y cómo se mueve la pieza que le tocó.':'Cut along the dotted line. Card game: deal them out, and each person says the name and how their piece moves.',
+  '📝 Planilla en blanco':'📝 Blank scoresheet','Para anotar la partida jugada por jugada. Practica la notación en papel.':'To record the game move by move. Practice notation on paper.',
+  '🖨 Imprimir planilla':'🖨 Print scoresheet','Planilla de partida':'Game scoresheet',
+  'Blancas':'White','Negras':'Black',
+  'Resultado: 1–0 ½–½ 0–1 Firma blancas: ________ Firma negras: ________':'Result: 1–0 ½–½ 0–1     White signature: ________  Black signature: ________',
+  '✏️ Hoja de actividad (niños pequeños)':'✏️ Activity sheet (young children)','Escribe el nombre de cada pieza. Colorea y aprende.':'Write the name of each piece. Color and learn.',
+  '🖨 Imprimir actividad':'🖨 Print activity','¿Cómo se llama cada pieza?':'What is each piece called?',
+  'Pinta las piezas de tu color favorito. ¡Buen trabajo! ⭐':'Color the pieces in your favorite color. Good job! ⭐',
+  '🧑‍🏫 Ficha del docente':'🧑‍🏫 Teacher sheet','Rúbrica de evaluación y lista de cotejo para observar en clase, sin exámenes escritos.':'Assessment rubric and checklist to observe in class, with no written exams.',
+  '🖨 Imprimir ficha':'🖨 Print sheet','Evaluación de ajedrez · sin examen escrito':'Chess assessment · no written exam',
+  'Rúbrica (marca el nivel de cada estudiante)':'Rubric (mark each student\'s level)',
+  'Estudiante':'Student','Inicial':'Initial','En proceso':'In progress','Logrado':'Achieved',
+  'Inicial: reconoce las piezas y mueve al menos tres. En proceso: mueve todo bien pero olvida reglas especiales o el jaque. Logrado: juega una partida completa sin jugadas ilegales y reconoce el jaque mate.':
+    '<b>Initial:</b> recognizes the pieces and moves at least three. &nbsp; <b>In progress:</b> moves everything well but forgets special rules or check. &nbsp; <b>Achieved:</b> plays a full game with no illegal moves and recognizes checkmate.',
+  'Lista de cotejo de actitud':'Attitude checklist','Observo que el estudiante…':'I observe that the student…','Sí':'Yes','Aún no':'Not yet',
+  'Da la mano al empezar y al terminar':'Shakes hands at the start and end','Juega en silencio y respeta el turno':'Plays quietly and respects turns',
+  'Acepta perder sin desarmar el tablero':'Accepts losing without knocking over the board','Ayuda a un compañero que va empezando':'Helps a classmate who is starting out',
+  'Piensa antes de tocar la pieza':'Thinks before touching the piece',
+  '🎲 Hoja de mini-juegos':'🎲 Mini-games sheet','Seis juegos cortos para la clase, listos para pegar en la pared.':'Six short games for class, ready to stick on the wall.',
+  '🖨 Imprimir mini-juegos':'🖨 Print mini-games','Mini-juegos de ajedrez para el aula':'Chess mini-games for the classroom',
+  'Juego':'Game','Cómo se juega y qué enseña':'How to play and what it teaches',
+  'Carrera de peones':'Pawn race','Solo los 8 peones por bando. Gana quien cruce primero o deje al rival sin jugadas. Enseña avance, captura y bloqueo.':'Only the 8 pawns per side. Whoever crosses first or leaves the opponent with no moves wins. Teaches advancing, capturing and blocking.',
+  'Duelo de torres':'Rook duel','Una torre por bando en esquinas opuestas. Gana quien capture primero. Enseña el movimiento recto y anticipar el peligro.':'One rook per side in opposite corners. Whoever captures first wins. Teaches straight movement and anticipating danger.',
+  'El caballo glotón':'The greedy knight','Un caballo contra varios peones quietos. ¿Cuántos captura sin pisar casilla defendida? Enseña la L y a planificar.':'One knight against several still pawns. How many can it capture without stepping on a defended square? Teaches the L and planning.',
+  'Alfiles contra peones':'Bishops vs pawns','Dos alfiles contra cuatro peones. Los peones ganan si uno corona. Enseña diagonales largas y control de casillas.':'Two bishops against four pawns. The pawns win if one promotes. Teaches long diagonals and square control.',
+  'Mate de la escalera':'Ladder mate','Dos torres contra un rey solo. Empújalo al borde escalón por escalón. Enseña el primer mate que se domina.':'Two rooks against a lone king. Push it to the edge step by step. Teaches the first mate you master.',
+  'Rey y dama contra rey':'King and queen vs king','Dar mate sin ahogar (si ahogas, pierdes). Enseña el mate básico y a cuidar el ahogado.':'Give mate without stalemate (if you stalemate, you draw). Teaches the basic mate and to watch for stalemate.',
+  '🏅 Diploma de participación':'🏅 Participation diploma','Un recuerdo para cerrar el torneo interno. No es un título oficial.':'A keepsake to close the internal tournament. It is not an official title.',
+  '🖨 Imprimir diploma':'🖨 Print diploma','Diploma de participación':'Participation diploma','Ajedrez en el Aula · Torneo interno':'Chess in the Classroom · Internal tournament',
+  'Se entrega a:':'Awarded to:','por jugar con esfuerzo, respetar el turno y dar la mano al terminar.':'for playing with effort, respecting turns and shaking hands at the end.',
+  'Recuerdo educativo, sin carácter oficial ni acreditación.':'Educational keepsake, with no official standing or accreditation.',
+  'Solo para enseñar y aprender. Material educativo abierto y gratuito. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Open and free educational material. It grants no certificates or accreditation. Published with GitHub Pages.',
+  // fichas (JS)
+  'Rey':'King','Dama':'Queen','Torre':'Rook','Alfil':'Bishop','Caballo':'Knight','Peón':'Pawn','Vale:':'Value:'
+};
+</script>
+<script src="assets/app.js"></script>
+<script>
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
 function printOnly(name){
   document.body.className='only only-'+name;
   window.print();
@@ -233,13 +284,13 @@ var pc=document.getElementById('pcards');
 [['w',0],['b',1]].forEach(function(side){
   PIECES.forEach(function(p){
     var card=document.createElement('div'); card.className='pcard';
-    card.innerHTML='<div class="g '+(side[0]==='w'?'w':'')+'">'+p[side[1]]+'</div><div class="n">'+p[2]+'</div><div class="v">Vale: '+p[3]+'</div>';
+    card.innerHTML='<div class="g '+(side[0]==='w'?'w':'')+'">'+p[side[1]]+'</div><div class="n">'+T(p[2])+'</div><div class="v">'+T('Vale:')+' '+p[3]+'</div>';
     pc.appendChild(card);
   });
 });
 // planilla
 var pl=document.getElementById('planilla');
-pl.innerHTML='<tr><th>#</th><th>Blancas</th><th>Negras</th><th>#</th><th>Blancas</th><th>Negras</th></tr>';
+pl.innerHTML='<tr><th>#</th><th>'+T('Blancas')+'</th><th>'+T('Negras')+'</th><th>#</th><th>'+T('Blancas')+'</th><th>'+T('Negras')+'</th></tr>';
 for(var k=1;k<=20;k++){
   var tr=document.createElement('tr');
   tr.innerHTML='<td>'+k+'</td><td></td><td></td><td>'+(k+20)+'</td><td></td><td></td>';
@@ -253,6 +304,5 @@ PIECES.forEach(function(p){
   act.appendChild(row);
 });
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>
