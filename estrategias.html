@@ -170,7 +170,7 @@
         <p id="cdesc" style="margin-top:.2em">—</p>
         <p class="note" id="chint" style="margin-top:.8em;display:none"></p>
       </div>
-      <p class="note" style="margin-top:12px">Estrategias aplicadas: <span id="cscore" class="mono" style="color:var(--ambar)">0 / 4</span></p>
+      <p class="note" style="margin-top:12px"><span data-en="Strategies applied:">Estrategias aplicadas:</span> <span id="cscore" class="mono" style="color:var(--ambar)">0 / 4</span></p>
     </div>
   </div>
 
@@ -183,10 +183,113 @@
 
 <script src="assets/chess.js"></script>
 <script src="assets/puzzles.js"></script>
+<script src="assets/i18n-puzzles.js"></script>
 <script src="assets/board.js"></script>
+<script>
+window.PAGE_I18N={
+  __title:'Strategies · Chess in the Classroom',
+  'Estrategias · las ideas que ganan partidas':'Strategies · the ideas that win games',
+  'Estrategias y tácticas':'Strategies and tactics',
+  'Estas son las ideas que separan a quien mueve las piezas de quien de verdad juega. Están explicadas con palabras sencillas para que las entiendan tanto el maestro como el alumno. Al final hay una prueba interactiva para aplicarlas.':
+    'These are the ideas that separate someone who moves the pieces from someone who really plays. They\'re explained in simple words so both teacher and student understand them. At the end there\'s an <strong>interactive quiz</strong> to apply them.',
+  '1 · Los tres principios de la apertura':'1 · The three opening principles',
+  'Centro':'Center','Domina el centro':'Control the center',
+  'Las casillas del centro (d4, e4, d5, e5) son las más valiosas: desde ahí tus piezas alcanzan más lugares. Ocúpalas con peones y apunta hacia ellas.':
+    'The central squares (d4, e4, d5, e5) are the most valuable: from there your pieces reach more places. Occupy them with pawns and aim at them.',
+  'Desarrollo':'Development','Saca tus piezas':'Bring out your pieces',
+  'Caballos y alfiles primero, hacia casillas activas. Una pieza en su casa no sirve para nada. No muevas la misma pieza dos veces en la apertura.':
+    'Knights and bishops first, toward active squares. A piece at home is useless. Don\'t move the same piece twice in the opening.',
+  'Rey seguro':'Safe king','Enroca temprano':'Castle early',
+  'Pon a tu rey a salvo con el enroque y conecta tus torres. Un rey en el centro es un rey en peligro.':
+    'Bring your king to safety by castling and connect your rooks. A king in the center is a king in danger.',
+  'Regla de oro para principiantes: no saques la dama en las primeras jugadas. Parece fuerte, pero el rival la persigue con piezas pequeñas y pierdes tiempo mientras él desarrolla su ejército.':
+    '<em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Golden rule for beginners:</em> don\'t bring the queen out in the first moves. It looks strong, but the opponent chases it with small pieces and you lose time while they develop their army.',
+  '2 · Las ocho tácticas esenciales':'2 · The eight essential tactics',
+  'Una táctica es una jugada (o dos) que gana material o da mate por la fuerza. Reconocerlas es lo que más rápido sube el nivel.':
+    'A tactic is a move (or two) that wins material or forces mate. Recognizing them is what raises your level fastest.',
+  'Tenedor':'Fork','El tenedor (o horquilla)':'The fork',
+  'Una sola pieza ataca dos objetivos a la vez. El rival solo puede salvar uno. El caballo es el rey del tenedor porque salta y ataca desde ángulos inesperados. Aquí Cd6+ ataca al rey y a la torre al mismo tiempo.':
+    'A single piece attacks two targets at once. The opponent can only save one. The knight is king of the fork because it jumps and attacks from unexpected angles. Here <span class="mono" style="color:var(--ambar)">Nd6+</span> attacks the king and the rook at the same time.',
+  'Clavada':'Pin','La clavada':'The pin',
+  'Atacas una pieza que no se puede mover porque detrás está algo más valioso —a menudo el rey—. La pieza queda «clavada» en su sitio. El alfil y la torre clavan muy bien. Una pieza clavada al rey no puede moverse: apílale ataques encima y cáela.':
+    'You attack a piece that can\'t move because something more valuable is behind it —often the king—. The piece is «pinned» in place. Bishops and rooks pin very well. A piece pinned to the king <strong>cannot move</strong>: pile attacks on it and win it.',
+  'Brocheta':'Skewer','La brocheta':'The skewer',
+  'Como la clavada, pero al revés: adelante está la pieza valiosa y detrás la menos valiosa. Das jaque, el rey se aparta y capturas lo que estaba detrás. Aquí Ta1+ pincha al rey y detrás cae la dama.':
+    'Like the pin, but reversed: the valuable piece is in front and the lesser one behind. You give check, the king steps aside and you capture what was behind. Here <span class="mono" style="color:var(--ambar)">Ra1+</span> skewers the king and the queen falls behind.',
+  'Mate del pasillo':'Back-rank mate','El mate de la última fila':'The back-rank mate',
+  'El rey enrocado queda encerrado por sus propios peones. Una torre o dama entra por la última fila y no hay escape. Es el mate que más partidas escolares decide. La defensa: hacerle un «respiradero» al rey adelantando un peón.':
+    'The castled king is boxed in by its own pawns. A rook or queen comes in on the last rank and there\'s no escape. It\'s the mate that decides the most school games. The defense: make a «luft» for the king by advancing a pawn.',
+  'Ataque doble':'Double attack','El ataque doble':'The double attack',
+  'Una pieza (a menudo la dama) amenaza dos cosas por líneas distintas. Aquí De5+ da jaque al rey y a la vez ataca la torre: el rival salva al rey y pierde la torre.':
+    'One piece (often the queen) threatens two things on different lines. Here <span class="mono" style="color:var(--ambar)">Qe5+</span> checks the king and attacks the rook at once: the opponent saves the king and loses the rook.',
+  'Descubierto':'Discovery','El jaque descubierto':'The discovered check',
+  'Mueves una pieza y descubres el jaque de otra que estaba detrás. Como el jaque manda, tu pieza que se movió puede capturar «gratis». Aquí el caballo captura en c5 y descubre el jaque de la torre.':
+    'You move one piece and uncover the check of another behind it. Since check rules, the piece you moved can capture «for free». Here the knight captures on c5 and uncovers the rook\'s check.',
+  'Clavada ganadora':'Winning pin','Explotar la clavada':'Exploiting the pin',
+  'Una pieza clavada no puede moverse sin perder algo mayor. Entonces la atacas otra vez con algo de menos valor (a menudo un peón) y la ganas. Aquí el caballo está clavado contra la dama: e5 lo ataca y no puede huir.':
+    'A pinned piece can\'t move without losing something greater. So you attack it again with something of lesser value (often a pawn) and win it. Here the knight is pinned against the queen: <span class="mono" style="color:var(--ambar)">e5</span> attacks it and it can\'t flee.',
+  'Doble jaque':'Double check','El doble jaque':'The double check',
+  'Dos piezas dan jaque a la vez. Es tan fuerte que el rey está obligado a moverse: no vale capturar ni tapar, porque nunca se quitan dos jaques con una sola jugada. Base de muchos mates espectaculares.':
+    'Two pieces give check at once. It\'s so strong that <strong>the king is forced to move</strong>: capturing or blocking won\'t do, because two checks are never removed with one move. The basis of many spectacular mates.',
+  '3 · Nociones de final':'3 · Endgame notions',
+  'Cuando quedan pocas piezas, mandan dos ideas: la oposición de reyes y los peones pasados.':
+    'When few pieces remain, two ideas rule: the opposition of kings and passed pawns.',
+  'Oposición':'Opposition','La oposición':'The opposition',
+  'Dos reyes frente a frente con una casilla en medio. Tiene la oposición el que NO le toca mover: obliga al otro a apartarse y así avanza su rey. Es la llave de casi todos los finales de rey y peón.':
+    'Two kings face to face with one square between them. The opposition belongs to whoever is <strong>NOT to move</strong>: it forces the other to step aside so their king advances. It\'s the key to almost every king-and-pawn endgame.',
+  'Peón pasado':'Passed pawn','El peón pasado':'The passed pawn',
+  'Un peón sin peones enemigos que lo detengan en su columna ni en las de al lado. Su misión es coronar. «Un peón pasado debe ser empujado»: apóyalo con tu rey y conviértelo en dama.':
+    'A pawn with no enemy pawns to stop it on its file or the neighboring ones. Its mission is to promote. «A passed pawn must be pushed»: support it with your king and turn it into a queen.',
+  'Mates elementales: para ganar cuando te sobra material, aprende los mates básicos — rey+dama, rey+dos torres y rey+torre contra rey solo. Practícalos en la sección de Prácticas (nivel Normal) y contra la IA en Jugar.':
+    '<em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Basic mates:</em> to win when you have extra material, learn the basic mates — king+queen, king+two rooks and king+rook against a lone king. Practice them in the <a href="practicas.html">Practice</a> section (Normal level) and against the AI in <a href="jugar.html">Play</a>.',
+  '4 · Escuelas y planes de medio juego':'4 · Schools and middlegame plans',
+  'La forma de entender el ajedrez fue cambiando con la historia. Conocer estas ideas te da un plan cuando ya no hay tácticas obvias.':
+    'The way chess is understood changed through history. Knowing these ideas gives you a <strong>plan</strong> when there are no obvious tactics left.',
+  'Escuela Romántica':'Romantic School',
+  'Ataque directo al rey, sacrificios y tácticas fulgurantes. Rechazar un sacrificio se veía como falta de honor. No se valoraba la estructura de peones ni el centro.':
+    'Direct attack on the king, sacrifices and dazzling tactics. Declining a sacrifice was seen as dishonorable. Pawn structure and the center were not valued.',
+  'Escuela Clásica':'Classical School',
+  'Steinitz y Tarrasch: el ajedrez tiene leyes. Ocupa y defiende el centro con peones, desarrolla las piezas y acumula pequeñas ventajas que suman.':
+    'Steinitz and Tarrasch: chess has laws. Occupy and defend the center with pawns, develop the pieces and accumulate <strong>small advantages</strong> that add up.',
+  'Hipermodernismo':'Hypermodernism',
+  'Nimzowitsch y Réti: el centro se puede controlar a distancia con piezas en vez de ocuparlo. Nace el fianchetto: el alfil en la diagonal larga (b2, g2, b7, g7) como francotirador.':
+    'Nimzowitsch and Réti: the center can be controlled <strong>from a distance</strong> with pieces instead of occupying it. The <em>fianchetto</em> is born: the bishop on the long diagonal (b2, g2, b7, g7) as a sniper.',
+  'Estilo universal':'Universal style',
+  'Con ayuda de los motores (Stockfish) y campeones como Carlsen, se mezcla todo: buscar ventajas mínimas, defender con precisión y crear problemas prácticos al rival.':
+    'With the help of engines (Stockfish) and champions like Carlsen, everything mixes: seek minimal advantages, defend with precision and create practical problems for the opponent.',
+  'Planes que casi siempre sirven':'Plans that almost always work',
+  '♜ Coloca las torres en columnas abiertas o semiabiertas.':'♜ Place the rooks on <strong>open</strong> or semi-open files.',
+  '♝ Cuida tu pareja de alfiles: valen más con el tablero abierto.':'♝ Keep your <strong>bishop pair</strong>: they\'re worth more with an open board.',
+  '🎯 Ataca los peones débiles del rival (aislados, doblados, retrasados).':'🎯 Attack the opponent\'s <strong>weak pawns</strong> (isolated, doubled, backward).',
+  '👑 Si los reyes enrocaron en lados distintos, ataca con los peones.':'👑 If the kings castled on opposite sides, <strong>attack with the pawns</strong>.',
+  '🐴 Busca casillas fuertes (que ningún peón rival puede atacar) para tu caballo.':'🐴 Look for <strong>strong squares</strong> (that no enemy pawn can attack) for your knight.',
+  'Cómo mejorar de verdad':'How to really improve',
+  '🧩 Resuelve problemas despacio: reconoce el patrón, no corras.':'🧩 Solve <a href="practicas.html">puzzles</a> slowly: recognize the pattern, don\'t rush.',
+  '⏱ Entrena con ritmo pausado, no solo partidas rápidas.':'⏱ Train at a slow pace, not just fast games.',
+  '🔍 Analiza tus propias partidas: ¿dónde cambió la evaluación y por qué?':'🔍 Analyze your own games: where did the evaluation change and why?',
+  '📈 Una partida bien estudiada enseña más que diez jugadas sin pensar.':'📈 One well-studied game teaches more than ten thoughtless moves.',
+  '5 · Prueba: juega la estrategia':'5 · Quiz: play the strategy',
+  'Ahora te toca a ti. En cada posición hay una jugada que aplica una idea táctica. Elige la dificultad; las posiciones se barajan para que nunca te toque la misma tanda.':
+    'Now it\'s your turn. In each position there\'s a move that applies a tactical idea. Choose the difficulty; the positions shuffle so you never get the same round.',
+  'Todas':'All','🟡 Medio':'🟡 Medium','🔴 Difícil':'🔴 Hard',
+  '💡 Pista':'💡 Hint','👁 Solución':'👁 Solution','⏭ Siguiente':'⏭ Next',
+  'Solo para enseñar y aprender. Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Open educational material. It grants no certificates or accreditation. Published with GitHub Pages.',
+  // reto EXTRA + estados del quiz
+  'Domina el centro':'Control the center',
+  'Primera jugada de la partida: ocupa el centro con un peón.':'First move of the game: occupy the center with a pawn.',
+  'Adelanta el peón de rey o el de dama dos casillas.':'Advance the king\'s or queen\'s pawn two squares.',
+  'Las blancas mueven.':'White to move.',
+  '✅ ¡Estrategia aplicada!':'✅ Strategy applied!',
+  '🔁 Esa no logra la idea. Prueba otra.':'🔁 That doesn\'t achieve the idea. Try another.',
+  'La jugada correcta está marcada.':'The correct move is marked.'
+};
+</script>
+<script src="assets/app.js"></script>
 <script>
 (function(){
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
 // diagramas ilustrativos con clip animado del movimiento
 var reduce = typeof matchMedia!=='undefined' && matchMedia('(prefers-reduced-motion:reduce)').matches;
 Array.prototype.slice.call(document.querySelectorAll('.mini.cb')).forEach(function(box){
@@ -234,9 +337,9 @@ function load(){
   cur=DECK[idx];
   board.setState(cur.fen);
   board.lock(false);
-  statusEl.textContent='Las blancas mueven.'; statusEl.className='status';
+  statusEl.textContent=T('Las blancas mueven.'); statusEl.className='status';
   cnum.textContent=(idx+1)+' / '+DECK.length;
-  ctitle.textContent=cur.t; cdesc.textContent=cur.d;
+  ctitle.textContent=T(cur.t); cdesc.textContent=T(cur.d);
   chint.style.display='none'; chint.textContent='';
 }
 function validate(mv){
@@ -244,13 +347,13 @@ function validate(mv){
   var ok=cur.sol.some(function(s){ return s[0]===from&&s[1]===to&&(!s[2]||mv.promotion===s[2]); });
   if(ok){
     correct++; cscore.textContent=correct;
-    statusEl.textContent='✅ ¡Estrategia aplicada!'; statusEl.className='status win';
+    statusEl.textContent=T('✅ ¡Estrategia aplicada!'); statusEl.className='status win';
     board.lock(true);
     if(window.AA) AA.award('estrategia');
     if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('board'));},180);
     setTimeout(next,1300); return true;
   }
-  statusEl.textContent='🔁 Esa no logra la idea. Prueba otra.'; statusEl.className='status lose';
+  statusEl.textContent=T('🔁 Esa no logra la idea. Prueba otra.'); statusEl.className='status lose';
   return false;
 }
 function next(){ idx++; if(idx>=DECK.length){ DECK=buildDeck(); idx=0; } load(); }
@@ -260,18 +363,17 @@ document.getElementById('diff').addEventListener('click',function(e){
   b.classList.add('on'); diff=b.dataset.d; DECK=buildDeck(); idx=0; load();
 });
 document.getElementById('next').addEventListener('click',next);
-document.getElementById('hint').addEventListener('click',function(){ chint.style.display='block'; chint.textContent='💡 '+cur.h; });
+document.getElementById('hint').addEventListener('click',function(){ chint.style.display='block'; chint.textContent='💡 '+T(cur.h); });
 document.getElementById('show').addEventListener('click',function(){
   var s=cur.sol[0], from=C.sqToRC(s[0]);
   board.sel=from;
   board.legal=C.legalMoves(board.state).filter(function(m){return m.from[0]===from[0]&&m.from[1]===from[1];});
   board.render();
   var to=C.sqToRC(s[1]); var cell=board.cells[to[0]+'-'+to[1]]; if(cell) cell.classList.add('sel');
-  statusEl.textContent='La jugada correcta está marcada.'; statusEl.className='status check';
+  statusEl.textContent=T('La jugada correcta está marcada.'); statusEl.className='status check';
 });
 DECK=buildDeck(); load();
 })();
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>
