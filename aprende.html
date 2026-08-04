@@ -23,8 +23,10 @@
 .piece-card:hover{transform:translateY(-4px);border-color:var(--ambar)}
 .piece-card.sel{border-color:var(--ambar);background:#2A2119}
 .glyph{font-size:clamp(46px,12vw,72px);line-height:1;font-family:'DejaVu Sans','Segoe UI Symbol',sans-serif}
-.piece-card .nm{font-family:var(--disp);font-weight:900;font-size:20px;margin-top:4px}
-.piece-card .val{font-family:var(--mono);font-size:12px;color:var(--ambar)}
+.piece-card .nm,.flip-face .nm{font-family:var(--disp);font-weight:900;font-size:22px;margin-top:4px}
+.piece-card .val,.flip-face .val{font-family:var(--mono);font-size:12.5px;color:var(--ambar);margin-top:2px}
+#pieceGrid.pieces-grid{grid-template-columns:repeat(3,1fr)}
+#pieceGrid .flip-card{min-height:168px}
 .demo{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:center;margin-top:22px}
 @media(max-width:640px){.demo{grid-template-columns:1fr}}
 .demo .cb{max-width:300px}
@@ -163,15 +165,16 @@ var PIECES=[
   {k:'p', wg:'♙', bg:'♟', nm:'Peón', val:'1 punto', fen:'d2', text:'El peón camina derechito hacia adelante y come de ladito, en diagonal. Nunca da marcha atrás. Si llega al final… ¡se vuelve dama!', say:'«Camina derechito, pero come de ladito.»'}
 ];
 
-/* ---- PANEL 1: CONOCE ---- */
+/* ---- PANEL 1: CONOCE (tarjetas que giran) ---- */
 var grid=document.getElementById('pieceGrid');
 PIECES.forEach(function(p){
-  var d=document.createElement('div'); d.className='piece-card';
-  d.innerHTML='<div class="glyph">'+p.bg+'</div><div class="nm">'+p.nm+'</div><div class="val">'+p.val+'</div>';
-  d.addEventListener('click',function(){
-    Array.prototype.slice.call(grid.children).forEach(function(x){x.classList.remove('sel');});
-    d.classList.add('sel');
-  });
+  var d=document.createElement('button'); d.className='flip-card'; d.type='button';
+  d.setAttribute('aria-label','Pieza: toca para ver su nombre');
+  d.innerHTML='<div class="flip-inner">'+
+    '<div class="flip-face front"><div class="glyph">'+p.bg+'</div><div class="flip-hint">toca para ver</div></div>'+
+    '<div class="flip-face back"><div class="nm">'+p.nm+'</div><div class="val">'+p.val+'</div></div>'+
+    '</div>';
+  d.addEventListener('click',function(){ d.classList.toggle('flipped'); });
   grid.appendChild(d);
 });
 

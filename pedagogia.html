@@ -316,7 +316,7 @@
         <h3>Práctica reflexiva</h3>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:.45em;margin-top:.4em">
           <li>Después de cada clase, anota qué funcionó y qué no.</li>
-          <li>Prueba <strong>un método distinto</strong> cada semana (de los siete de arriba).</li>
+          <li>Prueba <strong>un método distinto</strong> cada semana (de los once de arriba).</li>
           <li>Enseñar es aprender: prepararte para explicar te obliga a entender mejor.</li>
           <li>No temas decir «no sé, vamos a averiguarlo»: modela el aprendizaje.</li>
         </ul>
@@ -450,6 +450,16 @@ function seg(id,set){
 seg('ctx',function(v){ctx=v;});
 seg('edad',function(v){edad=v;});
 render();
+
+// al pulsar una tarjeta de método se despliega/oculta su guion
+Array.prototype.slice.call(document.querySelectorAll('.card.method')).forEach(function(card){
+  var det=card.querySelector('details.guion'); if(!det) return;
+  card.style.cursor='pointer';
+  card.addEventListener('click',function(e){
+    if(e.target.closest('summary')||e.target.closest('a')) return; // respeta el toggle nativo y los enlaces
+    det.open=!det.open;
+  });
+});
 </script>
 <script src="assets/app.js"></script>
 </body>

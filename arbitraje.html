@@ -184,8 +184,9 @@ var cnum=document.getElementById('cnum'), ctitle=document.getElementById('ctitle
     optsEl=document.getElementById('opts'), explain=document.getElementById('explain'), nextBtn=document.getElementById('next'),
     prog=document.getElementById('prog'), scoreEl=document.getElementById('score');
 
+function proceed(){ i++; if(i>=CASES.length) finish(); else render(); }
 function render(){
-  answered=false; nextBtn.disabled=true; explain.className='explain'; optsEl.innerHTML='';
+  answered=false; nextBtn.disabled=true; nextBtn.style.display=''; explain.className='explain'; optsEl.innerHTML='';
   prog.style.width=(i/CASES.length*100)+'%';
   var c=CASES[i];
   cnum.textContent='Caso '+(i+1)+' de '+CASES.length;
@@ -199,14 +200,16 @@ function render(){
 function answer(c,idx,btn){
   if(answered)return; answered=true;
   var buttons=optsEl.querySelectorAll('.opt'); buttons.forEach(function(b){b.disabled=true;});
-  if(idx===c.correct){ btn.classList.add('correct'); score++; }
+  var ok=idx===c.correct;
+  if(ok){ btn.classList.add('correct'); score++; }
   else { btn.classList.add('wrong'); buttons[c.correct].classList.add('correct'); }
   scoreEl.textContent=score;
   explain.innerHTML=c.ex+'<span class="art">📖 '+c.art+'</span>';
   explain.classList.add('on');
-  nextBtn.disabled=false;
+  if(ok){ nextBtn.style.display='none'; setTimeout(proceed,1900); } // correcto: avanza tras leer la regla
+  else { nextBtn.disabled=false; }                                  // incorrecto: se queda
 }
-nextBtn.addEventListener('click',function(){ i++; if(i>=CASES.length) finish(); else render(); });
+nextBtn.addEventListener('click', proceed);
 function finish(){
   document.querySelector('.card').style.display='none';
   document.querySelector('.bar').style.display='none';

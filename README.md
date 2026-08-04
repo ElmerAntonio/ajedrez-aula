@@ -120,6 +120,21 @@ HTML, CSS y JavaScript que se abren directamente.
   local del navegador). **No se envía nada a ningún servidor** y no hace falta
   cuenta.
 
+## 🌐 Idioma e interfaz
+
+- **Español / Inglés:** botón 🌐 en la barra que cambia la navegación y la
+  interfaz compartida (y el inicio) a inglés. La preferencia se recuerda.
+- **Logo propio** (caballo en un escudo verde) como favicon del navegador y
+  marca en la barra.
+- **Animación de contenido** que aparece suavemente al desplazarse.
+- **Tarjetas que giran**: en «Aprende» las piezas se voltean para mostrar su
+  nombre y valor; en «Pedagogía» las tarjetas de método despliegan su guion.
+- **Avance automático**: en el test de nivel y en árbitro, una respuesta
+  correcta pasa sola a la siguiente; una incorrecta se queda para que leas el
+  porqué antes de continuar.
+- Tipografía más grande y legible en computadora; las piezas de los tableros
+  de ejemplo se dimensionan respecto al tablero (no a la pantalla).
+
 ## ♿ Accesibilidad y diseño responsive
 
 Aplicando las pautas **WCAG 2.2**:
