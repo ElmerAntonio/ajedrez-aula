@@ -220,7 +220,14 @@ function renderBadges(){
 
 /* ---------- API pública ---------- */
 global.AA={ getRole:getRole, setRole:setRole, openRoleModal:openRoleModal, award:award,
-            getProgress:getProg, badges:BADGES };
+            getProgress:getProg, badges:BADGES,
+            lang:getLang,
+            // traduce una cadena suelta generada por JS (usa el diccionario de página o el compartido)
+            t:function(es){ if(getLang()!=='en') return es;
+              var d=global.PAGE_I18N; if(d&&d[es]!=null) return d[es];
+              if(COMMON[es]!=null) return COMMON[es]; return DICT[es]||es; },
+            // vuelve a traducir el contenido tras generar HTML nuevo dinámicamente
+            translateEls:function(){ translateEls(); } };
 
 /* enlace "saltar al contenido" para usuarios de teclado (WCAG 2.4.1) */
 function injectSkipLink(){
@@ -287,6 +294,16 @@ var DICT={
   'Ajedrez en el Aula · material educativo libre · sin fines de acreditación':
     'Chess in the Classroom · free educational material · not for accreditation'
 };
+/* cadenas que se repiten en todo el sitio (pie de página, avisos, botones comunes) */
+var COMMON={
+  'Ajedrez en el Aula · material educativo libre · alojado en GitHub':
+    'Chess in the Classroom · free educational material · hosted on GitHub',
+  'Solo para enseñar y aprender. Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    'For teaching and learning only. Open educational material. It grants no certificates or accreditation. Published with GitHub Pages.',
+  'Siguiente':'Next','Siguiente →':'Next →','Reiniciar':'Restart','Empezar':'Start','Volver a empezar':'Start over',
+  'Comprobar':'Check','Correcto':'Correct','Incorrecto':'Incorrect','¡Correcto!':'Correct!','¡Muy bien!':'Great!',
+  'Pista':'Hint','Siguiente pregunta':'Next question','Reintentar':'Try again','Continuar':'Continue'
+};
 function getLang(){ return lsGet(LS_LANG)==='en' ? 'en' : 'es'; }
 function t(es){ return getLang()==='en' && DICT[es] ? DICT[es] : es; }
 function setLang(l){ lsSet(LS_LANG, l); location.reload(); }
@@ -302,9 +319,31 @@ function applyLang(){
   var bs=document.querySelector('.brand span:not(.logo)'); if(bs) bs.textContent='in the Classroom';
   var bt=document.querySelector('.brand');
   if(bt) Array.prototype.slice.call(bt.childNodes).forEach(function(n){ if(n.nodeType===3 && /Ajedrez/.test(n.textContent)) n.textContent=n.textContent.replace('Ajedrez','Chess'); });
-  // elementos marcados con data-i18n (traducción por página, p. ej. el inicio)
+  // elementos marcados con data-en (traducción manual por elemento, p. ej. títulos con <br>)
   Array.prototype.slice.call(document.querySelectorAll('[data-en]')).forEach(function(el){
     el.innerHTML=el.getAttribute('data-en');
+  });
+  // traducción por diccionario de página (contenido estático y generado por JS)
+  translateEls();
+}
+
+/* Recorre el contenido y traduce cada elemento "hoja" cuyo texto esté en el
+   diccionario de la página (global.PAGE_I18N). Se puede volver a llamar después
+   de que el JS genere contenido nuevo (preguntas, planes, rangos…). */
+function normTxt(s){ return (s||'').replace(/\s+/g,' ').trim(); }
+function translateEls(){
+  if(getLang()!=='en') return;
+  var dict=global.PAGE_I18N; if(!dict) return;
+  if(dict.__title) document.title=dict.__title;
+  var sel='p,li,h1,h2,h3,h4,h5,h6,summary,figcaption,caption,th,td,button,label,dt,dd,'+
+          'blockquote,span.tag,.eyebrow,.lead,.note,.disclaimer,.k,.foot,option,.pill,.chip-t,.toc a';
+  Array.prototype.slice.call(document.querySelectorAll(sel)).forEach(function(el){
+    if(el.closest('.nav')||el.closest('.rm-box')) return;      // barra y modal se traducen aparte
+    if(el.hasAttribute('data-en')) return;                     // ya traducido a mano
+    if(el.querySelector('p,li,ul,ol,h1,h2,h3,h4,h5,h6,table')) return; // no es una hoja de texto
+    var key=normTxt(el.textContent); if(!key) return;
+    var en=dict[key]; if(en==null) en=COMMON[key];
+    if(en!=null && normTxt(el.innerHTML)!==normTxt(en)) el.innerHTML=en;
   });
 }
 function ensureLangChip(navIn){

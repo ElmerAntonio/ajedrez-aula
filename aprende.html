@@ -71,7 +71,7 @@
 
 <div class="wrap">
   <div class="eyebrow">Aprende jugando · para los más pequeños</div>
-  <h1>¡Vamos a conocer<br>las piezas!</h1>
+  <h1 data-en="Let's meet<br>the pieces!">¡Vamos a conocer<br>las piezas!</h1>
   <p class="lead" style="margin:.6em 0 0">Todavía no sabes jugar y está perfecto. Aquí vas a conocer a cada pieza, aprender cómo camina y jugar con ellas. Toca los botones y diviértete. 🎉</p>
 
   <div class="tabs2" id="tabs">
@@ -111,7 +111,7 @@
       <div class="quiz-piece" id="qGlyph">♞</div>
       <div class="answers" id="qAnswers"></div>
       <div class="big-fb" id="qFb" style="margin-top:14px">&nbsp;</div>
-      <p class="mono" style="color:var(--selva-cl)">Aciertos seguidos: <span id="qStreak">0</span></p>
+      <p class="mono" style="color:var(--selva-cl)"><span data-en="Correct in a row:">Aciertos seguidos:</span> <span id="qStreak">0</span></p>
     </div>
   </div>
 
@@ -125,8 +125,8 @@
     </div>
     <div style="text-align:center;margin:10px 0">
       <button class="btn" id="memReset">↻ Barajar de nuevo</button>
-      <span class="mono" style="margin-left:14px;color:var(--ambar)">Parejas: <span id="memPairs">0</span> / <span id="memTotal">6</span></span>
-      <span class="mono" style="margin-left:14px;color:#9DAFA2">Intentos: <span id="memTries">0</span></span>
+      <span class="mono" style="margin-left:14px;color:var(--ambar)"><span data-en="Pairs:">Parejas:</span> <span id="memPairs">0</span> / <span id="memTotal">6</span></span>
+      <span class="mono" style="margin-left:14px;color:#9DAFA2"><span data-en="Tries:">Intentos:</span> <span id="memTries">0</span></span>
     </div>
     <div class="mem" id="memGrid"></div>
     <div class="big-fb" id="memFb" style="margin-top:12px">&nbsp;</div>
@@ -151,12 +151,73 @@
 
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
+<script>
+window.PAGE_I18N={
+  __title:'Learn by playing · Chess in the Classroom',
+  'Aprende jugando · para los más pequeños':'Learn by playing · for the youngest',
+  'Todavía no sabes jugar y está perfecto. Aquí vas a conocer a cada pieza, aprender cómo camina y jugar con ellas. Toca los botones y diviértete. 🎉':
+    'You can\'t play yet and that\'s perfectly fine. Here you\'ll meet every piece, learn how it walks and play with them. Tap the buttons and have fun. 🎉',
+  '🧩 Conoce las piezas':'🧩 Meet the pieces','🚶 ¿Cómo se mueve?':'🚶 How does it move?',
+  '❓ Adivina la pieza':'❓ Guess the piece','🃏 Juego de memoria':'🃏 Memory game','🐴 El caballo glotón':'🐴 The greedy knight',
+  'Cada bando tiene 6 tipos de pieza. Toca una para ver su nombre y cuánto vale.':
+    'Each side has 6 kinds of piece. Tap one to see its name and how much it\'s worth.',
+  'Truco: el rey no tiene número porque no se puede cambiar por nada. ¡Si lo atrapan, se acaba el juego!':
+    '<em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Trick:</em> the king has no number because it can\'t be traded for anything. If it\'s caught, the game is over!',
+  'Toca una pieza y mira los puntos: ahí es donde puede ir. Cada pieza camina diferente.':
+    'Tap a piece and look at the dots: that\'s where it can go. Each piece walks differently.',
+  '¿Qué pieza es esta?':'Which piece is this?',
+  'Encuentra las parejas. Toca dos cartas para voltearlas. En Difícil tienes que emparejar cada pieza con cómo se mueve: ¡hay que saber jugar!':
+    'Find the pairs. Tap two cards to flip them. On <strong>Hard</strong> you must match each piece with <strong>how it moves</strong>: you have to know how to play!',
+  '🟢 Nombres':'🟢 Names','🔴 Movimientos (difícil)':'🔴 Moves (hard)','🟣 8 parejas':'🟣 8 pairs',
+  '↻ Barajar de nuevo':'↻ Shuffle again',
+  'El caballo tiene hambre: ¡tiene que comerse todos los peones! Recuerda que salta en forma de L. Tócalo y llévalo a un peón.':
+    'The knight is hungry: it has to eat <strong>all</strong> the pawns! Remember it jumps in an L shape. Tap it and take it to a pawn.',
+  '↻ Jugar otra vez':'↻ Play again',
+  'Consejo docente: es el mini-juego clásico para dominar el salto del caballo.':
+    'Teacher tip: it\'s the classic mini-game to master the knight\'s jump.',
+  'Solo para enseñar y aprender. Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Open educational material. It grants no certificates or accreditation. Published with GitHub Pages.',
+  // nombres de piezas y descripciones (usados por JS)
+  'Rey':'King','Dama':'Queen','Torre':'Rook','Alfil':'Bishop','Caballo':'Knight','Peón':'Pawn',
+  'La pieza más importante':'The most important piece','9 puntos · la más fuerte':'9 points · the strongest',
+  '5 puntos':'5 points','3 puntos':'3 points','1 punto':'1 point',
+  'El rey camina un pasito en cualquier dirección: adelante, atrás, a los lados o en diagonal. Es lento, pero hay que cuidarlo mucho.':
+    'The king walks one little step in any direction: forward, back, sideways or diagonally. It\'s slow, but you must protect it a lot.',
+  'La dama va para donde quiera y todo lo lejos que quiera: en línea recta y en diagonal. Es la más poderosa del ejército.':
+    'The queen goes wherever it wants and as far as it wants: in a straight line and diagonally. It\'s the most powerful in the army.',
+  'La torre camina en línea recta: para arriba, para abajo y a los lados. Nunca cruza en diagonal.':
+    'The rook walks in a straight line: up, down and sideways. It never crosses diagonally.',
+  'El alfil camina solo en diagonal, de esquinita en esquinita. Siempre se queda en su mismo color de casilla.':
+    'The bishop walks only diagonally, corner to corner. It always stays on its same color of square.',
+  'El caballo salta en forma de L: dos pasitos y dobla. ¡Y salta por encima de las demás piezas!':
+    'The knight jumps in an L shape: two little steps and turn. And it jumps over the other pieces!',
+  'El peón camina derechito hacia adelante y come de ladito, en diagonal. Nunca da marcha atrás. Si llega al final… ¡se vuelve dama!':
+    'The pawn walks straight forward and eats sideways, diagonally. It never goes back. If it reaches the end… it becomes a queen!',
+  '«El rey es el abuelito: da un pasito nada más.»':'«The king is grandpa: he takes just one little step.»',
+  '«La dama es torre y alfil juntos.»':'«The queen is rook and bishop together.»',
+  '«La torre es el carro: va derechito por la calle.»':'«The rook is the cart: it goes straight down the street.»',
+  '«El alfil camina en punta de pie por la sombra.»':'«The bishop tiptoes along the shadow.»',
+  '«Dos pasos y dobla la esquina, montado y saltando.»':'«Two steps and turn the corner, riding and jumping.»',
+  '«Camina derechito, pero come de ladito.»':'«It walks straight, but eats sideways.»',
+  'El rey':'The king','La dama':'The queen','La torre':'The rook','El alfil':'The bishop','El caballo':'The knight','El peón':'The pawn',
+  'toca para ver':'tap to see','Pieza: toca para ver su nombre':'Piece: tap to see its name',
+  'Un pasito':'One step','Recto y diagonal':'Straight and diagonal','En línea recta':'Straight line',
+  'En diagonal':'Diagonally','Salta en L':'Jumps in an L','Recto, come de lado':'Straight, eats sideways',
+  'Jaque':'Check','Mate':'Mate',
+  // fragmentos con variables
+  '¡Muy bien!':'Great!','Es el':'It\'s the','¡Ganaste en':'You won in','intentos!':'tries!',
+  'Peones por comer:':'Pawns to eat:','¡Te los comiste todos!':'You ate them all!','en':'in','saltos':'jumps'
+};
+</script>
 <script src="assets/chess.js"></script>
 <script src="assets/board.js"></script>
+<script src="assets/app.js"></script>
 <script>
 (function(){
 'use strict';
 var C=window.Chess;
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
+var EN=function(){return !!(window.AA&&AA.lang&&AA.lang()==='en');};
 var PIECES=[
   {k:'k', wg:'♔', bg:'♚', nm:'Rey', val:'La pieza más importante', fen:'d4', text:'El rey camina un pasito en cualquier dirección: adelante, atrás, a los lados o en diagonal. Es lento, pero hay que cuidarlo mucho.', say:'«El rey es el abuelito: da un pasito nada más.»'},
   {k:'q', wg:'♕', bg:'♛', nm:'Dama', val:'9 puntos · la más fuerte', fen:'d4', text:'La dama va para donde quiera y todo lo lejos que quiera: en línea recta y en diagonal. Es la más poderosa del ejército.', say:'«La dama es torre y alfil juntos.»'},
@@ -170,10 +231,10 @@ var PIECES=[
 var grid=document.getElementById('pieceGrid');
 PIECES.forEach(function(p){
   var d=document.createElement('button'); d.className='flip-card'; d.type='button';
-  d.setAttribute('aria-label','Pieza: toca para ver su nombre');
+  d.setAttribute('aria-label',T('Pieza: toca para ver su nombre'));
   d.innerHTML='<div class="flip-inner">'+
-    '<div class="flip-face front"><div class="glyph">'+p.bg+'</div><div class="flip-hint">toca para ver</div></div>'+
-    '<div class="flip-face back"><div class="nm">'+p.nm+'</div><div class="val">'+p.val+'</div></div>'+
+    '<div class="flip-face front"><div class="glyph">'+p.bg+'</div><div class="flip-hint">'+T('toca para ver')+'</div></div>'+
+    '<div class="flip-face back"><div class="nm">'+T(p.nm)+'</div><div class="val">'+T(p.val)+'</div></div>'+
     '</div>';
   d.addEventListener('click',function(){ d.classList.toggle('flipped'); });
   grid.appendChild(d);
@@ -200,15 +261,14 @@ function showMove(p){
   });
   // resalta selección
   var scell=demo.cells[rc[0]+'-'+rc[1]]; if(scell) scell.classList.add('sel');
-  document.getElementById('mvName').textContent='El '+p.nm.toLowerCase()==='el peón'?'El peón':'El '+p.nm.toLowerCase();
-  document.getElementById('mvName').textContent=(p.k==='q'||p.k==='r')?('La '+p.nm.toLowerCase()):('El '+p.nm.toLowerCase());
-  document.getElementById('mvText').textContent=p.text;
-  document.getElementById('mvSay').textContent=p.say;
+  document.getElementById('mvName').textContent=T((p.k==='q'||p.k==='r')?('La '+p.nm.toLowerCase()):('El '+p.nm.toLowerCase()));
+  document.getElementById('mvText').textContent=T(p.text);
+  document.getElementById('mvSay').textContent=T(p.say);
   Array.prototype.slice.call(moveGrid.children).forEach(function(x){x.classList.remove('sel');});
 }
 PIECES.forEach(function(p,i){
   var d=document.createElement('div'); d.className='piece-card'; d.style.padding='10px';
-  d.innerHTML='<div class="glyph" style="font-size:clamp(30px,7vw,44px)">'+p.bg+'</div><div class="nm" style="font-size:14px">'+p.nm+'</div>';
+  d.innerHTML='<div class="glyph" style="font-size:clamp(30px,7vw,44px)">'+p.bg+'</div><div class="nm" style="font-size:14px">'+T(p.nm)+'</div>';
   d.addEventListener('click',function(){
     Array.prototype.slice.call(moveGrid.children).forEach(function(x){x.classList.remove('sel');});
     d.classList.add('sel'); showMove(p);
@@ -228,17 +288,17 @@ function newQuiz(){
   opts.sort(function(){return Math.random()-0.5;});
   qAnswers.innerHTML='';
   opts.forEach(function(o){
-    var b=document.createElement('button');b.textContent=o.nm;
+    var b=document.createElement('button');b.textContent=T(o.nm);b.dataset.nm=o.nm;
     b.addEventListener('click',function(){answerQuiz(o,b);});
     qAnswers.appendChild(b);
   });
 }
 function answerQuiz(o,btn){
   var buttons=qAnswers.querySelectorAll('button'); buttons.forEach(function(b){b.disabled=true;});
-  if(o===qCur){ btn.classList.add('ok'); qStreak++; qFb.textContent='¡Muy bien! 🎉'; qFb.style.color='var(--selva-cl)';
+  if(o===qCur){ btn.classList.add('ok'); qStreak++; qFb.textContent=T('¡Muy bien!')+' 🎉'; qFb.style.color='var(--selva-cl)';
     if(window.celebrate) celebrate(btn); if(window.AA) AA.award('aprende'); }
-  else{ btn.classList.add('no'); qStreak=0; qFb.textContent='Es el '+qCur.nm.toLowerCase(); qFb.style.color='var(--fuego)';
-    buttons.forEach(function(b){if(b.textContent===qCur.nm)b.classList.add('ok');});}
+  else{ btn.classList.add('no'); qStreak=0; qFb.textContent=T('Es el')+' '+T(qCur.nm).toLowerCase(); qFb.style.color='var(--fuego)';
+    buttons.forEach(function(b){if(b.dataset.nm===qCur.nm)b.classList.add('ok');});}
   qStreakEl.textContent=qStreak;
   qStars.textContent='⭐'.repeat(Math.min(qStreak,10));
   setTimeout(newQuiz,1200);
@@ -251,11 +311,11 @@ var memGrid=document.getElementById('memGrid'), memPairs=document.getElementById
 var flipped=[], lock=false, pairs=0, tries=0, memMode='nombres', memNeed=6;
 function memDefs(){
   var defs=PIECES.map(function(p){
-    return {id:p.k, face:p.bg, label: memMode==='mueve'?MOVE_DESC[p.k]:p.nm};
+    return {id:p.k, face:p.bg, label: T(memMode==='mueve'?MOVE_DESC[p.k]:p.nm)};
   });
   if(memMode==='ocho'){
-    defs.push({id:'jaque', face:'+', label:'Jaque'});
-    defs.push({id:'mate', face:'#', label:'Mate'});
+    defs.push({id:'jaque', face:'+', label:T('Jaque')});
+    defs.push({id:'mate', face:'#', label:T('Mate')});
   }
   return defs;
 }
@@ -286,7 +346,7 @@ function flip(d){
     if(flipped[0].dataset.id===flipped[1].dataset.id){
       flipped.forEach(function(x){x.classList.add('done');x.classList.remove('up');});
       pairs++; memPairs.textContent=pairs; flipped=[]; lock=false;
-      if(pairs===memNeed){memFb.textContent='¡Ganaste en '+tries+' intentos! 🏆'; memFb.style.color='var(--ambar)';
+      if(pairs===memNeed){memFb.textContent=T('¡Ganaste en')+' '+tries+' '+T('intentos!')+' 🏆'; memFb.style.color='var(--ambar)';
         if(window.celebrate) celebrate(document.getElementById('memGrid'));
         if(window.AA) AA.award('memoria');}
     } else {
@@ -309,7 +369,7 @@ var glotonLeft=document.getElementById('glotonLeft'), glotonMovesEl=document.get
 function countPawns(state){var n=0;for(var r=0;r<8;r++)for(var c=0;c<8;c++){var p=state.board[r][c];if(p&&p.toLowerCase()==='p')n++;}return n;}
 function glotonStart(){
   glotonMoves=0; glotonMovesEl.textContent='0';
-  glotonFb.innerHTML='Peones por comer: <span id="glotonLeft">6</span>';
+  glotonFb.innerHTML=T('Peones por comer:')+' <span id="glotonLeft">6</span>';
   glotonLeft=document.getElementById('glotonLeft');
   if(!glotonBoard){
     glotonBoard=new ChessBoard(document.getElementById('glotonBoard'),{
@@ -327,11 +387,11 @@ function glotonAfter(){
   glotonMoves++; glotonMovesEl.textContent=glotonMoves;
   var left=countPawns(glotonBoard.state);
   if(left>0){
-    glotonFb.innerHTML='Peones por comer: <span id="glotonLeft">'+left+'</span>';
+    glotonFb.innerHTML=T('Peones por comer:')+' <span id="glotonLeft">'+left+'</span>';
     glotonLeft=document.getElementById('glotonLeft');
   } else {
     glotonBoard.lock(true);
-    glotonFb.innerHTML='¡Te los comiste todos! 🏆 en '+glotonMoves+' saltos';
+    glotonFb.innerHTML=T('¡Te los comiste todos!')+' 🏆 '+T('en')+' '+glotonMoves+' '+T('saltos');
     glotonFb.style.color='var(--ambar)';
     if(window.celebrate) celebrate(document.getElementById('glotonBoard'));
     if(window.AA) AA.award('aprende');
@@ -353,6 +413,5 @@ showMove(PIECES[4]); document.querySelectorAll('#moveGrid .piece-card')[4].class
 newQuiz(); buildMem(); glotonStart();
 })();
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>
