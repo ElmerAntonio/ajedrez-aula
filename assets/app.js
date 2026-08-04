@@ -61,6 +61,7 @@ function applyRole(){
     });
     ensureBurger(navIn);
     ensureRoleChip(navIn, r);
+    ensureLangChip(navIn);
   }
   // ---- reordena y filtra las tarjetas del inicio ----
   var cards=document.querySelector('.section-cards');
@@ -118,9 +119,9 @@ function ensureRoleChip(navIn, r){
     chip.addEventListener('click',function(){ openRoleModal(false); });
     navIn.appendChild(chip);
   } else { navIn.appendChild(chip); }
-  chip.innerHTML = r ? (ROLES[r].icon+' '+ROLES[r].label+' <span aria-hidden="true">▾</span>')
-                     : '👤 Elegir rol';
-  chip.setAttribute('aria-label', r ? ('Rol actual: '+ROLES[r].label+'. Pulsa para cambiarlo.') : 'Elegir tu rol');
+  chip.innerHTML = r ? (ROLES[r].icon+' '+t(ROLES[r].label)+' <span aria-hidden="true">▾</span>')
+                     : ('👤 '+t('Elegir rol'));
+  chip.setAttribute('aria-label', r ? ('Rol: '+t(ROLES[r].label)) : t('Elegir rol'));
 }
 
 /* ---------- MODAL DE ROL (accesible) ---------- */
@@ -157,14 +158,14 @@ function buildModal(){
   ov.id='roleModal'; ov.className='rm-overlay';
   ov.innerHTML=
     '<div class="rm-box" role="dialog" aria-modal="true" aria-labelledby="rmTitle" aria-describedby="rmDesc">'+
-      '<h2 id="rmTitle" style="font-size:clamp(22px,4vw,32px)">¿Quién eres?</h2>'+
-      '<p id="rmDesc" class="note" style="margin:.3em 0 1em">Elige tu rol para acomodar la página a lo que necesitas. Puedes cambiarlo cuando quieras.</p>'+
+      '<h2 id="rmTitle" style="font-size:clamp(22px,4vw,32px)">'+t('¿Quién eres?')+'</h2>'+
+      '<p id="rmDesc" class="note" style="margin:.3em 0 1em">'+t('Elige tu rol para acomodar la página a lo que necesitas. Puedes cambiarlo cuando quieras.')+'</p>'+
       '<div class="rm-opts">'+
-        '<button data-role="maestro" type="button"><span class="rm-ic">👩‍🏫</span><b>Maestro</b><small>Guía, reglamento e imprimibles</small></button>'+
-        '<button data-role="estudiante" type="button"><span class="rm-ic">🧒</span><b>Estudiante</b><small>Practica, juega y sube de nivel</small></button>'+
-        '<button data-role="nino" type="button"><span class="rm-ic">🧸</span><b>Niño pequeño</b><small>Aprende jugando desde cero</small></button>'+
+        '<button data-role="maestro" type="button"><span class="rm-ic">👩‍🏫</span><b>'+t('Maestro')+'</b><small>'+t('Guía, reglamento e imprimibles')+'</small></button>'+
+        '<button data-role="estudiante" type="button"><span class="rm-ic">🧒</span><b>'+t('Estudiante')+'</b><small>'+t('Practica, juega y sube de nivel')+'</small></button>'+
+        '<button data-role="nino" type="button"><span class="rm-ic">🧸</span><b>'+t('Niño pequeño')+'</b><small>'+t('Aprende jugando desde cero')+'</small></button>'+
       '</div>'+
-      '<button class="rm-skip btn ghost sm" type="button" style="margin-top:14px">Ahora no</button>'+
+      '<button class="rm-skip btn ghost sm" type="button" style="margin-top:14px">'+t('Ahora no')+'</button>'+
     '</div>';
   ov.addEventListener('click',function(e){ if(e.target===ov) closeRoleModal(); });
   ov.querySelectorAll('button[data-role]').forEach(function(b){
@@ -227,14 +228,104 @@ function injectSkipLink(){
   var main=document.querySelector('main, .wrap'); if(!main) return;
   if(!main.id) main.id='main';
   var a=document.createElement('a'); a.className='skip-link'; a.href='#'+main.id;
-  a.textContent='Saltar al contenido';
+  a.textContent=t('Saltar al contenido');
   document.body.insertBefore(a, document.body.firstChild);
+}
+
+/* ---------- LOGO Y FAVICON ---------- */
+var LOGO_SVG='<svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true">'+
+  '<rect width="64" height="64" rx="15" fill="#4C7A58"/>'+
+  '<rect x="6" y="6" width="52" height="52" rx="11" fill="none" stroke="#6FA37C" stroke-width="2" opacity=".6"/>'+
+  '<text x="32" y="48" font-size="42" text-anchor="middle" fill="#F0E7D2" '+
+  'font-family="DejaVu Sans,\'Segoe UI Symbol\',sans-serif">♞</text></svg>';
+function injectBranding(){
+  // favicon
+  if(!document.querySelector('link[rel="icon"]')){
+    var uri='data:image/svg+xml,'+encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#4C7A58"/>'+
+      '<text x="32" y="48" font-size="42" text-anchor="middle" fill="#F0E7D2" font-family="sans-serif">♞</text></svg>');
+    var link=document.createElement('link'); link.rel='icon'; link.type='image/svg+xml'; link.href=uri;
+    document.head.appendChild(link);
+  }
+  // logo en la marca de la barra
+  var brand=document.querySelector('.brand');
+  if(brand && !brand.querySelector('.logo')){
+    Array.prototype.slice.call(brand.childNodes).forEach(function(n){
+      if(n.nodeType===3 && n.textContent.indexOf('♞')>=0) n.textContent=n.textContent.replace('♞','').replace(/^\s+/,'');
+    });
+    var logo=document.createElement('span'); logo.className='logo'; logo.innerHTML=LOGO_SVG;
+    brand.insertBefore(logo, brand.firstChild);
+  }
+}
+
+/* ---------- ANIMACIÓN DE CONTENIDO (scroll reveal) ---------- */
+function setupReveal(){
+  if(typeof IntersectionObserver==='undefined') return;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var sel='.card, .rule, .sec, .concept, .method, .move-mini, .badge-wall';
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.06, rootMargin:'0px 0px -40px 0px'});
+  Array.prototype.slice.call(document.querySelectorAll(sel)).forEach(function(el){
+    if(el.closest('.rm-box')) return;                 // no animar el modal
+    var top=el.getBoundingClientRect().top;
+    if(top > window.innerHeight*0.9){ el.classList.add('reveal'); io.observe(el); } // solo lo que está más abajo
+  });
+}
+
+/* ---------- IDIOMA (ES / EN) — traduce la interfaz compartida ---------- */
+var LS_LANG='aa_lang';
+var DICT={
+  'Aprende':'Learn','Guía':'Guide','Pedagogía':'Pedagogy','Reglas':'Rules','Prácticas':'Practice',
+  'Estrategias':'Strategies','Jugar':'Play','Árbitro':'Referee','Imprimibles':'Printables','Nivel':'Level',
+  'Saltar al contenido':'Skip to content','Elegir rol':'Choose role','Ahora no':'Not now',
+  '¿Quién eres?':'Who are you?','Maestro':'Teacher','Estudiante':'Student','Niño pequeño':'Young child',
+  'Guía, reglamento e imprimibles':'Guide, rules and printables','Practica, juega y sube de nivel':'Practice, play and level up',
+  'Aprende jugando desde cero':'Learn by playing from scratch',
+  'Elige tu rol para acomodar la página a lo que necesitas. Puedes cambiarlo cuando quieras.':
+    'Choose your role to tailor the page to what you need. You can change it anytime.',
+  'Ajedrez en el Aula · material educativo libre · sin fines de acreditación':
+    'Chess in the Classroom · free educational material · not for accreditation'
+};
+function getLang(){ return lsGet(LS_LANG)==='en' ? 'en' : 'es'; }
+function t(es){ return getLang()==='en' && DICT[es] ? DICT[es] : es; }
+function setLang(l){ lsSet(LS_LANG, l); location.reload(); }
+function applyLang(){
+  var en=getLang()==='en';
+  document.documentElement.lang = en?'en':'es';
+  if(!en) return; // el contenido base ya está en español
+  // navegación
+  Array.prototype.slice.call(document.querySelectorAll('.nav-in a.lnk')).forEach(function(a){
+    var k=a.textContent.trim(); if(DICT[k]) a.textContent=DICT[k];
+  });
+  // marca
+  var bs=document.querySelector('.brand span'); if(bs) bs.textContent='in the Classroom';
+  var bt=document.querySelector('.brand'); // "Ajedrez in the Classroom" → "Chess in the Classroom"
+  if(bt) Array.prototype.slice.call(bt.childNodes).forEach(function(n){ if(n.nodeType===3 && /Ajedrez/.test(n.textContent)) n.textContent=n.textContent.replace('Ajedrez','Chess'); });
+  // elementos marcados con data-i18n (traducción por página, p. ej. el inicio)
+  Array.prototype.slice.call(document.querySelectorAll('[data-en]')).forEach(function(el){
+    el.innerHTML=el.getAttribute('data-en');
+  });
+}
+function ensureLangChip(navIn){
+  var chip=document.getElementById('langChip');
+  if(!chip){
+    chip=document.createElement('button'); chip.id='langChip'; chip.className='role-chip'; chip.type='button';
+    chip.style.background='var(--tinta3)'; chip.style.color='var(--marfil)';
+    chip.addEventListener('click',function(){ setLang(getLang()==='en'?'es':'en'); });
+    navIn.appendChild(chip);
+  } else { navIn.appendChild(chip); }
+  chip.textContent = getLang()==='en' ? '🌐 ES' : '🌐 EN';
+  chip.setAttribute('aria-label', getLang()==='en'?'Cambiar a español':'Switch to English');
 }
 
 /* ---------- arranque ---------- */
 function init(){
+  injectBranding();
   injectSkipLink();
   applyRole();
+  applyLang();
+  setupReveal();
   // primera visita al inicio: pregunta el rol
   var isHome=!!document.querySelector('.section-cards');
   if(isHome && !getRole()){ setTimeout(function(){ openRoleModal(true); }, 350); }

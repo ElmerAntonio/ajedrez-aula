@@ -191,8 +191,9 @@ var qcount=el('qcount'),qtitle=el('qtitle'),qsub=el('qsub'),optsEl=el('opts'),fb
     nextBtn=el('next'),prog=el('prog'),holder=el('qboard-holder'),qarea=el('qarea'),qdiff=el('qdiff');
 var DIFF=['','Fácil','Media','Difícil'];
 
+function proceed(){ i++; if(i>=Q.length) finish(); else render(); }
 function render(){
-  answered=false; nextBtn.disabled=true; fb.textContent=''; fb.className='status'; optsEl.innerHTML=''; holder.innerHTML='';
+  answered=false; nextBtn.disabled=true; nextBtn.style.display=''; fb.textContent=''; fb.className='status'; optsEl.innerHTML=''; holder.innerHTML='';
   prog.style.width=(i/Q.length*100)+'%';
   var q=Q[i];
   qcount.textContent='Pregunta '+(i+1)+' de '+Q.length;
@@ -213,16 +214,24 @@ function credit(q){ pts+=q.d; areaScore[q.area]+=q.d; }
 function answerMC(q,idx,btn){
   if(answered) return; answered=true;
   var buttons=optsEl.querySelectorAll('.opt'); buttons.forEach(function(b){b.disabled=true;});
-  if(idx===q.correct){ btn.classList.add('correct'); credit(q); fb.textContent='✅ Correcto'; fb.className='status win'; }
-  else { btn.classList.add('wrong'); buttons[q.correct].classList.add('correct'); fb.textContent='La respuesta correcta está en verde.'; fb.className='status lose'; }
-  nextBtn.disabled=false;
+  if(idx===q.correct){
+    btn.classList.add('correct'); credit(q); fb.textContent='✅ Correcto'; fb.className='status win';
+    nextBtn.style.display='none'; setTimeout(proceed,800);            // correcto: avanza solo
+  } else {
+    btn.classList.add('wrong'); buttons[q.correct].classList.add('correct');
+    fb.textContent='La respuesta correcta está en verde. Lee y pulsa Siguiente.'; fb.className='status lose';
+    nextBtn.disabled=false;                                            // incorrecto: se queda
+  }
 }
 function answerBoard(q,mv){
   if(answered) return false;
-  if(q.check(mv)){ answered=true; credit(q); fb.textContent='✅ ¡Bien jugado!'; fb.className='status win'; nextBtn.disabled=false; qboardObj.lock(true); return true; }
+  if(q.check(mv)){
+    answered=true; credit(q); fb.textContent='✅ ¡Bien jugado!'; fb.className='status win';
+    qboardObj.lock(true); nextBtn.style.display='none'; setTimeout(proceed,850); return true;
+  }
   fb.textContent='🔁 Esa no. Inténtalo otra vez.'; fb.className='status lose'; return false;
 }
-nextBtn.addEventListener('click',function(){ i++; if(i>=Q.length) finish(); else render(); });
+nextBtn.addEventListener('click', proceed);
 
 var LEVELS=[
  {min:0,  name:'Principiante', desc:'Estás dando tus primeros pasos. Ya reconoces el tablero y algunas piezas; ahora toca afianzar cómo se mueve cada una y las capturas.'},
