@@ -225,7 +225,9 @@ global.AA={ getRole:getRole, setRole:setRole, openRoleModal:openRoleModal, award
             // traduce una cadena suelta generada por JS (usa el diccionario de página o el compartido)
             t:function(es){ if(getLang()!=='en') return es;
               var d=global.PAGE_I18N; if(d&&d[es]!=null) return d[es];
-              if(COMMON[es]!=null) return COMMON[es]; return DICT[es]||es; },
+              if(COMMON[es]!=null) return COMMON[es];
+              if(global.I18N_EXTRA&&global.I18N_EXTRA[es]!=null) return global.I18N_EXTRA[es];
+              return DICT[es]||es; },
             // vuelve a traducir el contenido tras generar HTML nuevo dinámicamente
             translateEls:function(){ translateEls(); } };
 
@@ -342,7 +344,9 @@ function translateEls(){
     if(el.hasAttribute('data-en')) return;                     // ya traducido a mano
     if(el.querySelector('p,li,ul,ol,h1,h2,h3,h4,h5,h6,table')) return; // no es una hoja de texto
     var key=normTxt(el.textContent); if(!key) return;
-    var en=dict[key]; if(en==null) en=COMMON[key];
+    var en=dict[key];
+    if(en==null) en=COMMON[key];
+    if(en==null && global.I18N_EXTRA) en=global.I18N_EXTRA[key];
     if(en!=null && normTxt(el.innerHTML)!==normTxt(en)) el.innerHTML=en;
   });
 }

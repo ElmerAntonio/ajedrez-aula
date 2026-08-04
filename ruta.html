@@ -57,7 +57,7 @@
     <div class="note mono">Tu rango</div>
     <div class="name" id="rankName">—</div>
     <div class="xpbar"><i id="xp"></i></div>
-    <div class="mono" style="color:var(--selva-cl)">Habilidades: <span id="xpCount">0</span> / 8</div>
+    <div class="mono" style="color:var(--selva-cl)"><span data-en="Skills:">Habilidades:</span> <span id="xpCount">0</span> / 8</div>
   </div>
 
   <div class="tree" id="tree"></div>
@@ -69,10 +69,37 @@
 
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
+<script>
+window.PAGE_I18N={
+  __title:'My path · Chess in the Classroom',
+  'Mi ruta · árbol de habilidades':'My path · skill tree',
+  'Tu camino en el ajedrez':'Your path in chess',
+  'Como en un videojuego: avanza de la iniciación a la competencia. Cada habilidad se ilumina cuando ganas su medalla practicando, jugando y aprendiendo. Todo se guarda en tu dispositivo.':
+    'Just like a video game: advance from beginner to competition. Each skill <strong>lights up</strong> when you earn its badge by practicing, playing and learning. Everything is saved on your device.',
+  'Tu rango':'Your rank',
+  'Solo para enseñar y aprender. El progreso es un juego motivador; no otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Progress is a motivating game; it grants no certificates or accreditation. Published with GitHub Pages.',
+  // tiers, nodos, rangos (JS)
+  '1 · Iniciación':'1 · Initiation','2 · Táctica':'2 · Tactics','3 · Estrategia':'3 · Strategy',
+  '4 · Juego':'4 · Play','5 · Competencia':'5 · Competition',
+  'Conoce las piezas':'Meet the pieces','Reconoces las 6 piezas':'You recognize the 6 pieces',
+  'Buena memoria':'Good memory','Ganas el juego de memoria':'You win the memory game',
+  'Primer acierto':'First correct','Resuelves un ejercicio':'You solve an exercise',
+  'Sé anotar':'I can notate','Aciertas una notación':'You get a notation right',
+  'Estratega':'Strategist','Aplicas una estrategia':'You apply a strategy',
+  'Ganador':'Winner','Le ganas a la IA':'You beat the AI',
+  'Me conozco':'I know myself','Completas el test de nivel':'You complete the level test',
+  'Juez justo':'Fair judge','Apruebas las prácticas de árbitro':'You pass the referee practice',
+  'Aprendiz':'Apprentice','Peón valiente':'Brave pawn','Escudero':'Squire','Caballero':'Knight',
+  'Maestro del tablero':'Master of the board','Gran maestro escolar':'School grandmaster',
+  'repasar':'review','ir a ganarla →':'go earn it →'
+};
+</script>
 <script src="assets/app.js"></script>
 <script>
 (function(){
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
 // tiers → nodos. cada nodo se desbloquea con su medalla (id de AA.badges).
 var TIERS=[
   {lbl:'1 · Iniciación', nodes:[
@@ -101,7 +128,7 @@ var tree=document.getElementById('tree');
 TIERS.forEach(function(tier,ti){
   var tierDone=true;
   var sec=document.createElement('div'); sec.className='tier';
-  sec.innerHTML='<div class="tier-lbl">'+tier.lbl+'</div>';
+  sec.innerHTML='<div class="tier-lbl">'+T(tier.lbl)+'</div>';
   var nodes=document.createElement('div'); nodes.className='nodes';
   tier.nodes.forEach(function(n){
     total++;
@@ -111,8 +138,8 @@ TIERS.forEach(function(tier,ti){
     var cls = done?'done':(open?'open':'locked');
     var a=document.createElement('a'); a.className='node '+cls; a.href=n.go;
     a.innerHTML='<span class="state">'+(done?'✅':(open?'▶':'🔒'))+'</span>'+
-      '<div class="ic">'+n.ic+'</div><h3>'+n.t+'</h3><p>'+n.d+'</p>'+
-      '<span class="go">'+(done?'repasar':'ir a ganarla →')+'</span>';
+      '<div class="ic">'+n.ic+'</div><h3>'+T(n.t)+'</h3><p>'+T(n.d)+'</p>'+
+      '<span class="go">'+T(done?'repasar':'ir a ganarla →')+'</span>';
     nodes.appendChild(a);
   });
   sec.appendChild(nodes); tree.appendChild(sec);
@@ -121,7 +148,7 @@ TIERS.forEach(function(tier,ti){
 document.getElementById('xpCount').textContent=earned;
 document.getElementById('xp').style.width=Math.round(earned/total*100)+'%';
 var rank=RANKS[Math.min(RANKS.length-1, Math.round(earned/total*(RANKS.length-1)))];
-document.getElementById('rankName').textContent=rank;
+document.getElementById('rankName').textContent=T(rank);
 })();
 </script>
 </body>
