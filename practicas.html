@@ -9,6 +9,26 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/theme.css">
+<style>
+/* ---- Modo Foco Socrático ---- */
+.foco-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 16px}
+.socratic{margin-top:14px;border:1px solid #33473C;border-radius:16px;background:linear-gradient(180deg,#22312a,#1b2721);
+  padding:16px 18px}
+.socratic .who{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--selva-cl);
+  display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.socratic .who b{font-size:20px;line-height:1}
+.soc-q{font-size:clamp(15.5px,1.5vw,18.5px);line-height:1.5;color:var(--marfil);min-height:2.4em}
+.soc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.soc-step{font-family:var(--mono);font-size:11px;color:#7E9086;margin-top:8px}
+/* pantalla de foco: quita distracciones y centra el ejercicio */
+body.foco .nav,body.foco .foot,body.foco .disclaimer,body.foco #tabsWrap,
+body.foco .eyebrow,body.foco h1,body.foco>.wrap>.lead,body.foco .card.cool{display:none !important}
+body.foco{background:radial-gradient(1200px 700px at 50% -10%,rgba(76,122,88,.28),transparent 60%),var(--tinta)}
+body.foco .wrap{max-width:1080px;padding-top:24px}
+.foco-exit{position:fixed;top:14px;right:16px;z-index:60}
+body:not(.foco) .foco-exit{display:none}
+body.foco .game{gap:26px}
+</style>
 </head>
 <body>
 <nav class="nav"><div class="nav-in">
@@ -31,12 +51,19 @@
   <h1>Ejercicios para resolver</h1>
   <p class="lead" style="margin:.6em 0 1.2em">Cada ejercicio tiene una única jugada correcta. Mueve las piezas del tablero; la página te dice al instante si acertaste. Empieza por <strong>Fácil</strong> y avanza cuando te sientas cómodo. Ideal para que el alumno practique solo o en parejas.</p>
 
-  <div class="seg" id="tabs" style="margin-bottom:16px">
-    <button data-lv="facil" class="on">🟢 Fácil</button>
-    <button data-lv="medio">🟡 Medio</button>
-    <button data-lv="dificil">🔴 Difícil</button>
-    <button data-lv="notacion">🔤 Notación</button>
+  <div id="tabsWrap">
+    <div class="foco-bar">
+      <button class="btn ghost sm" id="focoBtn" type="button">🧘 Modo foco socrático</button>
+      <span class="note" id="focoHint">Un tutor que te hace preguntas —no te da la respuesta— y quita las distracciones para que pienses.</span>
+    </div>
+    <div class="seg" id="tabs" style="margin-bottom:16px">
+      <button data-lv="facil" class="on">🟢 Fácil</button>
+      <button data-lv="medio">🟡 Medio</button>
+      <button data-lv="dificil">🔴 Difícil</button>
+      <button data-lv="notacion">🔤 Notación</button>
+    </div>
   </div>
+  <button class="btn foco-exit" id="focoExit" type="button">✕ Salir del foco</button>
 
   <div class="game">
     <div class="board-wrap">
@@ -56,6 +83,15 @@
         <h3 id="ptitle" style="margin-top:.5em">—</h3>
         <p id="pdesc" style="margin-top:.2em">—</p>
         <p class="note" id="phint" style="margin-top:.8em;display:none"></p>
+      </div>
+      <div class="socratic" id="socratic">
+        <div class="who"><b>🦉</b> <span id="socWho" data-en="Socratic tutor">Tutor socrático</span></div>
+        <div class="soc-q" id="socQ">Pulsa «Guíame» y te haré preguntas para que encuentres la jugada tú mismo, sin darte la respuesta de inmediato.</div>
+        <div class="soc-actions">
+          <button class="btn sm" id="socNext" type="button">▶ Guíame</button>
+          <button class="btn ghost sm" id="socReset" type="button" style="display:none">↺ Empezar de nuevo</button>
+        </div>
+        <div class="soc-step" id="socStep"></div>
       </div>
       <div class="card cool" style="margin-top:14px">
         <h3>Cómo se juega</h3>
@@ -104,7 +140,48 @@ window.PAGE_I18N={
   'Notación':'Notation',
   'Lee la jugada marcada en el tablero.':'Read the move marked on the board.',
   '💡 Primero la inicial de la pieza (el peón no lleva), luego el destino. x = captura.':
-    '💡 First the piece initial (the pawn has none), then the destination. x = capture.'
+    '💡 First the piece initial (the pawn has none), then the destination. x = capture.',
+  // ---- Modo Foco Socrático ----
+  '🧘 Modo foco socrático':'🧘 Socratic focus mode',
+  'Un tutor que te hace preguntas —no te da la respuesta— y quita las distracciones para que pienses.':
+    'A tutor that asks you questions —it doesn\'t give the answer— and removes distractions so you think.',
+  '✕ Salir del foco':'✕ Exit focus',
+  'Pulsa «Guíame» y te haré preguntas para que encuentres la jugada tú mismo, sin darte la respuesta de inmediato.':
+    'Press «Guide me» and I\'ll ask you questions so you find the move yourself, without giving you the answer right away.',
+  '▶ Guíame':'▶ Guide me','Otra pista →':'Another hint →','↺ Empezar de nuevo':'↺ Start over',
+  'Concéntrate en tu':'Focus on your','¿A qué casilla debe ir?':'Which square should it go to?',
+  'La jugada es':'The move is','Hazla en el tablero.':'Play it on the board.','Paso':'Step','pieza':'piece',
+  'peón':'pawn','caballo':'knight','alfil':'bishop','torre':'rook','dama':'queen','rey':'king',
+  // preguntas por objetivo (want)
+  '¿Qué pieza del rival puedes capturar con ventaja en esta posición?':'Which enemy piece can you capture with an advantage in this position?',
+  '¿Cómo le das jaque al rey rival en una sola jugada?':'How do you give check to the enemy king in a single move?',
+  '¿Puedes dar jaque mate en UNA jugada? Busca el jaque sin escape.':'Can you give checkmate in ONE move? Look for the check with no escape.',
+  '¿Cuál es la mejor jugada aquí? Piensa en el plan que te conviene.':'What is the best move here? Think about the plan that suits you.',
+  // preguntas por tema
+  'Recuerda cómo se mueve cada pieza. ¿Cuál de las tuyas llega hasta esa pieza rival para capturarla?':
+    'Remember how each piece moves. Which of yours reaches that enemy piece to capture it?',
+  'Tu peón está muy cerca del final. ¿Qué le pasa a un peón cuando llega a la última fila?':
+    'Your pawn is very close to the end. What happens to a pawn when it reaches the last rank?',
+  'Un jaque obliga al rival a responder. ¿Desde qué casilla amenazas directamente al rey?':
+    'A check forces the opponent to respond. From which square do you threaten the king directly?',
+  'Un tenedor ataca dos cosas a la vez. ¿Hay una casilla desde donde UNA pieza amenace dos objetivos?':
+    'A fork attacks two things at once. Is there a square from which ONE piece threatens two targets?',
+  'Un peón también hace tenedor al comer. ¿Qué dos piezas rivales están juntas, en diagonal a tu peón?':
+    'A pawn also forks when it captures. Which two enemy pieces are together, diagonal to your pawn?',
+  'En la brocheta das jaque y detrás cae algo valioso. ¿En qué línea están el rey y una pieza grande, uno tras otro?':
+    'In a skewer you give check and something valuable falls behind. On which line are the king and a big piece, one behind the other?',
+  'Tu dama puede amenazar dos cosas por líneas distintas. ¿Qué casilla toca al rey y a otra pieza a la vez?':
+    'Your queen can threaten two things on different lines. Which square hits the king and another piece at once?',
+  'En el descubierto, mueves una pieza y OTRA que estaba detrás da el jaque. ¿Cuál de las tuyas tapa a otra?':
+    'In a discovery, you move one piece and ANOTHER behind it gives check. Which of yours is blocking another?',
+  'Una pieza rival está clavada: no puede moverse porque detrás está algo mayor. ¿Cómo la atacas otra vez?':
+    'An enemy piece is pinned: it can\'t move because something greater is behind it. How do you attack it again?',
+  'El rey rival está encerrado por sus propios peones. ¿Qué pieza tuya entra por la última fila?':
+    'The enemy king is boxed in by its own pawns. Which of your pieces comes in on the last rank?',
+  'Busca el jaque del que el rey no pueda escapar, ni tapar, ni capturar. ¿Cuál es?':
+    'Look for the check the king can\'t escape, block or capture. Which is it?',
+  'Tu rey está en el centro, expuesto. ¿Cuál es la jugada que lo pone a salvo y activa la torre?':
+    'Your king is in the center, exposed. What move brings it to safety and activates the rook?'
 };
 </script>
 <script src="assets/app.js"></script>
@@ -160,10 +237,13 @@ function load(){
   pdesc.textContent=T(current.d);
   phint.style.display='none';
   phint.textContent='';
+  document.getElementById('socratic').style.display='';
+  resetSocratic();
 }
 
 function loadNotation(){
   puzzleControls.style.display='none'; notaOpts.style.display='grid';
+  document.getElementById('socratic').style.display='none';
   var fen=NOTA_FENS[Math.floor(Math.random()*NOTA_FENS.length)];
   var st=Chess.parseFEN(fen);
   var moves=Chess.legalMoves(st);
@@ -271,6 +351,90 @@ document.getElementById('show').addEventListener('click',function(){
   if(cell) cell.classList.add('sel');
   statusEl.textContent=T('La jugada correcta está marcada.');
   statusEl.className='status check';
+});
+
+/* ---------- MODO FOCO SOCRÁTICO ----------
+   Un tutor basado en reglas que, en vez de dar la respuesta, hace preguntas
+   cada vez más concretas hasta que el estudiante halla la jugada. Usa el motor
+   (posición, tema de la táctica y solución) para escalonar las preguntas. */
+var PNAME={p:'peón',n:'caballo',b:'alfil',r:'torre',q:'dama',k:'rey'};
+var WANT_Q={
+  capture:'¿Qué pieza del rival puedes capturar con ventaja en esta posición?',
+  check:'¿Cómo le das jaque al rey rival en una sola jugada?',
+  mate:'¿Puedes dar jaque mate en UNA jugada? Busca el jaque sin escape.',
+  move:'¿Cuál es la mejor jugada aquí? Piensa en el plan que te conviene.'
+};
+var TEMA_Q={
+  captura:'Recuerda cómo se mueve cada pieza. ¿Cuál de las tuyas llega hasta esa pieza rival para capturarla?',
+  coronacion:'Tu peón está muy cerca del final. ¿Qué le pasa a un peón cuando llega a la última fila?',
+  jaque:'Un jaque obliga al rival a responder. ¿Desde qué casilla amenazas directamente al rey?',
+  tenedor:'Un tenedor ataca dos cosas a la vez. ¿Hay una casilla desde donde UNA pieza amenace dos objetivos?',
+  'tenedor-peon':'Un peón también hace tenedor al comer. ¿Qué dos piezas rivales están juntas, en diagonal a tu peón?',
+  brocheta:'En la brocheta das jaque y detrás cae algo valioso. ¿En qué línea están el rey y una pieza grande, uno tras otro?',
+  'ataque-doble':'Tu dama puede amenazar dos cosas por líneas distintas. ¿Qué casilla toca al rey y a otra pieza a la vez?',
+  descubierto:'En el descubierto, mueves una pieza y OTRA que estaba detrás da el jaque. ¿Cuál de las tuyas tapa a otra?',
+  clavada:'Una pieza rival está clavada: no puede moverse porque detrás está algo mayor. ¿Cómo la atacas otra vez?',
+  pasillo:'El rey rival está encerrado por sus propios peones. ¿Qué pieza tuya entra por la última fila?',
+  mate:'Busca el jaque del que el rey no pueda escapar, ni tapar, ni capturar. ¿Cuál es?',
+  enroque:'Tu rey está en el centro, expuesto. ¿Cuál es la jugada que lo pone a salvo y activa la torre?'
+};
+var socQ=document.getElementById('socQ'), socNext=document.getElementById('socNext'),
+    socReset=document.getElementById('socReset'), socStepEl=document.getElementById('socStep');
+var ladder=[], socStage=0;
+
+function buildLadder(){
+  ladder=[];
+  if(!current||!current.sol||!current.sol[0]) return;
+  var fromSq=current.sol[0][0], toSq=current.sol[0][1];
+  var fr=Chess.sqToRC(fromSq);
+  var code=(board.state.board[fr[0]]||[])[fr[1]];
+  var pieza=code?T(PNAME[code.toLowerCase()]||'pieza'):T('pieza');
+  ladder.push(T(WANT_Q[current.want]||WANT_Q.move));
+  if(TEMA_Q[current.tema]) ladder.push(T(TEMA_Q[current.tema]));
+  if(current.h) ladder.push('💡 '+T(current.h));
+  ladder.push(T('Concéntrate en tu')+' '+pieza+' '+T('de')+' '+fromSq+'. '+T('¿A qué casilla debe ir?'));
+  ladder.push({reveal:true, from:fromSq, to:toSq});
+}
+function resetSocratic(){
+  socStage=0; ladder=[];
+  socQ.textContent=T('Pulsa «Guíame» y te haré preguntas para que encuentres la jugada tú mismo, sin darte la respuesta de inmediato.');
+  socNext.style.display=''; socNext.textContent=T('▶ Guíame');
+  socReset.style.display='none'; socStepEl.textContent='';
+}
+function socAdvance(){
+  if(!ladder.length) buildLadder();
+  if(socStage>=ladder.length) return;
+  var step=ladder[socStage];
+  if(step && step.reveal){
+    // último peldaño: muestra la jugada en el tablero
+    var fr=Chess.sqToRC(step.from), to=Chess.sqToRC(step.to);
+    board.sel=fr;
+    board.legal=Chess.legalMoves(board.state).filter(function(m){return m.from[0]===fr[0]&&m.from[1]===fr[1];});
+    board.render();
+    var cell=board.cells[to[0]+'-'+to[1]]; if(cell) cell.classList.add('sel');
+    socQ.textContent=T('La jugada es')+' '+step.from+' → '+step.to+'. '+T('Hazla en el tablero.');
+    socNext.style.display='none'; socReset.style.display='';
+  } else {
+    socQ.textContent=step;
+    socNext.textContent=T('Otra pista →');
+  }
+  socStage++;
+  socStepEl.textContent=T('Paso')+' '+Math.min(socStage,ladder.length)+' / '+ladder.length;
+  if(socStage>=ladder.length){ socNext.style.display='none'; socReset.style.display=''; }
+}
+socNext.addEventListener('click', socAdvance);
+socReset.addEventListener('click', resetSocratic);
+
+/* ---------- pantalla de foco (sin distracciones) ---------- */
+document.getElementById('focoBtn').addEventListener('click',function(){
+  document.body.classList.add('foco');
+  window.scrollTo(0,0);
+});
+document.getElementById('focoExit').addEventListener('click',function(){
+  document.body.classList.remove('foco');
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape' && document.body.classList.contains('foco')) document.body.classList.remove('foco');
 });
 
 load();
