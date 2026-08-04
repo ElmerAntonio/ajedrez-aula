@@ -57,7 +57,7 @@
       <button class="btn" id="next" disabled>Siguiente →</button>
     </div>
   </div>
-  <p class="note" style="text-align:center;margin-top:14px">Decisiones correctas: <span id="score" class="mono" style="color:var(--ambar)">0</span> / 8</p>
+  <p class="note" style="text-align:center;margin-top:14px"><span data-en="Correct decisions:">Decisiones correctas:</span> <span id="score" class="mono" style="color:var(--ambar)">0</span> / 8</p>
 
   <div id="done" style="display:none;text-align:center;margin-top:20px">
     <div class="card" style="padding:clamp(22px,4vw,36px)">
@@ -74,10 +74,147 @@
 
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
+<script>
+window.PAGE_I18N={
+  __title:'Referee practice · Chess in the Classroom',
+  'Prácticas de árbitro · casos de torneo':'Referee practice · tournament cases',
+  '¿Qué haría un árbitro?':'What would a referee do?',
+  'En un torneo escolar surgen situaciones que hay que resolver con criterio. Lee cada caso y decide. Te decimos la regla FIDE que lo respalda y cómo adaptarla en primaria. Ideal para estudiantes de 7.° a 9.° que serán jueces auxiliares.':
+    'In a school tournament, situations arise that must be resolved with judgment. Read each case and decide. We tell you the FIDE rule that backs it and how to adapt it in lower grades. Ideal for 7th–9th grade students who will be assistant referees.',
+  'Solo para enseñar y aprender. Basado en las Leyes FIDE, con fines educativos. No otorga certificación de árbitro ni acreditación oficial. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Based on the FIDE Laws, for educational purposes. It grants no referee certification or official accreditation. Published with GitHub Pages.',
+  '↻ Repasar los casos':'↻ Review the cases',
+  'Caso':'Case','de':'of','Procedimiento de reclamo':'Claim procedure',
+  // ---- casos: título / escena / opciones / explicación ----
+  'Una jugada ilegal':'An illegal move',
+  'En plena partida, un niño mueve su alfil en línea recta, como si fuera torre, y aprieta el reloj. El rival levanta la mano. ¿Qué haces?':
+    'In the middle of a game, a child moves their bishop in a straight line, as if it were a rook, and presses the clock. The opponent raises a hand. What do you do?',
+  'Dejar la jugada: ya apretó el reloj':'Let the move stand: they already pressed the clock',
+  'Restaurar la posición anterior, aplicar pieza tocada y dar 2 minutos al rival':'Restore the previous position, apply touch-move and give the opponent 2 minutes',
+  'Declarar perdedor al que hizo la jugada ilegal':'Declare the player who made the illegal move the loser',
+  'Reiniciar toda la partida':'Restart the whole game',
+  'Se restaura la posición justo antes de la jugada ilegal y se aplica la regla de pieza tocada (debe mover ese alfil de forma legal). El rival recibe 2 minutos extra. Solo la segunda jugada ilegal del mismo jugador pierde la partida.':
+    'The position just before the illegal move is restored and the touch-move rule applies (they must move that bishop legally). The opponent gets 2 extra minutes. Only the <strong>second</strong> illegal move by the same player loses the game.',
+  'Pieza tocada':'Touch-move',
+  'Un jugador toca su caballo, lo piensa mejor y quiere mover la dama. ¿Se lo permites?':'A player touches their knight, thinks better of it and wants to move the queen. Do you allow it?',
+  'Sí, mientras no lo haya soltado en otra casilla':'Yes, as long as they haven\'t released it on another square',
+  'No: si el caballo tiene una jugada legal, debe mover el caballo':'No: if the knight has a legal move, they must move the knight',
+  'Solo si avisa «compongo»':'Only if they say «I adjust»',
+  'Sí, porque aún no apretó el reloj':'Yes, because they haven\'t pressed the clock yet',
+  'Tocar una pieza propia obliga a moverla si tiene alguna jugada legal. «Compongo» (j\'adoube) solo sirve si se dice antes de tocar, y únicamente para acomodar.':
+    'Touching your own piece obliges you to move it if it has any legal move. «I adjust» (<span class="mono">j\'adoube</span>) only counts if said <strong>before</strong> touching, and only to adjust.',
+  'El rey en jaque':'The king in check',
+  'Un jugador está en jaque, pero hace una jugada que no resuelve el jaque (deja a su rey atacado) y aprieta el reloj. ¿Es válido?':
+    'A player is in check but makes a move that doesn\'t resolve it (leaving their king attacked) and presses the clock. Is it valid?',
+  'Sí, es su decisión':'Yes, it\'s their decision','No: es jugada ilegal, se restaura la posición':'No: it\'s an illegal move, the position is restored',
+  'Sí, pero pierde un turno':'Yes, but they lose a turn','Se le captura el rey y gana el rival':'The king is captured and the opponent wins',
+  'Dejar al propio rey en jaque es una jugada ilegal. Se restaura la posición y debe hacer una jugada que resuelva el jaque. El rey nunca se captura: la partida termina con el mate.':
+    'Leaving your own king in check is an illegal move. The position is restored and they must make a move that resolves the check. The king is <strong>never captured</strong>: the game ends with checkmate.',
+  'Cae la bandera':'The flag falls',
+  'A un jugador se le acaba el tiempo (cae la bandera). Pero al rival solo le queda un rey solo, sin más piezas. ¿Quién gana?':
+    'A player runs out of time (the flag falls). But the opponent has only a lone king, no other pieces. Who wins?',
+  'Gana por tiempo el que aún tiene piezas':'The one who still has pieces wins on time','Es tablas: el rival no tiene material para dar mate':'It\'s a draw: the opponent has no material to give mate',
+  'Pierde el del rey solo':'The lone-king player loses','Se reanuda con más tiempo':'Play resumes with more time',
+  'Quien se queda sin tiempo normalmente pierde, PERO si el rival no tiene material suficiente para dar mate (aquí, un rey solo), la partida es tablas. Además, la caída de bandera debe reclamarse.':
+    'Whoever runs out of time normally loses, BUT if the opponent has <strong>insufficient material to give mate</strong> (here, a lone king), the game is a <strong>draw</strong>. Also, a fallen flag must be claimed.',
+  'Enroque dudoso':'Doubtful castling',
+  'Un jugador quiere enrocar. Su torre de enroque está atacada por un alfil enemigo, y el rey no pasa por ninguna casilla atacada. ¿Puede enrocar?':
+    'A player wants to castle. Their castling rook is attacked by an enemy bishop, and the king doesn\'t pass through any attacked square. Can they castle?',
+  'No, porque la torre está atacada':'No, because the rook is attacked','Sí: la restricción de casillas atacadas es solo para el rey':'Yes: the attacked-square restriction is only for the king',
+  'No, nunca se enroca bajo ataque':'No, you never castle under attack','Solo si captura antes el alfil':'Only if they capture the bishop first',
+  'Se permite enrocar aunque la torre esté atacada o pase por una casilla atacada. Lo que no se permite es que el rey esté en jaque, pase por, o llegue a una casilla atacada.':
+    'Castling is allowed even if the <strong>rook</strong> is attacked or passes through an attacked square. What is not allowed is for the <strong>king</strong> to be in check, or to pass through or land on an attacked square.',
+  'Suena un celular':'A phone rings',
+  'Durante la partida, suena el teléfono de un jugador dentro de la sala. En un torneo con reglamento FIDE estricto, ¿qué corresponde?':
+    'During the game, a player\'s phone rings inside the room. In a tournament with strict FIDE rules, what applies?',
+  'Una advertencia y sigue jugando':'A warning and play continues','Puede perder la partida':'They can lose the game',
+  'Solo apagar el teléfono':'Just turn off the phone','Cambiar de sala':'Change rooms',
+  'La FIDE es muy estricta: si un dispositivo suena en la sala, el jugador puede perder la partida. En un torneo escolar, anúncialo con claridad antes de empezar y decide la sanción por adelantado.':
+    'FIDE is very strict: if a device rings in the room, the player <strong>can lose the game</strong>. In a school tournament, announce it clearly before starting and decide the penalty in advance.',
+  'Reclamo de triple repetición':'Threefold repetition claim',
+  'Un jugador dice que la misma posición se ha repetido tres veces y reclama tablas. ¿Qué haces primero?':
+    'A player says the same position has repeated three times and claims a draw. What do you do first?',
+  'Declaras tablas de inmediato':'Declare a draw immediately','Verificas con las planillas antes de decidir':'Verify with the scoresheets before deciding',
+  'Ignoras el reclamo':'Ignore the claim','Le das la razón al que va ganando':'Side with whoever is winning',
+  'La triple repetición no es automática: el jugador debe reclamarla y tú debes verificarla, normalmente con las planillas. Por eso anotar bien la partida es importante. A la quíntuple repetición, el árbitro declara tablas por sí mismo.':
+    'Threefold repetition is <strong>not automatic</strong>: the player must claim it and you must verify it, usually with the <strong>scoresheets</strong>. That\'s why recording the game well matters. At fivefold repetition, the referee declares the draw independently.',
+  'Cómo se reclama':'How to make a claim',
+  'Un jugador quiere hacer un reclamo al árbitro en medio de la partida. ¿Cuál es el procedimiento correcto?':
+    'A player wants to make a claim to the referee mid-game. What is the correct procedure?',
+  'Gritar para llamar al árbitro':'Shout to call the referee','Detener el reloj, levantar la mano y esperar en silencio':'Stop the clock, raise a hand and wait in silence',
+  'Discutir con el rival hasta acordar':'Argue with the opponent until you agree','Seguir jugando y reclamar al final':'Keep playing and claim at the end',
+  'El protocolo: detener el reloj, levantar la mano y esperar al árbitro sin discutir con el rival. Luego explicar el hecho y acatar la decisión. Enseña este protocolo el mismo día que enseñas el reloj.':
+    'The protocol: stop the clock, raise a hand and wait for the referee without arguing with the opponent. Then explain the facts and abide by the decision. Teach this protocol the same day you teach the clock.',
+  'Ahogado en el tablero':'Stalemate on the board',
+  'Un jugador con dama y rey contra un rey solo mueve y deja al rey rival sin ninguna jugada legal, pero SIN estar en jaque. ¿Cuál es el resultado?':
+    'A player with queen and king against a lone king moves and leaves the enemy king with no legal move, but WITHOUT being in check. What is the result?',
+  'Gana quien tiene la dama':'The one with the queen wins','Tablas por rey ahogado':'Draw by stalemate',
+  'Sigue la partida':'The game continues','Pierde el rey solo':'The lone king loses',
+  'Sin jaque y sin jugada legal es rey ahogado: tablas, aunque un bando tenga muchísimo más material. Enseña a dejar siempre una casilla al rey rival mientras buscas el mate.':
+    'No check and no legal move is <strong>stalemate</strong>: a draw, even if one side has far more material. Teach players to always leave the enemy king a square while looking for mate.',
+  'Coronar y tocar':'Promoting and touching',
+  'Un jugador lleva su peón a la última fila, lo suelta, pero aún no coloca la pieza nueva. ¿Qué pasa?':
+    'A player takes their pawn to the last rank, releases it, but hasn\'t placed the new piece yet. What happens?',
+  'La jugada no cuenta':'The move doesn\'t count','El peón debe promocionar; elige la pieza y recién ahí termina la jugada':'The pawn must promote; choose the piece and only then is the move complete',
+  'Se queda como peón':'It stays a pawn','Pierde el turno':'They lose the turn',
+  'La promoción es obligatoria al llegar a la última fila: el peón no puede seguir siendo peón. La jugada se completa cuando la pieza nueva se coloca y se suelta. Debe haber piezas de repuesto disponibles.':
+    'Promotion is mandatory on reaching the last rank: the pawn can\'t remain a pawn. The move is complete when the <strong>new piece</strong> is placed and released. Spare pieces must be available.',
+  'Dos manos en el enroque':'Two hands when castling',
+  'Un jugador enroca usando las dos manos (una para el rey y otra para la torre) a la vez. ¿Es correcto?':
+    'A player castles using both hands (one for the king and one for the rook) at once. Is it correct?',
+  'Sí, mientras el enroque sea legal':'Yes, as long as the castling is legal','No: la jugada se hace con una sola mano':'No: the move is made with a single hand',
+  'Da igual':'It doesn\'t matter','Pierde la partida':'They lose the game',
+  'Toda jugada, incluido el enroque, se realiza con una sola mano. Se mueve primero el rey y luego la torre. En primaria conviene enseñarlo con paciencia y sin sancionar al inicio.':
+    'Every move, including castling, is made with <strong>a single hand</strong>. Move the king first and then the rook. In lower grades, teach it patiently and without penalizing at first.',
+  'El rey llega antes':'The king comes first',
+  'En el enroque, un jugador toca primero la torre en vez del rey. El rival reclama. ¿Qué decides?':
+    'When castling, a player touches the rook first instead of the king. The opponent claims. What do you decide?',
+  'Enroque anulado, pierde la partida':'Castling voided, they lose the game','Debe mover esa torre (pieza tocada); si quería enrocar, debió tocar el rey primero':'They must move that rook (touch-move); to castle, they should have touched the king first',
+  'Se permite igual':'It\'s allowed anyway','Repite la jugada libremente':'They freely repeat the move',
+  'Si toca la torre primero, aplica «pieza tocada»: debe jugar esa torre y ya no puede enrocar en esa jugada. Para enrocar hay que tocar el rey primero. En primaria, avisa y deja repetir.':
+    'If they touch the rook first, «touch-move» applies: they must play that rook and can no longer castle this move. To castle you must <strong>touch the king first</strong>. In lower grades, warn and let them redo it.',
+  'Ofrecer tablas':'Offering a draw',
+  'Un jugador ofrece tablas. ¿Cuál es la forma correcta según la FIDE?':'A player offers a draw. What is the correct way according to FIDE?',
+  'Antes de mover su pieza':'Before moving their piece','Después de mover su pieza y antes de apretar el reloj, diciéndolo una vez':'After moving their piece and before pressing the clock, saying it once',
+  'Cuando quiera, las veces que quiera':'Whenever they like, as many times as they like','Solo por escrito':'Only in writing',
+  'La oferta correcta: haz tu jugada, ofrece tablas y aprieta el reloj. Ofrecer repetidamente para molestar al rival es conducta antideportiva y el árbitro puede sancionarla.':
+    'The correct offer: make your move, offer the draw and press the clock. Offering repeatedly to annoy the opponent is unsporting conduct and the referee can penalize it.',
+  'Empieza con negras':'Starting with Black',
+  'Al iniciar la ronda, resulta que el reloj arrancó con el tiempo de las negras corriendo. ¿Qué corresponde?':
+    'At the start of the round, the clock started with Black\'s time running. What applies?',
+  'Se deja así':'Leave it as is','Se corrige: la partida empieza con el reloj de las blancas':'Correct it: the game starts with White\'s clock',
+  'Gana el que se dé cuenta':'Whoever notices wins','Se reinicia el torneo':'Restart the tournament',
+  'Las blancas siempre mueven primero, así que al comenzar debe correr el reloj de las blancas. Si se detecta el error, el árbitro corrige el reloj y ajusta los tiempos con criterio.':
+    'White always moves first, so at the start <strong>White\'s</strong> clock must run. If the error is spotted, the referee corrects the clock and adjusts the times with judgment.',
+  'Anotar la partida':'Recording the game',
+  'En una partida con ritmo largo, un niño de premedia no anota sus jugadas. ¿Qué dice el reglamento?':
+    'In a long-time-control game, a middle-school child isn\'t recording their moves. What do the rules say?',
+  'No importa nunca':'It never matters','Debe anotar ambas jugadas de forma legible mientras tenga más de 5 minutos':'They must record both sides\' moves legibly while they have more than 5 minutes',
+  'Solo anota las blancas':'Only record White\'s moves','Solo si va ganando':'Only if they\'re winning',
+  'Con ritmo largo es obligatorio anotar de forma legible las jugadas de ambos bandos, salvo que queden menos de 5 minutos sin incremento. La planilla es la prueba para reclamar repetición o las 50 jugadas.':
+    'With a long time control it\'s mandatory to legibly record both sides\' moves, unless fewer than 5 minutes remain with no increment. The scoresheet is the proof to claim repetition or the 50-move rule.',
+  'Material insuficiente y tiempo':'Insufficient material and time',
+  'A un jugador se le cae la bandera, pero a su rival solo le queda el rey y un alfil. ¿Resultado?':
+    'A player\'s flag falls, but the opponent has only king and bishop left. Result?',
+  'Gana el del alfil por tiempo':'The bishop side wins on time','Tablas: rey y alfil no pueden dar mate a un rey solo':'Draw: king and bishop can\'t mate a lone king',
+  'Gana el que reclame':'Whoever claims wins',
+  'Rey y alfil (o rey y caballo) contra rey solo es material insuficiente para dar mate, así que la caída de bandera es tablas, no derrota.':
+    'King and bishop (or king and knight) against a lone king is <strong>insufficient material</strong> to mate, so the fallen flag is a draw, not a loss.',
+  // ---- mensajes finales ----
+  '¡Árbitro estrella! 🏅':'Star referee! 🏅',
+  'Dominas las decisiones. Estás listo para arbitrar las mesas de primaria.':'You master the calls. You\'re ready to referee the primary tables.',
+  '¡Buen juez! 👍':'Good judge! 👍',
+  'Ya decides bien. Repasa los casos que fallaste en la sección de Reglas.':'You already decide well. Review the cases you missed in the Rules section.',
+  'Sigue practicando 📚':'Keep practicing 📚',
+  'Repasa las Reglas y vuelve a intentarlo. Arbitrar se aprende con la práctica.':'Review the Rules and try again. Refereeing is learned with practice.'
+};
+</script>
+<script src="assets/app.js"></script>
 <script src="assets/board.js"></script>
 <script>
 (function(){
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
 var CASES=[
  {t:'Una jugada ilegal',
   s:'En plena partida, un niño mueve su alfil en línea recta, como si fuera torre, y aprieta el reloj. El rival levanta la mano. ¿Qué haces?',
@@ -190,10 +327,10 @@ function render(){
   answered=false; nextBtn.disabled=true; nextBtn.style.display=''; explain.className='explain'; optsEl.innerHTML='';
   prog.style.width=(i/CASES.length*100)+'%';
   var c=CASES[i];
-  cnum.textContent='Caso '+(i+1)+' de '+CASES.length;
-  ctitle.textContent=c.t; cscene.textContent=c.s;
+  cnum.textContent=T('Caso')+' '+(i+1)+' '+T('de')+' '+CASES.length;
+  ctitle.textContent=T(c.t); cscene.textContent=T(c.s);
   c.opts.forEach(function(text,idx){
-    var b=document.createElement('button'); b.className='opt'; b.type='button'; b.textContent=text;
+    var b=document.createElement('button'); b.className='opt'; b.type='button'; b.textContent=T(text);
     b.addEventListener('click',function(){answer(c,idx,b);});
     optsEl.appendChild(b);
   });
@@ -205,7 +342,7 @@ function answer(c,idx,btn){
   if(ok){ btn.classList.add('correct'); score++; }
   else { btn.classList.add('wrong'); buttons[c.correct].classList.add('correct'); }
   scoreEl.textContent=score;
-  explain.innerHTML=c.ex+'<span class="art">📖 '+c.art+'</span>';
+  explain.innerHTML=T(c.ex)+'<span class="art">📖 '+T(c.art)+'</span>';
   explain.classList.add('on');
   if(ok){ nextBtn.style.display='none'; setTimeout(proceed,1900); } // correcto: avanza tras leer la regla
   else { nextBtn.disabled=false; }                                  // incorrecto: se queda
@@ -218,8 +355,8 @@ function finish(){
   var msg = score>=7 ? ['¡Árbitro estrella! 🏅','Dominas las decisiones. Estás listo para arbitrar las mesas de primaria.']
           : score>=5 ? ['¡Buen juez! 👍','Ya decides bien. Repasa los casos que fallaste en la sección de Reglas.']
           : ['Sigue practicando 📚','Repasa las Reglas y vuelve a intentarlo. Arbitrar se aprende con la práctica.'];
-  document.getElementById('doneTitle').textContent=msg[0]+' ('+score+'/'+CASES.length+')';
-  document.getElementById('doneText').textContent=msg[1];
+  document.getElementById('doneTitle').textContent=T(msg[0])+' ('+score+'/'+CASES.length+')';
+  document.getElementById('doneText').textContent=T(msg[1]);
   if(score>=5){ if(window.AA) AA.award('arbitro'); if(window.celebrate) setTimeout(function(){celebrate(document.getElementById('doneTitle'));},200); }
 }
 document.getElementById('retry').addEventListener('click',function(){
@@ -233,6 +370,5 @@ document.getElementById('retry').addEventListener('click',function(){
 render();
 })();
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>

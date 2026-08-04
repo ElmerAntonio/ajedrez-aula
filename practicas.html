@@ -65,7 +65,7 @@
           <li>✅ Verde = acertaste · 🔁 rojo = inténtalo otra vez.</li>
         </ul>
       </div>
-      <p class="note" style="margin-top:12px">Progreso de esta tanda: <span id="score" class="mono" style="color:var(--ambar)">0</span> resueltos.</p>
+      <p class="note" style="margin-top:12px"><span data-en="Progress this round:">Progreso de esta tanda:</span> <span id="score" class="mono" style="color:var(--ambar)">0</span> <span data-en="solved.">resueltos.</span></p>
     </div>
   </div>
 
@@ -78,10 +78,41 @@
 
 <script src="assets/chess.js"></script>
 <script src="assets/puzzles.js"></script>
+<script src="assets/i18n-puzzles.js"></script>
 <script src="assets/board.js"></script>
+<script>
+window.PAGE_I18N={
+  __title:'Practice · Chess in the Classroom',
+  'Prácticas · de fácil a normal':'Practice · from easy to normal',
+  'Ejercicios para resolver':'Exercises to solve',
+  'Cada ejercicio tiene una única jugada correcta. Mueve las piezas del tablero; la página te dice al instante si acertaste. Empieza por Fácil y avanza cuando te sientas cómodo. Ideal para que el alumno practique solo o en parejas.':
+    'Each exercise has a single correct move. Move the pieces on the board; the page tells you instantly if you got it right. Start with <strong>Easy</strong> and move up when you feel comfortable. Ideal for the student to practice alone or in pairs.',
+  '🟢 Fácil':'🟢 Easy','🟡 Medio':'🟡 Medium','🔴 Difícil':'🔴 Hard','🔤 Notación':'🔤 Notation',
+  '💡 Pista':'💡 Hint','👁 Ver solución':'👁 See solution','⏭ Siguiente':'⏭ Next',
+  'Cómo se juega':'How to play',
+  '👆 Toca una pieza tuya para ver a dónde puede ir.':'👆 Tap one of your pieces to see where it can go.',
+  '🎯 Toca la casilla de destino para mover.':'🎯 Tap the destination square to move.',
+  '✅ Verde = acertaste · 🔁 rojo = inténtalo otra vez.':'✅ Green = correct · 🔁 red = try again.',
+  'Solo para enseñar y aprender. Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Open educational material. It grants no certificates or accreditation. Published with GitHub Pages.',
+  // estados y textos dinámicos
+  'Las blancas mueven.':'White to move.',
+  '✅ ¡Correcto! Bien jugado.':'✅ Correct! Well played.',
+  '🔁 Esa no es. Inténtalo de nuevo.':'🔁 Not that one. Try again.',
+  'La jugada correcta está marcada.':'The correct move is marked.',
+  '¿Cómo se anota esta jugada?':'How is this move written?',
+  'Notación':'Notation',
+  'Lee la jugada marcada en el tablero.':'Read the move marked on the board.',
+  '💡 Primero la inicial de la pieza (el peón no lleva), luego el destino. x = captura.':
+    '💡 First the piece initial (the pawn has none), then the destination. x = capture.'
+};
+</script>
+<script src="assets/app.js"></script>
 <script>
 (function(){
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
+var EN=function(){return !!(window.AA&&AA.lang&&AA.lang()==='en');};
 // Ejercicios verificados con el motor, tomados del banco compartido y
 // barajados para que la tanda cambie en cada visita.
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
@@ -122,11 +153,11 @@ function load(){
   board.setState(current.fen);
   board.setFlip(false);
   board.lock(false);
-  statusEl.textContent='Las blancas mueven.';
+  statusEl.textContent=T('Las blancas mueven.');
   statusEl.className='status';
   pnum.textContent=(idx+1)+' / '+PUZZLES[level].length;
-  ptitle.textContent=current.t;
-  pdesc.textContent=current.d;
+  ptitle.textContent=T(current.t);
+  pdesc.textContent=T(current.d);
   phint.style.display='none';
   phint.textContent='';
 }
@@ -145,11 +176,13 @@ function loadNotation(){
   board.render();
   var toCell=board.cells[mv.to[0]+'-'+mv.to[1]]; if(toCell){toCell.classList.add('hint'); if(mv.capture||mv.ep) toCell.classList.add('cap');}
   var fromSq=Chess.rcToSq(mv.from[0],mv.from[1]), toSq=Chess.rcToSq(mv.to[0],mv.to[1]);
-  ptitle.textContent='¿Cómo se anota esta jugada?';
-  pdesc.innerHTML='La pieza va de <strong class="mono">'+fromSq+'</strong> (casilla marcada) a <strong class="mono">'+toSq+'</strong> (aro). Elige la notación correcta.';
-  pnum.textContent='Notación';
-  phint.style.display='block'; phint.textContent='💡 Primero la inicial de la pieza (el peón no lleva), luego el destino. x = captura.';
-  statusEl.textContent='Lee la jugada marcada en el tablero.'; statusEl.className='status';
+  ptitle.textContent=T('¿Cómo se anota esta jugada?');
+  pdesc.innerHTML= EN()
+    ? ('The piece goes from <strong class="mono">'+fromSq+'</strong> (marked square) to <strong class="mono">'+toSq+'</strong> (ring). Choose the correct notation.')
+    : ('La pieza va de <strong class="mono">'+fromSq+'</strong> (casilla marcada) a <strong class="mono">'+toSq+'</strong> (aro). Elige la notación correcta.');
+  pnum.textContent=T('Notación');
+  phint.style.display='block'; phint.textContent=T('💡 Primero la inicial de la pieza (el peón no lleva), luego el destino. x = captura.');
+  statusEl.textContent=T('Lee la jugada marcada en el tablero.'); statusEl.className='status';
   // opciones: la correcta + 3 distractores de otras jugadas legales
   var opts=[notaSAN];
   var others=moves.map(function(m){return Chess.toSAN(st,m);}).filter(function(s){return s!==notaSAN;});
@@ -170,11 +203,11 @@ function answerNotation(s,btn){
     if(!solved['notacion'+Date.now()]){} // el puntaje de notación cuenta aciertos
     notaScore++; scoreEl.textContent = level==='notacion' ? notaScore : countSolved();
     if(window.AA) AA.award('notacion');
-    statusEl.textContent='✅ ¡Correcto! Se anota '+notaSAN; statusEl.className='status win';
+    statusEl.textContent=(EN()?'✅ Correct! It\'s written ':'✅ ¡Correcto! Se anota ')+notaSAN; statusEl.className='status win';
   } else {
     btn.style.background='var(--fuego)'; btn.style.color='#fff';
     Array.prototype.slice.call(notaOpts.children).forEach(function(x){ if(x.textContent===notaSAN){x.style.background='var(--selva)';x.style.color='#fff';} });
-    statusEl.textContent='La correcta es '+notaSAN; statusEl.className='status lose';
+    statusEl.textContent=(EN()?'The correct one is ':'La correcta es ')+notaSAN; statusEl.className='status lose';
   }
   setTimeout(loadNotation, 1400);
 }
@@ -191,7 +224,7 @@ function validate(mv){
   if(ok){
     var key=level+idx;
     if(!solved[key]){ solved[key]=true; scoreEl.textContent=countSolved(); }
-    statusEl.textContent='✅ ¡Correcto! Bien jugado.';
+    statusEl.textContent=T('✅ ¡Correcto! Bien jugado.');
     statusEl.className='status win';
     board.lock(true);
     if(window.AA) AA.award('practica');
@@ -199,7 +232,7 @@ function validate(mv){
     setTimeout(function(){ next(); }, 1250);
     return true; // deja que el tablero aplique la jugada para que se vea
   } else {
-    statusEl.textContent='🔁 Esa no es. Inténtalo de nuevo.';
+    statusEl.textContent=T('🔁 Esa no es. Inténtalo de nuevo.');
     statusEl.className='status lose';
     return false; // el tablero no aplica la jugada
   }
@@ -224,7 +257,7 @@ document.getElementById('tabs').addEventListener('click',function(e){
 });
 document.getElementById('skip').addEventListener('click',next);
 document.getElementById('hint').addEventListener('click',function(){
-  phint.style.display='block'; phint.textContent='💡 '+current.h;
+  phint.style.display='block'; phint.textContent='💡 '+T(current.h);
 });
 document.getElementById('show').addEventListener('click',function(){
   var s=current.sol[0];
@@ -236,13 +269,12 @@ document.getElementById('show').addEventListener('click',function(){
   var to=Chess.sqToRC(s[1]);
   var cell=board.cells[to[0]+'-'+to[1]];
   if(cell) cell.classList.add('sel');
-  statusEl.textContent='La jugada correcta está marcada.';
+  statusEl.textContent=T('La jugada correcta está marcada.');
   statusEl.className='status check';
 });
 
 load();
 })();
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>

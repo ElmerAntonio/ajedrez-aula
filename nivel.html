@@ -80,7 +80,7 @@
         <span>Principiante</span><span>Iniciado</span><span>Intermedio</span><span>Avanzado</span><span>Experto</span>
       </div>
       <p id="levelDesc" class="lead" style="margin:1em auto"></p>
-      <p class="mono" style="color:var(--selva-cl)">Puntaje ponderado: <span id="finalScore">0</span> / <span id="maxScore">0</span> (<span id="finalPct">0</span>%)</p>
+      <p class="mono" style="color:var(--selva-cl)"><span data-en="Weighted score:">Puntaje ponderado:</span> <span id="finalScore">0</span> / <span id="maxScore">0</span> (<span id="finalPct">0</span>%)</p>
       <div class="card" style="text-align:left;margin-top:18px">
         <h3>Tu desempeño por área</h3>
         <div id="areas" style="margin-top:.5em"></div>
@@ -102,10 +102,90 @@
 
 <script src="assets/chess.js"></script>
 <script src="assets/puzzles.js"></script>
+<script src="assets/i18n-puzzles.js"></script>
 <script src="assets/board.js"></script>
+<script>
+window.PAGE_I18N={
+  __title:'What\'s my level? · Chess in the Classroom',
+  'Mi nivel · evaluación por áreas':'My level · assessment by area',
+  '¿Cuál es tu nivel real?':'What\'s your real level?',
+  'Una evaluación seria: preguntas de dificultad creciente sobre reglas, piezas, táctica, estrategia, finales, notación y competencia, más retos en el tablero. Al final te ubicamos en uno de cinco niveles con un desglose honesto de tus fortalezas y qué te conviene practicar. No es un examen escolar y no se guarda nada.':
+    'A serious assessment: questions of rising difficulty on rules, pieces, tactics, strategy, endgames, notation and competition, plus board challenges. At the end we place you in one of <strong>five levels</strong> with an honest breakdown of your strengths and what to practice. It\'s not a school exam and nothing is saved.',
+  'Tu nivel estimado':'Your estimated level','Tu desempeño por área':'Your performance by area',
+  'Qué te conviene practicar':'What you should practice','↻ Hacer el test otra vez':'↻ Take the test again',
+  'Solo para enseñar y aprender. El resultado es orientativo y educativo. No otorga certificados, títulos ni acreditación ni equivale a un Elo oficial. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> The result is a guide and educational. <strong>It grants no certificates, degrees or accreditation</strong> and is not an official Elo. Published with GitHub Pages.',
+  // áreas, dificultad, niveles (chips y etiquetas)
+  'Área':'Area','Dificultad':'Difficulty',
+  'Reglas':'Rules','Piezas':'Pieces','Especiales':'Special','Táctica':'Tactics','Estrategia':'Strategy',
+  'Finales':'Endgames','Notación':'Notation','Competencia':'Competition',
+  'Fácil':'Easy','Media':'Medium','Difícil':'Hard',
+  'Principiante':'Beginner','Iniciado':'Novice','Intermedio':'Intermediate','Avanzado':'Advanced','Experto':'Expert',
+  'Pregunta':'Question','de':'of',
+  '✅ Correcto':'✅ Correct',
+  'La respuesta correcta está en verde. Lee y pulsa Siguiente.':'The correct answer is in green. Read it and press Next.',
+  '✅ ¡Bien jugado!':'✅ Well played!','🔁 Esa no. Inténtalo otra vez.':'🔁 Not that one. Try again.',
+  'Toca la pieza y llévala a una casilla que resuelva el ejercicio.':'Tap the piece and take it to a square that solves the exercise.',
+  // niveles: descripciones
+  'Estás dando tus primeros pasos. Ya reconoces el tablero y algunas piezas; ahora toca afianzar cómo se mueve cada una y las capturas.':
+    'You\'re taking your first steps. You already recognize the board and some pieces; now it\'s time to nail down how each one moves and captures.',
+  'Conoces lo básico y mueves casi todas las piezas. El siguiente paso son las reglas especiales (enroque, al paso, coronación) y el jaque mate.':
+    'You know the basics and move almost all the pieces. The next step is the special rules (castling, en passant, promotion) and checkmate.',
+  'Ya juegas con criterio: dominas las reglas y empiezas a ver tácticas. Es momento de tenedores, clavadas y mates básicos.':
+    'You already play with judgment: you master the rules and start to see tactics. It\'s time for forks, pins and basic mates.',
+  'Manejas reglas, táctica y notación con soltura. Trabaja estrategia de medio juego, finales y ritmo de competencia.':
+    'You handle rules, tactics and notation with ease. Work on middlegame strategy, endgames and competition pacing.',
+  'Dominas reglas, táctica, estrategia y competencia. Estás listo para torneos, para arbitrar y para enseñar a otros.':
+    'You master rules, tactics, strategy and competition. You\'re ready for tournaments, to referee and to teach others.',
+  // recomendaciones
+  '¡Muy parejo en todas las áreas! Reta a la IA en nivel Difícil y ayuda a otros a aprender.':
+    'Very even across all areas! Challenge the AI on <a href="jugar.html">Hard</a> and help others learn.',
+  'Refuerza sobre todo estas áreas:':'Focus above all on these areas:',
+  'Reglas':'Rules', // (link)
+  'Aprende jugando':'Learn by playing',
+  'Reglas (enroque, al paso, coronación)':'Rules (castling, en passant, promotion)',
+  'Estrategias y Prácticas':'Strategies and Practice',
+  'Estrategias (escuelas y planes)':'Strategies (schools and plans)',
+  'Estrategias (nociones de final)':'Strategies (endgame notions)',
+  'Prácticas → modo Notación':'Practice → Notation mode',
+  'Reglas y Árbitro':'Rules and Referee',
+  // ---- preguntas de opción múltiple ----
+  '¿Cuántas casillas tiene el tablero?':'How many squares does the board have?',
+  '¿Quién mueve primero?':'Who moves first?','Las negras':'Black','Las blancas':'White','Se sortea':'By draw','El que tenga la dama':'Whoever has the queen',
+  'Al armar el tablero, la esquina derecha de cada jugador debe ser…':'When setting up the board, each player\'s right corner must be…','Oscura':'Dark','Clara':'Light','Cualquiera':'Either','La del rey':'The king\'s',
+  '¿Cuántas piezas tiene cada bando al inicio?':'How many pieces does each side have at the start?',
+  '¿Cuál es la única pieza que salta sobre otras?':'Which is the only piece that jumps over others?','Alfil':'Bishop','Torre':'Rook','Caballo':'Knight','Dama':'Queen',
+  '¿Cómo captura el peón?':'How does the pawn capture?','Recto hacia adelante':'Straight forward','En diagonal, una casilla':'Diagonally, one square','En forma de L':'In an L shape','Como quiera':'Any way',
+  '¿Cuánto vale aproximadamente la dama?':'Roughly how much is the queen worth?','3 puntos':'3 points','5 puntos':'5 points','9 puntos':'9 points','Sin valor':'No value',
+  'Un alfil que empieza en casilla clara…':'A bishop that starts on a light square…','Puede ir a casillas oscuras':'Can go to dark squares','Vive siempre en casillas claras':'Always lives on light squares','Cambia de color al capturar':'Changes color when capturing','Salta como el caballo':'Jumps like the knight',
+  '¿Cuál de estos finales SÍ permite dar mate a un rey solo?':'Which of these endings CAN mate a lone king?','Rey y alfil solo':'King and bishop only','Rey y caballo solo':'King and knight only','Rey y torre':'King and rook','Rey solo':'Lone king',
+  '¿Qué es coronar (promocionar)?':'What is promoting?','Poner una corona de adorno':'Putting on a decorative crown','Un peón llega a la última fila y se vuelve otra pieza':'A pawn reaches the last rank and becomes another piece','Capturar la dama':'Capturing the queen','Dar jaque':'Giving check',
+  'La captura al paso ocurre cuando…':'En passant capture happens when…','Cualquier pieza pasa al lado':'Any piece passes alongside','Un peón enemigo avanza dos casillas y queda al lado del tuyo':'An enemy pawn advances two squares and lands beside yours','El rey pasa por una casilla':'The king passes a square','Se corona un peón':'A pawn promotes',
+  '¿Se puede enrocar estando en jaque?':'Can you castle while in check?','Sí, siempre':'Yes, always','No, nunca estando en jaque':'No, never while in check','Solo del lado corto':'Only kingside','Solo si la torre no se movió':'Only if the rook hasn\'t moved',
+  'Si la torre del enroque está atacada, pero el rey no pasa por casillas atacadas…':'If the castling rook is attacked, but the king doesn\'t pass through attacked squares…','No se puede enrocar':'You can\'t castle','Sí se puede enrocar':'You can castle','Solo enroque largo':'Only queenside castling','Se pierde la torre':'You lose the rook',
+  'Un "tenedor" es…':'A "fork" is…','Un empate':'A draw','Una pieza que ataca dos objetivos a la vez':'One piece attacking two targets at once','Mover dos piezas':'Moving two pieces','Un tipo de enroque':'A kind of castling',
+  'Una "clavada" es cuando…':'A "pin" is when…','Una pieza no puede moverse porque detrás hay algo más valioso':'A piece can\'t move because something more valuable is behind it','El rey no puede moverse':'The king can\'t move','Se acaba el tiempo':'Time runs out','Coronas un peón':'You promote a pawn',
+  'Ante un DOBLE JAQUE, el rey…':'Facing a DOUBLE CHECK, the king…','Puede taparlo con una pieza':'Can block it with a piece','Puede capturar una de las que dan jaque':'Can capture one of the checking pieces','Está obligado a moverse':'Is forced to move','Puede ignorarlo':'Can ignore it',
+  '¿Por qué es bueno controlar el centro?':'Why is controlling the center good?','Se ve más bonito':'It looks nicer','Desde el centro las piezas alcanzan más casillas':'From the center pieces reach more squares','Es obligatorio':'It\'s mandatory','Protege la dama':'It protects the queen',
+  'El "fianchetto" consiste en…':'The "fianchetto" consists of…','Sacar la dama pronto':'Bringing out the queen early','Poner un alfil en la diagonal larga (b2, g2, b7 o g7)':'Placing a bishop on the long diagonal (b2, g2, b7 or g7)','Doblar las torres':'Doubling the rooks','Cambiar todos los peones':'Trading all the pawns',
+  'En la apertura, sacar la dama muy temprano…':'In the opening, bringing the queen out too early…','Es lo mejor':'Is best','Suele ser malo: la persiguen y pierdes tiempo':'Is usually bad: it gets chased and you lose time','No cambia nada':'Changes nothing',
+  'La "oposición" (reyes enfrentados con una casilla en medio) favorece a…':'The "opposition" (kings facing with one square between) favors…','El que le toca mover':'The one to move','El que NO le toca mover':'The one NOT to move','Siempre las blancas':'Always White','El que tiene más peones':'Whoever has more pawns',
+  'Un "peón pasado" es…':'A "passed pawn" is…','Un peón capturado':'A captured pawn','Un peón sin peones enemigos que lo detengan camino a coronar':'A pawn with no enemy pawns to stop it on the way to promotion','Un peón doblado':'A doubled pawn','El peón del rey':'The king\'s pawn',
+  'Si el jugador de turno no está en jaque pero no tiene jugada legal, es…':'If the player to move isn\'t in check but has no legal move, it\'s…','Jaque mate':'Checkmate','Rey ahogado: tablas':'Stalemate: a draw','Victoria':'A win','Jugada ilegal':'An illegal move',
+  '¿Qué significa 0-0?':'What does 0-0 mean?','Empate':'Draw','Enroque corto':'Kingside castling','Coronación':'Promotion','Jaque':'Check',
+  '¿Qué quiere decir "Dxf7#"?':'What does "Qxf7#" mean?','Dama a f7':'Queen to f7','La dama captura en f7 y da jaque mate':'The queen captures on f7 and gives checkmate','Peón a f7':'Pawn to f7','Enroque':'Castling',
+  'En notación española, la inicial del caballo es…':'In English notation, the knight\'s initial is…',
+  'La regla de "pieza tocada" dice que…':'The "touch-move" rule says that…','Puedes cambiar de idea':'You can change your mind','Si tocas tu pieza, debes moverla si es legal':'If you touch your piece, you must move it if legal','Solo cuenta si aprietas el reloj':'It only counts if you press the clock','No existe':'It doesn\'t exist',
+  'El Sistema Suizo empareja en cada ronda a jugadores…':'The Swiss System pairs, each round, players…','Al azar':'At random','Con puntaje parecido':'With similar scores','Por edad':'By age','Por país':'By country',
+  'El desempate Buchholz suma…':'The Buchholz tiebreak adds up…','Tus propios puntos':'Your own points','Los puntos de todos tus rivales':'The points of all your opponents','Las piezas capturadas':'The pieces captured','El tiempo usado':'The time used',
+  '¿Qué pasa con la SEGUNDA jugada ilegal del mismo jugador?':'What happens on the SECOND illegal move by the same player?','Nada':'Nothing','Pierde la partida':'They lose the game','Dos minutos más':'Two more minutes','Repite la jugada':'They repeat the move'
+};
+</script>
+<script src="assets/app.js"></script>
 <script>
 (function(){
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
 var C=window.Chess, BANK=window.CHESS_PUZZLES;
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
@@ -197,15 +277,15 @@ function render(){
   answered=false; nextBtn.disabled=true; nextBtn.style.display=''; fb.textContent=''; fb.className='status'; optsEl.innerHTML=''; holder.innerHTML='';
   prog.style.width=(i/Q.length*100)+'%';
   var q=Q[i];
-  qcount.textContent='Pregunta '+(i+1)+' de '+Q.length;
-  qarea.textContent=q.area; qdiff.textContent=DIFF[q.d];
-  qtitle.textContent=q.t; qsub.textContent=q.sub||'';
+  qcount.textContent=T('Pregunta')+' '+(i+1)+' '+T('de')+' '+Q.length;
+  qarea.textContent=T(q.area); qdiff.textContent=T(DIFF[q.d]);
+  qtitle.textContent=T(q.t); qsub.textContent=T(q.sub||'');
   if(q.type==='board'){
     var box=document.createElement('div'); box.className='cb qboard'; holder.appendChild(box);
     qboardObj=new ChessBoard(box,{fen:q.fen, onDrop:function(mv){ return answerBoard(q,mv); }});
   } else {
     q.opts.forEach(function(text,idx){
-      var b=document.createElement('button'); b.className='opt'; b.type='button'; b.textContent=text;
+      var b=document.createElement('button'); b.className='opt'; b.type='button'; b.textContent=T(text);
       b.addEventListener('click',function(){ answerMC(q,idx,b); });
       optsEl.appendChild(b);
     });
@@ -216,21 +296,21 @@ function answerMC(q,idx,btn){
   if(answered) return; answered=true;
   var buttons=optsEl.querySelectorAll('.opt'); buttons.forEach(function(b){b.disabled=true;});
   if(idx===q.correct){
-    btn.classList.add('correct'); credit(q); fb.textContent='✅ Correcto'; fb.className='status win';
+    btn.classList.add('correct'); credit(q); fb.textContent=T('✅ Correcto'); fb.className='status win';
     nextBtn.style.display='none'; setTimeout(proceed,800);            // correcto: avanza solo
   } else {
     btn.classList.add('wrong'); buttons[q.correct].classList.add('correct');
-    fb.textContent='La respuesta correcta está en verde. Lee y pulsa Siguiente.'; fb.className='status lose';
+    fb.textContent=T('La respuesta correcta está en verde. Lee y pulsa Siguiente.'); fb.className='status lose';
     nextBtn.disabled=false;                                            // incorrecto: se queda
   }
 }
 function answerBoard(q,mv){
   if(answered) return false;
   if(q.check(mv)){
-    answered=true; credit(q); fb.textContent='✅ ¡Bien jugado!'; fb.className='status win';
+    answered=true; credit(q); fb.textContent=T('✅ ¡Bien jugado!'); fb.className='status win';
     qboardObj.lock(true); nextBtn.style.display='none'; setTimeout(proceed,850); return true;
   }
-  fb.textContent='🔁 Esa no. Inténtalo otra vez.'; fb.className='status lose'; return false;
+  fb.textContent=T('🔁 Esa no. Inténtalo otra vez.'); fb.className='status lose'; return false;
 }
 nextBtn.addEventListener('click', proceed);
 
@@ -247,7 +327,7 @@ function finish(){
   var pct=Math.round(pts/maxPts*100);
   el('finalScore').textContent=pts; el('maxScore').textContent=maxPts; el('finalPct').textContent=pct;
   var lvl=LEVELS[0]; LEVELS.forEach(function(L){ if(pct>=L.min) lvl=L; });
-  el('levelName').textContent=lvl.name; el('levelDesc').textContent=lvl.desc;
+  el('levelName').textContent=T(lvl.name); el('levelDesc').textContent=T(lvl.desc);
   el('gaugePin').style.left=Math.max(2,Math.min(98,pct))+'%';
   // desglose por área
   var areasEl=el('areas'); areasEl.innerHTML='';
@@ -256,21 +336,26 @@ function finish(){
     var p=Math.round((areaScore[a]/areaMax[a])*100);
     if(p<60) weak.push({a:a,p:p});
     var row=document.createElement('div'); row.className='area';
-    row.innerHTML='<span class="nm">'+a+'</span><span class="track"><span class="fill" style="width:'+p+'%;background:'+(p>=60?'var(--selva-cl)':p>=34?'var(--ambar)':'var(--fuego)')+'"></span></span><span class="pct">'+p+'%</span>';
+    row.innerHTML='<span class="nm">'+T(a)+'</span><span class="track"><span class="fill" style="width:'+p+'%;background:'+(p>=60?'var(--selva-cl)':p>=34?'var(--ambar)':'var(--fuego)')+'"></span></span><span class="pct">'+p+'%</span>';
     areasEl.appendChild(row);
   });
   // recomendaciones según áreas débiles
   weak.sort(function(x,y){return x.p-y.p;});
-  var LINKS={Reglas:'<a href="reglas.html">Reglas</a>',Piezas:'<a href="aprende.html">Aprende jugando</a>',
+  var LINKS_ES={Reglas:'<a href="reglas.html">Reglas</a>',Piezas:'<a href="aprende.html">Aprende jugando</a>',
     Especiales:'<a href="reglas.html">Reglas</a> (enroque, al paso, coronación)',Táctica:'<a href="estrategias.html">Estrategias</a> y <a href="practicas.html">Prácticas</a>',
     Estrategia:'<a href="estrategias.html">Estrategias</a> (escuelas y planes)',Finales:'<a href="estrategias.html">Estrategias</a> (nociones de final)',
     Notación:'<a href="practicas.html">Prácticas</a> → modo Notación',Competencia:'<a href="reglas.html">Reglas</a> y <a href="arbitraje.html">Árbitro</a>'};
+  var LINKS_EN={Reglas:'<a href="reglas.html">Rules</a>',Piezas:'<a href="aprende.html">Learn by playing</a>',
+    Especiales:'<a href="reglas.html">Rules</a> (castling, en passant, promotion)',Táctica:'<a href="estrategias.html">Strategies</a> and <a href="practicas.html">Practice</a>',
+    Estrategia:'<a href="estrategias.html">Strategies</a> (schools and plans)',Finales:'<a href="estrategias.html">Strategies</a> (endgame notions)',
+    Notación:'<a href="practicas.html">Practice</a> → Notation mode',Competencia:'<a href="reglas.html">Rules</a> and <a href="arbitraje.html">Referee</a>'};
+  var LINKS = (window.AA&&AA.lang&&AA.lang()==='en')?LINKS_EN:LINKS_ES;
   var recs=el('recs');
   if(weak.length===0){
-    recs.innerHTML='<p>¡Muy parejo en todas las áreas! Reta a la IA en nivel <a href="jugar.html">Difícil</a> y ayuda a otros a aprender.</p>';
+    recs.innerHTML='<p>'+T('¡Muy parejo en todas las áreas! Reta a la IA en nivel Difícil y ayuda a otros a aprender.')+'</p>';
   } else {
-    var html='<p>Refuerza sobre todo estas áreas:</p><ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">';
-    weak.slice(0,3).forEach(function(w){ html+='<li>📌 <strong>'+w.a+'</strong> ('+w.p+'%): '+(LINKS[w.a]||'')+'</li>'; });
+    var html='<p>'+T('Refuerza sobre todo estas áreas:')+'</p><ul style="list-style:none;display:flex;flex-direction:column;gap:.5em;margin-top:.4em">';
+    weak.slice(0,3).forEach(function(w){ html+='<li>📌 <strong>'+T(w.a)+'</strong> ('+w.p+'%): '+(LINKS[w.a]||'')+'</li>'; });
     html+='</ul>';
     recs.innerHTML=html;
   }
@@ -286,6 +371,5 @@ el('retry').addEventListener('click',function(){
 render();
 })();
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>

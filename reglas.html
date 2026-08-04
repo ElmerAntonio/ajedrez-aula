@@ -42,7 +42,7 @@
 
 <div class="wrap">
   <div class="eyebrow">Reglamento · referencia completa</div>
-  <h1>Todas las reglas,<br>en un solo lugar</h1>
+  <h1 data-en="All the rules,<br>in one place">Todas las reglas,<br>en un solo lugar</h1>
   <p class="lead" style="margin:.6em 0 0">Una referencia rápida para consultar cualquier regla en clase o en un torneo. Está basada en las Leyes del Ajedrez de la FIDE, explicada en lenguaje sencillo.</p>
 
   <div class="toc">
@@ -170,7 +170,89 @@ P.forEach(function(p){
     .forEach(function(m){var cell=b.cells[m.to[0]+'-'+m.to[1]];if(cell)cell.classList.add('hint');});
   var scell=b.cells[rc[0]+'-'+rc[1]]; if(scell) scell.classList.add('sel');
 });
+if(window.AA&&AA.translateEls) AA.translateEls();
 })();
+</script>
+<script>
+window.PAGE_I18N={
+  __title:'Chess rules · Chess in the Classroom',
+  'Reglamento · referencia completa':'Rulebook · complete reference',
+  'Una referencia rápida para consultar cualquier regla en clase o en un torneo. Está basada en las Leyes del Ajedrez de la FIDE, explicada en lenguaje sencillo.':
+    'A quick reference to look up any rule in class or at a tournament. It is based on the FIDE Laws of Chess, explained in plain language.',
+  'Tablero':'Board','Piezas':'Pieces','Enroque':'Castling','Al paso':'En passant','Coronación':'Promotion',
+  'Jaque y mate':'Check &amp; mate','Tablas':'Draws','Competencia':'Competition','Notación':'Notation',
+  '1 · El tablero':'1 · The board',
+  'El tablero tiene 64 casillas (8 × 8), claras y oscuras alternadas. Se coloca de modo que cada jugador tenga una casilla clara en su esquina derecha. Las columnas se nombran con letras (a–h) y las filas con números (1–8). Cada casilla tiene un nombre: la letra de su columna y el número de su fila (por ejemplo, e4). Las blancas mueven primero y luego se alternan los turnos.':
+    'The board has <strong>64 squares</strong> (8 × 8), light and dark alternating. It is placed so each player has a <strong>light square in their right-hand corner</strong>. Files are named with letters (a–h) and ranks with numbers (1–8). Every square has a name: its file letter and rank number (for example, <span class="mono">e4</span>). <strong>White moves first</strong> and then turns alternate.',
+  '2 · Cómo se mueve cada pieza':'2 · How each piece moves',
+  'Todas las piezas capturan igual que se mueven, salvo el peón. Ninguna puede saltar sobre otras, excepto el caballo.':
+    'Every piece captures the same way it moves, except the pawn. None may jump over others, except the knight.',
+  '3 · El enroque':'3 · Castling',
+  'Única jugada que mueve dos piezas a la vez (rey y torre). Pone al rey a salvo. Condiciones:':
+    'The only move that shifts <strong>two pieces at once</strong> (king and rook). It brings the king to safety. Conditions:',
+  'El rey no se ha movido nunca en la partida.':'The king has never moved in the game.',
+  'Esa torre tampoco se ha movido.':'That rook has not moved either.',
+  'No hay piezas entre el rey y la torre.':'There are no pieces between the king and rook.',
+  'El rey no está en jaque en este momento.':'The king is not in check right now.',
+  'El rey no pasa por ni llega a una casilla atacada.':'The king does not pass through or land on an attacked square.',
+  'Se permite enrocar aunque la torre esté atacada. Se anota 0-0 (corto) o 0-0-0 (largo).':
+    'Castling is allowed even if the rook is attacked. It is written <span class="mono">0-0</span> (kingside) or <span class="mono">0-0-0</span> (queenside).',
+  '4 · Captura al paso (en passant)':'4 · En passant capture <span class="mono" style="font-size:.6em;color:#9DAFA2">(en passant)</span>',
+  'Si un peón enemigo avanza dos casillas de golpe y queda al lado del tuyo, tu peón puede capturarlo como si solo hubiera avanzado una. Solo un peón captura a otro peón, y debe hacerse de inmediato, en la jugada siguiente, o se pierde el derecho.':
+    'If an enemy pawn advances <strong>two squares at once</strong> and lands beside yours, your pawn may capture it <strong>as if it had moved only one</strong>. Only a pawn captures another pawn this way, and it must be done <strong>immediately</strong>, on the very next move, or the right is lost.',
+  '5 · Coronación':'5 · Promotion',
+  'Cuando un peón llega a la última fila, se convierte en dama, torre, alfil o caballo de su color (no puede quedar como peón ni volverse rey). Casi siempre se elige dama. La pieza nueva actúa de inmediato. Puedes tener varias damas.':
+    'When a pawn reaches the <strong>last rank</strong>, it becomes a <strong>queen, rook, bishop or knight</strong> of its color (it cannot stay a pawn or become a king). A queen is almost always chosen. The new piece acts immediately. You can have several queens.',
+  '6 · Jaque, jaque mate y rey ahogado':'6 · Check, checkmate and stalemate',
+  'Jaque: el rey está amenazado. Hay que resolverlo de inmediato de una de tres formas: mover el rey, capturar la pieza que ataca, o tapar el camino. No se puede ignorar ni dejar al rey en jaque.':
+    '<strong>Check:</strong> the king is threatened. It must be dealt with at once in one of three ways: move the king, capture the attacking piece, or block the line. You cannot ignore it or leave the king in check.',
+  'Jaque mate: el rey está en jaque y ninguna de las tres salidas funciona. La partida termina y gana quien da el mate. Se anota con #.':
+    '<strong>Checkmate:</strong> the king is in check and none of the three escapes works. The game ends and the player giving mate wins. It is written <span class="mono">#</span>.',
+  'Rey ahogado: el jugador de turno no está en jaque pero no tiene ninguna jugada legal. Es tablas (empate), aunque tenga menos piezas.':
+    '<strong>Stalemate:</strong> the player to move <strong>is not in check</strong> but has no legal move at all. It is a <strong>draw</strong>, even with fewer pieces.',
+  '7 · Las tablas (empate)':'7 · Draws',
+  'Medio punto para cada jugador (½–½). Ocurren por:':'Half a point for each player (<span class="mono">½–½</span>). They happen by:',
+  'Rey ahogado':'Stalemate','Sin jaque y sin jugada legal.':'No check and no legal move.',
+  'Acuerdo':'Agreement','Los dos jugadores lo aceptan.':'Both players accept it.',
+  'Triple repetición':'Threefold repetition','La misma posición tres veces. Se reclama al árbitro.':'The same position three times. Claimed to the referee.',
+  '50 jugadas':'50 moves','50 jugadas sin mover peón ni capturar. Se reclama.':'50 moves with no pawn move or capture. Claimed.',
+  'Material insuficiente':'Insufficient material','Ningún bando puede dar mate (por ejemplo, rey solo contra rey).':'Neither side can give mate (for example, lone king vs king).',
+  'Automáticas':'Automatic','A las 75 jugadas o quíntuple repetición, el árbitro declara tablas solo.':'At 75 moves or fivefold repetition, the referee declares the draw automatically.',
+  '8 · Reglas de competencia (torneo)':'8 · Competition rules (tournament)',
+  'Pieza tocada, pieza jugada':'Touch-move',
+  'Si tocas una pieza tuya, debes moverla (si es legal). Si tocas una del rival, debes capturarla. Para acomodar sin jugar, avisa antes: «compongo» (j\'adoube).':
+    'If you touch one of your pieces, you must move it (if legal). If you touch an opponent\'s piece, you must capture it. To adjust without moving, say first: «I adjust» (<span class="mono">j\'adoube</span>).',
+  'Jugada ilegal (FIDE 7.5)':'Illegal move (FIDE 7.5)',
+  'Se restaura la posición anterior, se aplica pieza tocada y el rival gana 2 minutos. La segunda jugada ilegal del mismo jugador pierde la partida.':
+    'The previous position is restored, touch-move applies and the opponent gains 2 minutes. A <strong>second</strong> illegal move by the same player loses the game.',
+  'El reloj':'The clock',
+  'Solo corre el del jugador de turno. Primero mueve, después aprieta, con la misma mano. Quedarse sin tiempo pierde, salvo que el rival no tenga material para dar mate.':
+    'Only the clock of the player to move runs. Move first, then press, with the same hand. Running out of time loses, unless the opponent has no material to give mate.',
+  'Conducta':'Conduct',
+  'Prohibido recibir ayuda, usar apuntes o dispositivos y molestar al rival. Los teléfonos que suenan pueden costar la partida. El árbitro vela por el reglamento y resuelve los reclamos.':
+    'No help, notes or devices are allowed, and no disturbing the opponent. Phones that ring can cost the game. The referee upholds the rules and settles disputes.',
+  'Adaptación escolar: en primaria puedes suavizar «pieza tocada» y no exigir planilla — pero anúncialo antes del torneo. Desde 5.° grado, aplica el reglamento completo.':
+    '<em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">School adaptation:</em> in lower grades you may soften «touch-move» and not require scoresheets — but announce it <strong>before</strong> the tournament. From 5th grade on, apply the full rulebook.',
+  '9 · Notación algebraica':'9 · Algebraic notation',
+  'Se escribe la inicial de la pieza (en español: R rey, D dama, T torre, A alfil, C caballo; el peón no lleva inicial) seguida de la casilla de destino.':
+    'You write the <strong>piece initial</strong> (in English: K king, Q queen, R rook, B bishop, N knight; the pawn has no initial) followed by the <strong>destination square</strong>.',
+  'Símbolos':'Symbols',
+  'x captura · + jaque · # mate 0-0 enroque corto · 0-0-0 largo = coronación · ½–½ tablas':
+    'x capture · + check · # mate<br>0-0 kingside castling · 0-0-0 queenside<br>= promotion · ½–½ draw',
+  'Ejemplos':'Examples',
+  'e4 · Cf3 · Axc6 · Dh5+ Te8# · b8=D · 0-0':'e4 · Nf3 · Bxc6 · Qh5+<br>Re8# · b8=Q · 0-0',
+  'Practícala en la sección de Prácticas → modo Notación.':'Practice it in the <a href="practicas.html">Practice</a> section → Notation mode.',
+  'Solo para enseñar y aprender. Material educativo abierto basado en las Leyes FIDE. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Open educational material based on the FIDE Laws. It grants no certificates or accreditation. Published with GitHub Pages.',
+  // piezas (tarjetas generadas por JS)
+  'Rey':'King','Dama':'Queen','Torre':'Rook','Alfil':'Bishop','Caballo':'Knight','Peón':'Pawn',
+  'Un paso en cualquier dirección.':'One step in any direction.',
+  'Recto y diagonal, sin límite.':'Straight and diagonal, unlimited.',
+  'En línea recta.':'In a straight line.',
+  'Solo en diagonal.':'Diagonally only.',
+  'En forma de L; salta.':'In an L shape; it jumps.',
+  'Avanza recto, come en diagonal.':'Moves straight, captures diagonally.'
+};
 </script>
 <script src="assets/app.js"></script>
 </body>

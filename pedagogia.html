@@ -87,7 +87,7 @@
 
 <div class="wrap">
   <div class="eyebrow">Pedagogía · para el maestro</div>
-  <h1>Muchas maneras<br>de enseñar ajedrez</h1>
+  <h1 data-en="Many ways<br>to teach chess">Muchas maneras<br>de enseñar ajedrez</h1>
   <p class="lead" style="margin:.6em 0 0">No hay una sola forma correcta. Cada grupo, cada edad y cada escuela es distinta. Aquí tienes métodos variados, cómo llegar a cada estilo de aprendizaje, cómo adaptarte a <strong>tu</strong> contexto, y cómo tú mismo, como maestro, puedes ir aprendiendo un paso por delante de tus estudiantes.</p>
 
   <div class="toc">
@@ -378,7 +378,264 @@
 <div class="foot">Ajedrez en el Aula · material educativo libre · alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a></div>
 
 <script>
+window.PAGE_I18N={
+  __title:'Pedagogy · Chess in the Classroom',
+  'Pedagogía · para el maestro':'Pedagogy · for the teacher',
+  'No hay una sola forma correcta. Cada grupo, cada edad y cada escuela es distinta. Aquí tienes métodos variados, cómo llegar a cada estilo de aprendizaje, cómo adaptarte a tu contexto, y cómo tú mismo, como maestro, puedes ir aprendiendo un paso por delante de tus estudiantes.':
+    'There is no single right way. Every group, every age and every school is different. Here you have varied methods, how to reach each learning style, how to adapt to <strong>your</strong> context, and how you yourself, as a teacher, can keep learning one step ahead of your students.',
+  'Métodos':'Methods','Cómo aprenden':'How they learn','Planifica tu clase':'Plan your class',
+  'Según tu contexto':'By your context','El maestro aprende':'The teacher learns','Materiales':'Materials',
+  '1 · Once maneras de enseñar':'1 · Eleven ways to teach',
+  'Puedes combinarlas en la misma clase. Lo importante es enseñar una sola idea a la vez y dejar que los niños jueguen enseguida.':
+    'You can combine them in the same class. What matters is <strong>teaching one idea at a time</strong> and letting the children play right away.',
+  // ---- métodos: frente ----
+  'Por pasos':'Step by step','Método por pasos':'Step-by-step method',
+  'Enseña de lo simple a lo complejo, un ladrillo sobre otro: primero el tablero, luego una pieza, su captura, y solo después la siguiente. Nadie avanza hasta dominar el paso anterior. Es la base del plan de 12 clases.':
+    'Teach from simple to complex, one brick on another: first the board, then a piece, its capture, and only then the next. No one advances until they master the previous step. It\'s the basis of the <a href="guia.html">12-lesson plan</a>.',
+  'Cuento':'Story','Narración y personajes':'Storytelling and characters',
+  'Convierte cada pieza en un personaje: el rey abuelito, el caballo que salta la cerca, la torre-carro. La imaginación fija la memoria. Ideal para los más pequeños; empieza en Aprende jugando.':
+    'Turn each piece into a character: grandpa king, the knight that jumps the fence, the rook-cart. Imagination fixes memory. Ideal for the youngest; start in <a href="aprende.html">Learn by playing</a>.',
+  'Mini-juegos':'Mini-games','Aprender jugando':'Learning by playing',
+  'Nunca empieces con una partida completa. Juegos de 3 minutos que enseñan una sola cosa: carrera de peones, duelo de torres, el caballo tragón. Resuélvelos también en Prácticas.':
+    'Never start with a full game. 3-minute games that teach one single thing: pawn race, rook duel, the greedy knight. Solve them too in <a href="practicas.html">Practice</a>.',
+  'Cuerpo':'Body','Ajedrez humano y movimiento':'Human chess and movement',
+  'Dibuja el tablero en la cancha con tiza; los niños son las piezas y caminan sus movimientos. El cuerpo aprende lo que la cabeza olvida. Perfecto para aniversarios y grupos inquietos.':
+    'Draw the board on the yard with chalk; the children are the pieces and walk their moves. The body learns what the head forgets. Perfect for special days and restless groups.',
+  'Descubrimiento':'Discovery','Preguntar antes de responder':'Ask before answering',
+  'En vez de explicar, pregunta: «¿qué crees que puede hacer el rey aquí?». Deja que lo descubran y que se corrijan entre ellos. Lo que se descubre se recuerda; lo que se explica se olvida.':
+    'Instead of explaining, ask: «what do you think the king can do here?». Let them discover it and correct each other. What is discovered is remembered; what is explained is forgotten.',
+  'Entre pares':'Peer to peer','Aprendizaje entre pares':'Peer learning',
+  'Los que saben más enseñan a los que empiezan. Nombra monitores (y monitoras). Un estudiante de 9.° puede guiar una mesa de primaria. Enseñar es la mejor forma de aprender.':
+    'Those who know more teach those starting out. Appoint <strong>monitors</strong>. A 9th-grader can guide a primary table. Teaching is the best way to learn.',
+  'Gamificación':'Gamification','Retos, medallas y torneo':'Challenges, badges and tournament',
+  'Convierte el avance en juego: retos por resolver, medallas por logros y un torneo interno al final. La plataforma ya da medallas automáticamente mientras el alumno practica y juega.':
+    'Turn progress into a game: challenges to solve, <strong>badges</strong> for achievements and an internal tournament at the end. The platform already awards badges automatically as the student practices and plays.',
+  'Inteligencias':'Intelligences','Inteligencias múltiples':'Multiple intelligences',
+  'Cada niño aprende distinto (Gardner). Ofrece la misma idea con música, con dibujo, con movimiento, con números y en equipo. Así el ajedrez llega a todos, no solo a los que «piensan rápido».':
+    'Each child learns differently (Gardner). Offer the same idea with music, drawing, movement, numbers and teamwork. That way chess reaches everyone, not just those who «think fast».',
+  'Dificultad justa':'Fair difficulty','Dificultad deseable':'Desirable difficulty',
+  'Si un niño falla una y otra vez, no bajes la nota: desarma el problema. Quita piezas que sobran hasta aislar la idea que le confunde, y vuelve a subir poco a poco. El reto debe costar, pero ser alcanzable.':
+    'If a child fails again and again, don\'t lower the grade: <strong>take the problem apart</strong>. Remove extra pieces until you isolate the idea that confuses them, then build back up little by little. The challenge should cost effort, but be reachable.',
+  'Análisis':'Analysis','Analizar la propia partida':'Analyzing your own game',
+  'La herramienta que más enseña: revisar lo que uno jugó. Después de cada partida, busquen juntos el momento en que cambió todo y por qué. Una partida bien mirada vale más que diez jugadas sin pensar.':
+    'The tool that teaches most: reviewing what you played. After each game, look together for the moment when everything changed and why. One game well reviewed is worth more than ten thoughtless moves.',
+  'Metacognición':'Metacognition','Cultura de pensamiento':'Thinking culture',
+  'Haz visible el pensamiento. Interrumpe el juego con rutinas fijas: «¿qué amenaza mi rival?», «¿qué pasa si…?». El niño aprende a pensar antes de mover y a explicar por qué, que es el verdadero objetivo del ajedrez escolar.':
+    'Make thinking visible. Interrupt the game with fixed routines: «what is my opponent threatening?», «what if…?». The child learns to think before moving and to explain why, which is the real goal of school chess.',
+  // ---- guion "toca para ver el guion" y "volver" ----
+  'Guion paso a paso':'Step-by-step script',
+  'Toca para ver el guion':'Tap to see the script','Toca para volver':'Tap to go back',
+  'toca para ver el guion paso a paso':'tap to see the step-by-step script',
+  // ---- métodos: pasos (li) ----
+  'Recuerda en un minuto lo del día anterior con una pregunta.':'Recall the previous day in one minute with a question.',
+  'Presenta una sola idea nueva en el tablero mural.':'Present <strong>one single</strong> new idea on the wall board.',
+  'Muéstrala 2–3 veces; que un niño la repita al frente.':'Show it 2–3 times; have a child repeat it in front.',
+  'Todos la practican en parejas 10 minutos con esa sola idea.':'Everyone practices it in pairs for 10 minutes with that one idea.',
+  'Cierra preguntando qué aprendieron; no avances si no la dominan.':'Close by asking what they learned; don\'t advance if they haven\'t mastered it.',
+  'Reúnelos y di: «Les voy a presentar a…» y nombra al personaje.':'Gather them and say: «Let me introduce you to…» and name the character.',
+  'Cuenta cómo camina con un gesto («el caballito salta la cerca»).':'Tell how it walks with a gesture («the little knight jumps the fence»).',
+  'Actúa el movimiento con las manos o con el cuerpo.':'Act out the move with your hands or your body.',
+  'Que cada niño repita el cuento moviendo su pieza.':'Have each child repeat the story by moving their piece.',
+  'Jueguen un mini-juego usando solo ese personaje.':'Play a mini-game using only that character.',
+  'Explica la meta del juego en una sola frase.':'Explain the goal of the game in a single sentence.',
+  'Muestra un ejemplo rápido en el tablero mural.':'Show a quick example on the wall board.',
+  'Reparte por parejas y pon 3 minutos de reloj.':'Split into pairs and set 3 minutes on the clock.',
+  'Camina y observa; no corrijas cada jugada.':'Walk around and observe; don\'t correct every move.',
+  'Al terminar, pregunta qué descubrieron.':'When done, ask what they discovered.',
+  'Traza un tablero 8×8 en el piso con tiza.':'Draw an 8×8 board on the floor with chalk.',
+  'Asigna una pieza a cada niño (con un cartel colgado).':'Assign a piece to each child (with a hanging sign).',
+  'Dos «capitanes» dirigen las jugadas desde afuera.':'Two «captains» direct the moves from outside.',
+  'Cada pieza solo puede moverse como le corresponde.':'Each piece can only move as it should.',
+  'Al final, conversen qué se sintió ser esa pieza.':'At the end, talk about how it felt to be that piece.',
+  'Plantea una posición y haz una pregunta abierta.':'Set up a position and ask an open question.',
+  'Da tiempo en silencio para pensar; no respondas tú.':'Give silent time to think; don\'t answer yourself.',
+  'Recoge varias respuestas sin decir cuál es la correcta.':'Collect several answers without saying which is right.',
+  'Que lo prueben en el tablero y comprueben solos.':'Have them try it on the board and check for themselves.',
+  'Ellos enuncian la regla con sus propias palabras.':'They state the rule in their own words.',
+  'Identifica a quienes ya dominan la idea del día.':'Identify those who already master the day\'s idea.',
+  'Nómbralos monitores y dales una instrucción clara.':'Name them monitors and give them a clear instruction.',
+  'Empareja cada monitor con uno o dos que empiezan.':'Pair each monitor with one or two beginners.',
+  'El monitor enseña; tú supervisas y apoyas.':'The monitor teaches; you supervise and support.',
+  'Rota los monitores para que todos enseñen alguna vez.':'Rotate the monitors so everyone teaches at some point.',
+  'Fija una meta visible: el «reto del día» o una medalla.':'Set a visible goal: the «challenge of the day» or a badge.',
+  'Explica cómo se gana con una regla clara y justa.':'Explain how to win with a clear, fair rule.',
+  'Deja que intenten y celebra cada pequeño logro.':'Let them try and celebrate every small achievement.',
+  'Lleva un marcador visible del progreso del grupo.':'Keep a visible scoreboard of the group\'s progress.',
+  'Cierra con un mini-torneo o desafío final.':'Close with a mini-tournament or final challenge.',
+  'Elige la idea del día (por ejemplo, la torre).':'Choose the idea of the day (for example, the rook).',
+  'Preséntala de tres formas: una canción, un dibujo y un juego con el cuerpo.':'Present it three ways: a song, a drawing and a game with the body.',
+  'Deja que cada niño la trabaje por donde se sienta más cómodo.':'Let each child work on it however they feel most comfortable.',
+  'Junta a los que la entendieron distinto para que se expliquen.':'Bring together those who understood it differently so they explain to each other.',
+  'Cierra con una sola pregunta que todos respondan a su manera.':'Close with one question everyone answers in their own way.',
+  'Observa exactamente dónde se traba el estudiante.':'Watch exactly where the student gets stuck.',
+  'Quita del tablero todo lo que no sea esencial para esa idea.':'Remove from the board everything not essential to that idea.',
+  'Que resuelva la versión mínima hasta lograrlo solo.':'Have them solve the minimal version until they do it alone.',
+  'Agrega una pieza y repite; sube la dificultad de a poco.':'Add a piece and repeat; raise the difficulty little by little.',
+  'Cuando lo logra completo, celebra el esfuerzo, no el talento.':'When they do the whole thing, praise the effort, not the talent.',
+  'Al terminar, los dos rivales rearman la partida de memoria.':'When done, both players rebuild the game from memory.',
+  'Pregunta: «¿en qué jugada crees que cambió la partida?».':'Ask: «on which move do you think the game changed?».',
+  'Vuelvan a esa posición y busquen una jugada mejor.':'Go back to that position and look for a better move.',
+  'Nombra el error como idea, no como culpa («dejaste el peón sin defender»).':'Name the mistake as an idea, not as blame («you left the pawn undefended»).',
+  'Escriban una cosa que harán distinto la próxima vez.':'Write down one thing you\'ll do differently next time.',
+  'Antes de cada jugada, todos se preguntan: «¿qué quiere el rival?».':'Before each move, everyone asks: «what does the opponent want?».',
+  'Que digan en voz alta su plan antes de tocar la pieza.':'Have them say their plan out loud before touching the piece.',
+  'Usa la rutina «veo, pienso, me pregunto» con una posición.':'Use the «I see, I think, I wonder» routine with a position.',
+  'Nadie mueve sin poder explicar por qué.':'No one moves without being able to explain why.',
+  'Cierra preguntando qué aprendieron sobre su forma de pensar.':'Close by asking what they learned about how they think.',
+  'Regla de oro: habla poco, observa mucho. Diez minutos de explicación matan cualquier clase de ajedrez. Enseña una idea, juégala, y solo entonces agrega la siguiente.':
+    '<em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Golden rule:</em> talk little, watch a lot. Ten minutes of explanation kill any chess class. Teach one idea, play it, and only then add the next.',
+  // ---- 2 · estilos (VAK) ----
+  '2 · Cómo aprenden tus estudiantes':'2 · How your students learn',
+  'En un mismo grupo hay distintas formas de aprender. La buena noticia: el ajedrez las combina todas. Ofrece las cuatro y llegarás a todos.':
+    'In one group there are different ways of learning. The good news: chess combines them all. Offer the four and you\'ll reach everyone.',
+  'Visual':'Visual','Ve para aprender':'Sees to learn',
+  'Usa el tablero mural, diagramas y colores. Marca con flechas y resalta casillas. Los tableros de esta plataforma resaltan jugadas y destinos a propósito.':
+    'Use the <strong>wall board</strong>, diagrams and colors. Mark with arrows and highlight squares. This platform\'s boards highlight moves and destinations on purpose.',
+  'Auditivo':'Auditory','Escucha y repite':'Listens and repeats',
+  'Di las reglas en voz alta con frases pegajosas («camina derechito, come de ladito»). Que canten coordenadas y expliquen su jugada hablando. Repetir en voz alta fija la regla.':
+    'Say the rules out loud with catchy phrases («walk straight, eat sideways»). Have them sing coordinates and explain their move by speaking. Saying it aloud fixes the rule.',
+  'Kinestésico':'Kinesthetic','Toca y mueve':'Touches and moves',
+  'Que muevan piezas de verdad, caminen la «L» del caballo por el patio y armen el tablero con las manos. El movimiento del cuerpo ancla el aprendizaje.':
+    'Have them move real pieces, walk the knight\'s «L» across the yard and set up the board with their hands. Body movement anchors learning.',
+  'Social':'Social','Aprende con otros':'Learns with others',
+  'Parejas mixtas desde el primer día, monitores y juego en equipo. Muchos niños aprenden mejor explicándole a un compañero que escuchando al maestro.':
+    'Mixed pairs from day one, monitors and team play. Many children learn better by explaining to a classmate than by listening to the teacher.',
+  // ---- 3 · planificador ----
+  '3 · Arma tu clase en 10 segundos':'3 · Build your class in 10 seconds',
+  'Elige tu contexto y la edad de tu grupo. Te sugerimos un método, el material, la duración y una actividad para empezar hoy.':
+    'Choose your context and your group\'s age. We suggest a method, the material, the duration and an activity to start today.',
+  'Tu contexto':'Your context','Edad del grupo':'Group\'s age',
+  '🌾 Rural / sin luz':'🌾 Rural / no power','🪙 Escasos recursos':'🪙 Low resources',
+  '🏙️ Ciudad / con tecnología':'🏙️ City / with technology','🧑‍🏫 Multigrado':'🧑‍🏫 Multigrade','👥 Aula numerosa':'👥 Large class',
+  '4–6 años':'4–6 years','7–9 años':'7–9 years','10–12 años':'10–12 years','13–15 años':'13–15 years',
+  // planner labels + salida
+  'Tu clase sugerida':'Your suggested class','Método':'Method','Foco':'Focus','Actividad':'Activity',
+  'Duración':'Duration','Material':'Material','Consejo':'Tip','Empieza ya':'Start now',
+  'Empieza con:':'Start with:','por sesión, una vez por semana':'per session, once a week',
+  'Abrir la sección recomendada →':'Open the recommended section →','🖨 Imprimir plan de clase':'🖨 Print lesson plan','Abrir sección':'Open section',
+  '10 minutos':'10 minutes','20 minutos':'20 minutes','30 minutos':'30 minutes','30–40 minutos':'30–40 minutes',
+  'cuento y cuerpo':'story and body','mini-juegos y descubrimiento':'mini-games and discovery',
+  'mini-juegos y por pasos':'mini-games and step by step','descubrimiento y entre pares':'discovery and peer to peer',
+  'una sola pieza por sesión, sin partidas completas':'one piece per session, no full games',
+  'los seis movimientos, jaque y mate':'the six moves, check and mate',
+  'notación, tablas y reloj; listos para torneo interno':'notation, draws and clock; ready for an internal tournament',
+  'reglamento FIDE, planilla y competencia':'FIDE rules, scoresheet and competition',
+  'carrera de peones o reconocer piezas':'pawn race or recognizing pieces',
+  'duelo de torres y la partida completa':'rook duel and the full game',
+  'mate de la escalera y notación':'ladder mate and notation',
+  'estudiar una estrategia y arbitrar a los pequeños':'studying a strategy and refereeing the little ones',
+  'Rural / sin electricidad':'Rural / no electricity','Escasos recursos':'Low resources','Ciudad / con tecnología':'City / with technology',
+  'Aula multigrado':'Multigrade class','Aula numerosa':'Large class',
+  'tablero mural + ajedrez humano en la cancha':'wall board + human chess on the yard',
+  'tablero de cartulina y piezas con tapitas':'cardboard board and bottle-cap pieces',
+  'guía proyectada + Jugar contra la IA como estación':'projected guide + Play the AI as a station',
+  'estaciones por nivel + monitores':'stations by level + monitors',
+  'tablero mural grande + parejas fijas':'large wall board + fixed pairs',
+  'Todo funciona sin internet; aprovecha la luz natural y el espacio abierto.':'Everything works offline; make the most of natural light and open space.',
+  'Un tablero por cada dos niños. Que cada quien fabrique su juego: cuesta cero.':'One board per two children. Have each one make their set: it costs nothing.',
+  'Combina lo digital con partidas reales y compite por medallas.':'Combine the digital with real games and compete for badges.',
+  'Instrucción diferenciada: los mayores guían a los pequeños; una actividad, varios niveles.':'Differentiated instruction: the older ones guide the younger; one activity, several levels.',
+  'Demuestra para todos a la vez, rota por estaciones y evalúa de a uno.':'Demonstrate to all at once, rotate through stations and assess one by one.',
+  // planner impreso
+  'Plan de clase de ajedrez':'Chess lesson plan','Contexto:':'Context:','Edad:':'Age:','Duración:':'Duration:',
+  'Fecha: __________':'Date: __________','Objetivo':'Objective','Método sugerido':'Suggested method',
+  'Inicio':'Opening','Desarrollo':'Development','Cierre':'Closing','Evaluación':'Assessment',
+  'Adaptación al contexto':'Context adaptation','Observaciones del docente':'Teacher\'s notes',
+  'Ajedrez en el Aula · material educativo libre · no acredita nada':'Chess in the Classroom · free educational material · accredits nothing',
+  // objetivos/momentos por edad
+  'Reconocer el tablero y una pieza, y moverla correctamente.':'Recognize the board and a piece, and move it correctly.',
+  'Cuento: presenta la pieza como un personaje y actúa su movimiento (2 min).':'Story: introduce the piece as a character and act out its move (2 min).',
+  'Cada niño mueve esa pieza en el tablero; caminan su movimiento en el piso (6 min).':'Each child moves that piece on the board; they walk its move on the floor (6 min).',
+  'Cada uno muestra un movimiento y lo nombra (2 min).':'Each one shows a move and names it (2 min).',
+  'Observo si reconoce la pieza y la mueve bien (lista de cotejo).':'I observe whether they recognize the piece and move it well (checklist).',
+  'Dominar el movimiento y la captura de la pieza del día y jugar un mini-juego.':'Master the move and capture of the day\'s piece and play a mini-game.',
+  'Pregunta de repaso del día anterior (3 min).':'Review question from the previous day (3 min).',
+  'Muestro la idea en el tablero mural; juegan un mini-juego por parejas (12 min).':'I show the idea on the wall board; they play a mini-game in pairs (12 min).',
+  '¿Qué descubrieron? Nombro un par de aciertos (5 min).':'What did they discover? I name a couple of good moves (5 min).',
+  'Reto rápido de 1 minuto por estudiante mientras el resto juega.':'Quick 1-minute challenge per student while the rest play.',
+  'Anotar una partida corta y reconocer un mate básico.':'Record a short game and recognize a basic mate.',
+  'Repaso de coordenadas cantadas (5 min).':'Review of sung coordinates (5 min).',
+  'Practican notación y el mate de la escalera; ejercicios autocorregidos (18 min).':'They practice notation and the ladder mate; self-checking exercises (18 min).',
+  'Anotan entre todos una partida corta en la planilla (7 min).':'Together they record a short game on the scoresheet (7 min).',
+  'Rúbrica: arma el tablero, halla salidas de jaque, anota tres jugadas.':'Rubric: sets up the board, finds ways out of check, records three moves.',
+  'Aplicar una estrategia y conocer una regla de competencia.':'Apply a strategy and learn a competition rule.',
+  'Muestro una posición y pregunto qué harían (5 min).':'I show a position and ask what they would do (5 min).',
+  'Estudian una táctica y juegan aplicándola; los avanzados arbitran (25 min).':'They study a tactic and play applying it; the advanced ones referee (25 min).',
+  'Discusión de una regla FIDE y del arbitraje (5–10 min).':'Discussion of a FIDE rule and refereeing (5–10 min).',
+  'Prueban una decisión de árbitro y explican por qué (autoevaluación).':'They try a referee decision and explain why (self-assessment).',
+  // ---- 4 · contexto ----
+  '4 · Enseñar según tu contexto':'4 · Teaching according to your context',
+  'El ajedrez se adapta a cualquier escuela. Estas son soluciones concretas para las realidades más comunes.':
+    'Chess adapts to any school. These are concrete solutions for the most common realities.',
+  '🌾 Escuela rural / sin electricidad':'🌾 Rural school / no electricity',
+  'Todo funciona sin internet: descarga la plataforma una vez y úsala sin señal.':'Everything works <strong>without internet</strong>: download the platform once and use it with no signal.',
+  'Prioriza el tablero mural y el ajedrez humano en la cancha.':'Prioritize the <strong>wall board</strong> and human chess on the yard.',
+  'Aprovecha la luz natural; sesiones cortas a media mañana.':'Make the most of natural light; short mid-morning sessions.',
+  'Imprime el tablero y las fichas cuando haya acceso a una impresora en el pueblo.':'Print the <a href="imprimibles.html">board and pieces</a> when there\'s access to a printer in town.',
+  '🪙 Escasos recursos / sin material':'🪙 Low resources / no materials',
+  'Tablero de cartulina (8×8, casillas de 5 cm) plastificado con cinta.':'A <strong>cardboard</strong> board (8×8, 5 cm squares) laminated with tape.',
+  'Piezas con tapitas de dos colores y un papelito con la inicial.':'Pieces from <strong>bottle caps</strong> in two colors with a slip showing the initial.',
+  'Un tablero por cada dos estudiantes multiplica la participación.':'One board per two students multiplies participation.',
+  'Proyecto interdisciplinario: arte (tallar piezas), español (crónica del torneo).':'Cross-curricular project: art (carving pieces), language (tournament report).',
+  '🏙️ Ciudad / con tecnología':'🏙️ City / with technology',
+  'Proyecta la guía y los tableros animados al grupo entero.':'Project the <a href="guia.html">guide</a> and the animated boards to the whole group.',
+  'Usa Jugar contra la IA y Prácticas como estaciones o tarea.':'Use <a href="jugar.html">Play the AI</a> and <a href="practicas.html">Practice</a> as stations or homework.',
+  'Deja que compitan por medallas y organiza un torneo en línea interno.':'Let them compete for <strong>badges</strong> and organize an internal online tournament.',
+  'Combina lo digital con partidas reales: la pieza física no se reemplaza.':'Combine the digital with real games: the physical piece can\'t be replaced.',
+  '🧑‍🏫 Aula multigrado':'🧑‍🏫 Multigrade class',
+  'Instrucción diferenciada: el ajedrez tiene niveles para cada grado en la misma sala.':'<strong>Differentiated instruction:</strong> chess has levels for each grade in the same room.',
+  'Los mayores son monitores de los pequeños (aprendizaje entre pares).':'The older ones are <strong>monitors</strong> of the younger (peer learning).',
+  'Estaciones: un grado con mini-juegos, otro con prácticas, otro con la guía.':'Stations: one grade with mini-games, another with practice, another with the guide.',
+  'Una sola actividad, varios niveles: todos juegan, cada quien a su ritmo.':'One activity, several levels: everyone plays, each at their own pace.',
+  '👥 Aula numerosa':'👥 Large class',
+  'Un tablero mural grande y demostraciones para todos a la vez.':'One large wall board and demonstrations for everyone at once.',
+  'Parejas fijas y monitores por fila para no perder el control.':'Fixed pairs and monitors per row to keep control.',
+  'Mini-juegos cortos y rotación por estaciones.':'Short mini-games and rotation through stations.',
+  'Evalúa observando de a uno mientras el resto juega.':'Assess by observing one by one while the rest play.',
+  '🧒 Grupo muy pequeño o club':'🧒 Very small group or club',
+  'Más tiempo por estudiante: análisis de sus propias partidas.':'More time per student: analysis of their own games.',
+  'Reta a la IA en nivel creciente y estudia estrategias.':'Challenge the AI at rising levels and study strategies.',
+  'Prepara a los avanzados como árbitros y entrenadores.':'Prepare the advanced ones as referees and coaches.',
+  // ---- 5 · el maestro aprende ----
+  '5 · El maestro también aprende':'5 · The teacher learns too',
+  'No necesitas ser un experto: solo ir un paso por delante. Esta es tu ruta de autoformación con la misma plataforma.':
+    'You don\'t need to be an expert: just stay <strong>one step ahead</strong>. This is your self-training path with the same platform.',
+  'Tu ruta en cuatro pasos':'Your path in four steps',
+  'Lee las Reglas y haz el test de nivel para saber dónde estás.':'Read the <a href="reglas.html">Rules</a> and take the <a href="nivel.html">level test</a> to know where you stand.',
+  'Resuelve las Prácticas y estudia las Estrategias básicas.':'Solve the <a href="practicas.html">Practice</a> and study the basic <a href="estrategias.html">Strategies</a>.',
+  'Juega contra la IA en nivel fácil hasta ganarle con soltura.':'Play the <a href="jugar.html">AI</a> on easy until you beat it comfortably.',
+  'Repasa la guía la noche antes de cada clase: solo la lámina que toca.':'Review the <a href="guia.html">guide</a> the night before each class: just the slide for that day.',
+  'Práctica reflexiva':'Reflective practice',
+  'Después de cada clase, anota qué funcionó y qué no.':'After each class, note what worked and what didn\'t.',
+  'Prueba un método distinto cada semana (de los once de arriba).':'Try <strong>a different method</strong> each week (from the eleven above).',
+  'Enseñar es aprender: prepararte para explicar te obliga a entender mejor.':'Teaching is learning: preparing to explain forces you to understand better.',
+  'No temas decir «no sé, vamos a averiguarlo»: modela el aprendizaje.':'Don\'t be afraid to say «I don\'t know, let\'s find out»: model learning.',
+  'Aprende en comunidad':'Learn in community',
+  'Junta a dos o tres colegas y formen un pequeño círculo de estudio.':'Get two or three colleagues together and form a small study circle.',
+  'Observa una clase de otro docente y que te observen a ti.':'Watch another teacher\'s class and have them watch yours.',
+  'Deja que tus estudiantes avanzados te enseñen lo que descubren.':'Let your advanced students teach you what they discover.',
+  'Lo que NO necesitas':'What you do NOT need',
+  'Saber jugar bien tú mismo.':'To play well yourself.',
+  'Un título de ajedrez ni un curso caro.':'A chess title or an expensive course.',
+  'Relojes, piezas de torneo ni internet permanente.':'Clocks, tournament pieces or permanent internet.',
+  'Tres cosas que nunca funcionan: explicar las seis piezas el mismo día · empezar por la teoría de aperturas · jugar contra tus estudiantes para demostrarles que sabes.':
+    '<em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">Three things that never work:</em> explaining the six pieces the same day · starting with opening theory · playing against your students to show them you know.',
+  // ---- 6 · materiales ----
+  '6 · Materiales didácticos':'6 · Teaching materials',
+  '🖨️ Imprimibles':'🖨️ Printables','Tablero, fichas para recortar (cartas), planilla y ficha del docente con rúbrica.':'Board, cut-out pieces (cards), scoresheet and teacher sheet with rubric.',
+  '🧸 Juegos para pequeños':'🧸 Games for little ones','Reconocer piezas, cómo se mueven y memoria: material didáctico digital listo.':'Recognize pieces, how they move and memory: ready-made digital teaching material.',
+  '📖 Guía proyectable':'📖 Projectable guide','40 láminas con tableros animados para mostrar al grupo entero.':'40 slides with animated boards to show the whole group.',
+  '✂️ Hazlo tú':'✂️ Make it yourself','Cartulina + tapitas + tiza en la cancha. El mejor material es el que fabrican los propios niños.':'Cardboard + bottle caps + chalk on the yard. The best material is the one the children make themselves.',
+  '🧩 Prácticas y notación':'🧩 Practice and notation','Ejercicios autocorregidos, de fácil a normal, para trabajo autónomo.':'Self-checking exercises, from easy to normal, for independent work.',
+  '🤖 Rival de práctica':'🤖 Practice opponent','La IA y el modo 2 jugadores sirven de estación de aula y de tarea.':'The AI and the 2-player mode work as a classroom station and homework.',
+  'Solo para enseñar y aprender. Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
+    '<strong>For teaching and learning only.</strong> Open educational material. It grants no certificates or accreditation. Published with GitHub Pages.'
+};
+</script>
+<script src="assets/app.js"></script>
+<script>
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
 // Planificador de clase (recomendador por contexto + edad)
 var EDAD={
   '46':{lbl:'4–6 años', dur:'10 minutos', act:'carrera de peones o reconocer piezas', metodo:'cuento y cuerpo', foco:'una sola pieza por sesión, sin partidas completas', link:'aprende.html',
@@ -418,17 +675,17 @@ var out=document.getElementById('plan');
 function render(){
   var e=EDAD[edad], c=CTX[ctx];
   out.innerHTML=
-    '<h3>Tu clase sugerida</h3>'+
-    '<div class="line"><b>Método</b><span>'+e.metodo+'</span></div>'+
-    '<div class="line"><b>Foco</b><span>'+e.foco+'</span></div>'+
-    '<div class="line"><b>Actividad</b><span>Empieza con: '+e.act+'</span></div>'+
-    '<div class="line"><b>Duración</b><span>'+e.dur+' por sesión, una vez por semana</span></div>'+
-    '<div class="line"><b>Material</b><span>'+c.mat+'</span></div>'+
-    '<div class="line"><b>Consejo</b><span>'+c.tip+'</span></div>'+
-    '<div class="line"><b>Empieza ya</b><span><a href="'+e.link+'">Abrir la sección recomendada →</a></span></div>'+
+    '<h3>'+T('Tu clase sugerida')+'</h3>'+
+    '<div class="line"><b>'+T('Método')+'</b><span>'+T(e.metodo)+'</span></div>'+
+    '<div class="line"><b>'+T('Foco')+'</b><span>'+T(e.foco)+'</span></div>'+
+    '<div class="line"><b>'+T('Actividad')+'</b><span>'+T('Empieza con:')+' '+T(e.act)+'</span></div>'+
+    '<div class="line"><b>'+T('Duración')+'</b><span>'+T(e.dur)+' '+T('por sesión, una vez por semana')+'</span></div>'+
+    '<div class="line"><b>'+T('Material')+'</b><span>'+T(c.mat)+'</span></div>'+
+    '<div class="line"><b>'+T('Consejo')+'</b><span>'+T(c.tip)+'</span></div>'+
+    '<div class="line"><b>'+T('Empieza ya')+'</b><span><a href="'+e.link+'">'+T('Abrir la sección recomendada →')+'</a></span></div>'+
     '<div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">'+
-      '<button class="btn sm" id="printPlan" type="button">🖨 Imprimir plan de clase</button>'+
-      '<a class="btn ghost sm" href="'+e.link+'">Abrir sección</a>'+
+      '<button class="btn sm" id="printPlan" type="button">'+T('🖨 Imprimir plan de clase')+'</button>'+
+      '<a class="btn ghost sm" href="'+e.link+'">'+T('Abrir sección')+'</a>'+
     '</div>';
   document.getElementById('printPlan').addEventListener('click', printPlan);
 }
@@ -439,19 +696,19 @@ if(!planPrint){ planPrint=document.createElement('div'); planPrint.id='planPrint
 function printPlan(){
   var e=EDAD[edad], c=CTX[ctx];
   planPrint.innerHTML=
-    '<div class="pp-h">Plan de clase de ajedrez</div>'+
-    '<div class="pp-meta">Contexto: '+c.lbl+'  ·  Edad: '+e.lbl+'  ·  Duración: '+e.dur+'  ·  Fecha: __________</div>'+
-    '<div class="pp-sec"><b>Objetivo</b>'+e.obj+'</div>'+
-    '<div class="pp-sec"><b>Método sugerido</b>'+e.metodo+'</div>'+
-    '<div class="pp-sec"><b>Material ('+c.lbl+')</b>'+c.mat+'</div>'+
-    '<div class="pp-sec"><b>Inicio</b>'+e.inicio+'</div>'+
-    '<div class="pp-sec"><b>Desarrollo</b>'+e.desarrollo+'</div>'+
-    '<div class="pp-sec"><b>Cierre</b>'+e.cierre+'</div>'+
-    '<div class="pp-sec"><b>Evaluación</b>'+e.eval+'</div>'+
-    '<div class="pp-sec"><b>Adaptación al contexto</b>'+c.tip+'</div>'+
-    '<div class="pp-sec" style="border:0"><b>Observaciones del docente</b>'+
+    '<div class="pp-h">'+T('Plan de clase de ajedrez')+'</div>'+
+    '<div class="pp-meta">'+T('Contexto:')+' '+T(c.lbl)+'  ·  '+T('Edad:')+' '+T(e.lbl)+'  ·  '+T('Duración:')+' '+T(e.dur)+'  ·  '+T('Fecha: __________')+'</div>'+
+    '<div class="pp-sec"><b>'+T('Objetivo')+'</b>'+T(e.obj)+'</div>'+
+    '<div class="pp-sec"><b>'+T('Método sugerido')+'</b>'+T(e.metodo)+'</div>'+
+    '<div class="pp-sec"><b>'+T('Material')+' ('+T(c.lbl)+')</b>'+T(c.mat)+'</div>'+
+    '<div class="pp-sec"><b>'+T('Inicio')+'</b>'+T(e.inicio)+'</div>'+
+    '<div class="pp-sec"><b>'+T('Desarrollo')+'</b>'+T(e.desarrollo)+'</div>'+
+    '<div class="pp-sec"><b>'+T('Cierre')+'</b>'+T(e.cierre)+'</div>'+
+    '<div class="pp-sec"><b>'+T('Evaluación')+'</b>'+T(e.eval)+'</div>'+
+    '<div class="pp-sec"><b>'+T('Adaptación al contexto')+'</b>'+T(c.tip)+'</div>'+
+    '<div class="pp-sec" style="border:0"><b>'+T('Observaciones del docente')+'</b>'+
       '<div style="border:1px solid #ccc;height:70px;border-radius:6px;margin-top:4px"></div></div>'+
-    '<div style="font-size:11px;color:#777;text-align:center;margin-top:8px">Ajedrez en el Aula · material educativo libre · no acredita nada</div>';
+    '<div style="font-size:11px;color:#777;text-align:center;margin-top:8px">'+T('Ajedrez en el Aula · material educativo libre · no acredita nada')+'</div>';
   document.body.classList.add('printing');
   window.print();
   setTimeout(function(){ document.body.classList.remove('printing'); }, 300);
@@ -480,7 +737,7 @@ Array.prototype.slice.call(document.querySelectorAll('.card.method')).forEach(fu
   card.className='flip-card method-flip';
   card.setAttribute('role','button');
   card.setAttribute('tabindex','0');
-  card.setAttribute('aria-label', h3.textContent+' · toca para ver el guion paso a paso');
+  card.setAttribute('aria-label', h3.textContent+' · '+T('toca para ver el guion paso a paso'));
   card.innerHTML=
     '<div class="flip-inner">'+
       '<div class="flip-face front">'+
@@ -488,12 +745,12 @@ Array.prototype.slice.call(document.querySelectorAll('.card.method')).forEach(fu
         tagHTML+
         '<h3>'+titHTML+'</h3>'+
         '<p class="front-p">'+pHTML+'</p>'+
-        '<div class="flip-hint">🔄 Toca para ver el guion</div>'+
+        '<div class="flip-hint">🔄 '+T('Toca para ver el guion')+'</div>'+
       '</div>'+
       '<div class="flip-face back">'+
-        '<h4>Guion paso a paso</h4>'+
+        '<h4>'+T('Guion paso a paso')+'</h4>'+
         '<ol>'+olHTML+'</ol>'+
-        '<div class="flip-hint">🔄 Toca para volver</div>'+
+        '<div class="flip-hint">🔄 '+T('Toca para volver')+'</div>'+
       '</div>'+
     '</div>';
   function toggle(){ card.classList.toggle('flipped'); }
@@ -507,6 +764,5 @@ Array.prototype.slice.call(document.querySelectorAll('.card.method')).forEach(fu
   });
 });
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>

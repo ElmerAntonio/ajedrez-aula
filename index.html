@@ -120,8 +120,8 @@
       <p class="note" style="margin-top:.6em">Principiante · Intermedio · Avanzado</p>
     </a>
     <div class="card warm">
-      <div class="ico">🧭</div><h3>¿Por dónde empiezo?</h3>
-      <p><strong>Niño pequeño:</strong> empieza en «Aprende jugando».<br><strong>Maestro:</strong> abre la Guía y sigue el plan de 12 clases.<br><strong>Alumno nuevo:</strong> haz el test de nivel y sigue sus recomendaciones.<br><strong>¿Ya juegas?</strong> ve directo a Jugar contra la IA.</p>
+      <div class="ico">🧭</div><h3 data-en="Where do I start?">¿Por dónde empiezo?</h3>
+      <p data-en="<strong>Young child:</strong> start in «Learn by playing».<br><strong>Teacher:</strong> open the Guide and follow the 12-lesson plan.<br><strong>New student:</strong> take the level test and follow its advice.<br><strong>Already play?</strong> go straight to Play the AI."><strong>Niño pequeño:</strong> empieza en «Aprende jugando».<br><strong>Maestro:</strong> abre la Guía y sigue el plan de 12 clases.<br><strong>Alumno nuevo:</strong> haz el test de nivel y sigue sus recomendaciones.<br><strong>¿Ya juegas?</strong> ve directo a Jugar contra la IA.</p>
     </div>
   </div>
 
@@ -129,7 +129,7 @@
   <div class="card" style="margin-top:40px">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
       <h3 style="margin:0">🏅 Tus logros</h3>
-      <span class="note mono">Medallas: <span id="badgeCount">0 / 8</span></span>
+      <span class="note mono"><span data-en="Badges:">Medallas:</span> <span id="badgeCount">0 / 8</span></span>
     </div>
     <p class="note" style="margin:.4em 0 0">Gana medallas mientras practicas, juegas y aprendes. Se guardan en este dispositivo (no se envía nada a ningún servidor).</p>
     <div class="badge-wall" id="badgeWall"></div>
@@ -170,10 +170,86 @@
   </div>
 </div>
 
-<div class="foot">
+<div class="foot" data-en="Chess in the Classroom · free educational material · not for accreditation<br>Open source hosted on <a href=&quot;https://github.com/elmerantonio/ajedrez-aula&quot;>GitHub</a>">
   Ajedrez en el Aula · material educativo libre · sin fines de acreditación<br>
   Código abierto alojado en <a href="https://github.com/elmerantonio/ajedrez-aula">GitHub</a>
 </div>
+<script>
+window.PAGE_I18N={
+  __title:'Chess in the Classroom · Educational chess platform',
+  'Todo lo que hay aquí':'Everything you\'ll find here',
+  'Once secciones que se complementan. Empieza por donde quieras.':'Eleven sections that work together. Start wherever you like.',
+  'Aprende jugando':'Learn by playing',
+  'Para los más pequeños que aún no saben jugar: conoce las piezas, mira cómo se mueven y juega a adivinar y a la memoria. Colorido y divertido.':
+    'For the youngest who can\'t play yet: meet the pieces, see how they move and play guessing and memory games. Colorful and fun.',
+  'Ideal para CEFACEI y primeros grados':'Great for Pre-K and early grades',
+  'Guía docente':'Teacher guide',
+  'Presentación de 40 láminas: el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo con palabras que los niños entienden. Con tableros animados.':
+    'A 40-slide presentation: the board, the pieces, the rules, the FIDE Laws and how to explain it in words children understand. With animated boards.',
+  'Ideal para el maestro · también sirve de repaso al alumno':'Great for the teacher · also a review for the student',
+  'Pedagogía':'Pedagogy',
+  'Muchas maneras de enseñar (cuento, mini-juegos, ajedrez humano, entre pares), cómo adaptarte a tu contexto (rural, multigrado, escasos recursos) y cómo tú también aprendes. Con un planificador de clase.':
+    'Many ways to teach (storytelling, mini-games, human chess, peer learning), how to adapt to your context (rural, multigrade, low resources) and how you learn too. With a lesson planner.',
+  'Para el maestro · métodos y contexto':'For the teacher · methods and context',
+  'Reglas':'Rules',
+  'Todas las reglas en un solo lugar para consultar rápido: el tablero, cómo se mueve cada pieza, enroque, al paso, coronación, jaque, mate, tablas y torneo.':
+    'All the rules in one place for quick reference: the board, how each piece moves, castling, en passant, promotion, check, mate, draws and tournaments.',
+  'Referencia completa con diagramas':'Complete reference with diagrams',
+  'Prácticas':'Practice',
+  'Muchos ejercicios de fácil a difícil, barajados para que no se repitan: capturar, tenedores, mate en una jugada y un modo de notación. Te dice al instante si acertaste.':
+    'Many exercises from easy to hard, shuffled so they don\'t repeat: capturing, forks, mate in one and a <strong>notation</strong> mode. It tells you instantly if you got it right.',
+  '36 ejercicios en 3 niveles + notación':'36 exercises in 3 levels + notation',
+  'Estrategias':'Strategies',
+  'Tácticas, escuelas históricas y planes de medio juego, con una prueba interactiva de dificultad ajustable y muchas posiciones que se barajan.':
+    'Tactics, historical schools and middlegame plans, with an interactive quiz of adjustable difficulty and many positions that shuffle.',
+  '8 tácticas + escuelas + prueba variada':'8 tactics + schools + varied quiz',
+  'Jugar contra la IA':'Play the AI',
+  'Una inteligencia artificial vive en la página y juega contra ti en tres niveles. Con pistas, deshacer, lista de jugadas y reloj para practicar con el tiempo.':
+    'An artificial intelligence lives in the page and plays against you at three levels. With hints, undo, a move list and a <strong>clock</strong> to practice with time.',
+  'Elige color, dificultad y reloj':'Choose color, difficulty and clock',
+  'Mi ruta':'My path',
+  'Un árbol de habilidades tipo videojuego: avanza de la iniciación a la competencia desbloqueando ramas a medida que ganas medallas.':
+    'A video-game skill tree: advance from beginner to competition, unlocking branches as you earn badges.',
+  'Progreso gamificado':'Gamified progress',
+  'Prácticas de árbitro':'Referee practice',
+  'Casos reales de torneo escolar donde debes decidir qué hacer, con la regla FIDE que lo respalda. Para estudiantes que serán jueces auxiliares.':
+    'Real school-tournament cases where you must decide what to do, with the FIDE rule that backs it. For students who will be assistant referees.',
+  '8 casos con explicación':'8 cases with explanation',
+  'Imprimibles':'Printables',
+  'Materiales para imprimir gratis: tablero, fichas para recortar (cartas), planilla en blanco y hojas de actividad para niños pequeños.':
+    'Free printable materials: a board, cut-out pieces (cards), a blank scoresheet and activity sheets for young children.',
+  'Para el aula sin presupuesto':'For the classroom on no budget',
+  'Mi nivel':'My level',
+  'Un test de 8 preguntas que verifica si vas empezando, si ya juegas o si dominas las reglas — y te recomienda exactamente qué practicar después.':
+    'An 8-question test that checks whether you\'re starting out, already play or master the rules — and recommends exactly what to practice next.',
+  'Principiante · Intermedio · Avanzado':'Beginner · Intermediate · Advanced',
+  '🏅 Tus logros':'🏅 Your achievements',
+  'Gana medallas mientras practicas, juegas y aprendes. Se guardan en este dispositivo (no se envía nada a ningún servidor).':
+    'Earn badges as you practice, play and learn. They are saved on this device (nothing is sent to any server).',
+  '👩‍🏫 Si eres maestro':'👩‍🏫 If you\'re a teacher',
+  'No necesitas saber jugar bien: la guía te lleva de la mano.':'You don\'t need to play well: the guide takes you by the hand.',
+  'En Pedagogía hallas métodos, adaptaciones por contexto y un planificador de clase.':
+    'In <a href="pedagogia.html">Pedagogy</a> you\'ll find methods, context adaptations and a lesson planner.',
+  'Trae el plan de 12 clases listo para copiar.':'It brings a 12-lesson plan ready to copy.',
+  'Usa las prácticas y la IA como tarea o estación de aula.':'Use the practice exercises and the AI as homework or a classroom station.',
+  '🧒 Si eres alumno':'🧒 If you\'re a student',
+  'Empieza por «Mi nivel» para saber dónde estás.':'Start with «My level» to see where you stand.',
+  'Resuelve las prácticas: son como acertijos.':'Solve the practice exercises: they\'re like puzzles.',
+  'Reta a la IA y trata de subir de nivel.':'Challenge the AI and try to level up.',
+  'Todo funciona en el celular, sin instalar nada.':'Everything works on the phone, with nothing to install.',
+  '📌 Aviso importante':'📌 Important notice',
+  'Este sitio es material educativo abierto, creado únicamente para enseñar y aprender ajedrez. Su propósito es didáctico y de práctica.':
+    'This site is <strong>open educational material</strong>, created solely to <strong>teach and learn chess</strong>. Its purpose is didactic and practice-based.',
+  '❌ No acredita nada: no otorga certificados, títulos, notas oficiales ni reconocimiento alguno.':
+    '❌ <strong>It accredits nothing:</strong> it grants no certificates, degrees, official grades or recognition of any kind.',
+  '🆓 Es gratuito y libre: cualquiera puede usarlo, copiarlo y compartirlo.':
+    '🆓 It is <strong>free and open</strong>: anyone can use it, copy it and share it.',
+  '🌐 Se publica y aloja con GitHub (GitHub Pages). El código es abierto y está en el repositorio.':
+    '🌐 It is published and hosted with <strong>GitHub</strong> (GitHub Pages). The code is open and in the repository.',
+  '🔒 No pide cuenta ni datos personales; nada de lo que haces aquí se guarda ni se envía.':
+    '🔒 It asks for no account or personal data; nothing you do here is stored or sent.'
+};
+</script>
 <script src="assets/app.js"></script>
 </body>
 </html>

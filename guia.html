@@ -162,7 +162,7 @@ ol li::before{content:counter(n);position:absolute;left:0;top:.05em;width:1.5em;
 </style>
 </head>
 <body>
-<a id="home" href="index.html" aria-label="Volver al inicio">♞ Inicio</a>
+<a id="home" href="index.html" aria-label="Volver al inicio" data-en="♞ Home">♞ Inicio</a>
 <div id="deck">
 <!-- 1 -->
 <section class="slide cover center" data-t="Portada">
@@ -1301,9 +1301,12 @@ ol li::before{content:counter(n);position:absolute;left:0;top:.05em;width:1.5em;
 .sheet .rw span.res.lit{color:var(--marfil)}
 </style>
 
+<script src="assets/guia-i18n.js"></script>
+<script src="assets/app.js"></script>
 <script>
 (function(){
 'use strict';
+var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
 var FILL={k:'\u265a',q:'\u265b',r:'\u265c',b:'\u265d',n:'\u265e',p:'\u265f'};
 var OUTL={k:'\u2654',q:'\u2655',r:'\u2656',b:'\u2657',n:'\u2658',p:'\u2659'};
 
@@ -1425,7 +1428,7 @@ function build(box){
   if(box.dataset.anim){
     var btn=document.createElement('button');
     btn.className='play'; btn.type='button';
-    btn.innerHTML='<span>▶</span> Mostrar la jugada';
+    btn.innerHTML='<span>▶</span> '+T('Mostrar la jugada');
     box.parentNode.insertBefore(btn,box.nextSibling);
     btn.addEventListener('click',function(){play(box,btn);});
     box.__initial={fen:fen};
@@ -1519,7 +1522,7 @@ function show(n){
   });
   var p=String(cur+1); while(p.length<2)p='0'+p;
   num.textContent=p+' / '+slides.length;
-  tt.textContent=s.dataset.t||'';
+  tt.textContent=T(s.dataset.t||'');
 }
 document.getElementById('next').onclick=function(){show(cur+1);};
 document.getElementById('prev').onclick=function(){show(cur-1);};
@@ -1543,6 +1546,5 @@ document.addEventListener('touchend',function(e){
 show(0);
 })();
 </script>
-<script src="assets/app.js"></script>
 </body>
 </html>
