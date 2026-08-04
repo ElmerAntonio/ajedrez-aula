@@ -14,6 +14,17 @@
 .strat-card{display:flex;flex-direction:column;gap:12px}
 .concept{display:grid;grid-template-columns:230px 1fr;gap:20px;align-items:center}
 @media(max-width:640px){.concept{grid-template-columns:1fr}}
+/* ---- Modo Foco Socrático (la tarjeta del tutor vive en assets/socratic.js) ---- */
+.foco-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 16px}
+/* pantalla de foco: solo el bloque de la prueba, sin el artículo ni la barra */
+body.foco .nav,body.foco .foot,body.foco .disclaimer,
+body.foco .wrap>*:not(#quizZone):not(#focoExit){display:none !important}
+body.foco{background:radial-gradient(1200px 700px at 50% -10%,rgba(76,122,88,.28),transparent 60%),var(--tinta)}
+body.foco .wrap{max-width:1080px;padding-top:24px}
+body.foco #quizZone>h2{margin-top:0}
+.foco-exit{position:fixed;top:14px;right:16px;z-index:60}
+body:not(.foco) .foco-exit{display:none}
+body.foco .game{gap:26px}
 </style>
 </head>
 <body>
@@ -145,8 +156,13 @@
   </div>
 
   <!-- PRUEBA INTERACTIVA -->
+  <div id="quizZone">
   <h2 style="margin-top:.4em">5 · Prueba: juega la estrategia</h2>
   <p class="lead" style="margin:.4em 0 14px">Ahora te toca a ti. En cada posición hay una jugada que aplica una idea táctica. Elige la dificultad; las posiciones se barajan para que nunca te toque la misma tanda.</p>
+  <div class="foco-bar">
+    <button class="btn ghost sm" id="focoBtn" type="button">🧘 Modo foco socrático</button>
+    <span class="note" id="focoHint">Un tutor que te hace preguntas —no te da la respuesta— y quita las distracciones para que pienses.</span>
+  </div>
   <div class="seg" id="diff" style="margin-bottom:16px">
     <button data-d="todas" class="on">Todas</button>
     <button data-d="medio">🟡 Medio</button>
@@ -170,9 +186,12 @@
         <p id="cdesc" style="margin-top:.2em">—</p>
         <p class="note" id="chint" style="margin-top:.8em;display:none"></p>
       </div>
+      <div id="socHost"></div>
       <p class="note" style="margin-top:12px"><span data-en="Strategies applied:">Estrategias aplicadas:</span> <span id="cscore" class="mono" style="color:var(--ambar)">0 / 4</span></p>
     </div>
   </div>
+  </div>
+  <button class="btn foco-exit" id="focoExit" type="button">✕ Salir del foco</button>
 
   <div class="disclaimer" style="margin-top:26px">
     <strong>Solo para enseñar y aprender.</strong> Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.
@@ -272,6 +291,10 @@ window.PAGE_I18N={
   'Ahora te toca a ti. En cada posición hay una jugada que aplica una idea táctica. Elige la dificultad; las posiciones se barajan para que nunca te toque la misma tanda.':
     'Now it\'s your turn. In each position there\'s a move that applies a tactical idea. Choose the difficulty; the positions shuffle so you never get the same round.',
   'Todas':'All','🟡 Medio':'🟡 Medium','🔴 Difícil':'🔴 Hard',
+  '🧘 Modo foco socrático':'🧘 Socratic focus mode',
+  'Un tutor que te hace preguntas —no te da la respuesta— y quita las distracciones para que pienses.':
+    'A tutor that asks you questions —it doesn\'t give the answer— and removes distractions so you think.',
+  '✕ Salir del foco':'✕ Exit focus',
   '💡 Pista':'💡 Hint','👁 Solución':'👁 Solution','⏭ Siguiente':'⏭ Next',
   'Solo para enseñar y aprender. Material educativo abierto. No otorga certificados ni acreditación. Publicado con GitHub Pages.':
     '<strong>For teaching and learning only.</strong> Open educational material. It grants no certificates or accreditation. Published with GitHub Pages.',
@@ -286,10 +309,12 @@ window.PAGE_I18N={
 };
 </script>
 <script src="assets/app.js"></script>
+<script src="assets/socratic.js"></script>
 <script>
 (function(){
 'use strict';
 var T=(window.AA&&AA.t)?AA.t:function(s){return s;};
+var tut=null;
 // diagramas ilustrativos con clip animado del movimiento
 var reduce = typeof matchMedia!=='undefined' && matchMedia('(prefers-reduced-motion:reduce)').matches;
 Array.prototype.slice.call(document.querySelectorAll('.mini.cb')).forEach(function(box){
@@ -345,6 +370,7 @@ function load(){
   cnum.textContent=(idx+1)+' / '+DECK.length;
   ctitle.textContent=T(cur.t); cdesc.textContent=T(cur.d);
   chint.style.display='none'; chint.textContent='';
+  if(tut) tut.reset();
 }
 function validate(mv){
   var from=C.rcToSq(mv.from[0],mv.from[1]), to=C.rcToSq(mv.to[0],mv.to[1]);
@@ -376,6 +402,13 @@ document.getElementById('show').addEventListener('click',function(){
   var to=C.sqToRC(s[1]); var cell=board.cells[to[0]+'-'+to[1]]; if(cell) cell.classList.add('sel');
   statusEl.textContent=T('La jugada correcta está marcada.'); statusEl.className='status check';
 });
+// tutor socrático (compartido con Prácticas) sobre el ejercicio actual
+tut=Socratic.mount({ host:document.getElementById('socHost'), board:board, current:function(){return cur;} });
+// pantalla de foco sin distracciones
+document.getElementById('focoBtn').addEventListener('click',function(){ document.body.classList.add('foco'); window.scrollTo(0,0); });
+document.getElementById('focoExit').addEventListener('click',function(){ document.body.classList.remove('foco'); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&document.body.classList.contains('foco')) document.body.classList.remove('foco'); });
+
 DECK=buildDeck(); load();
 })();
 </script>
