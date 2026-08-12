@@ -112,7 +112,7 @@ strong{color:var(--marfil);font-weight:800}
 
 /* ---------- TABLERO INTERACTIVO ---------- */
 .board-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
-.cb{position:relative;width:100%;max-width:min(72vh,560px);aspect-ratio:1;
+.cb{position:relative;width:100%;max-width:min(80vh,640px);aspect-ratio:1;
   background:var(--tinta2);border-radius:12px;padding:4.4%;margin:0 auto;
   touch-action:manipulation;user-select:none;-webkit-user-select:none;
   container-type:inline-size} /* las piezas se miden respecto al tablero, no a la pantalla */
@@ -135,10 +135,16 @@ strong{color:var(--marfil);font-weight:800}
 .cb .pc.capd{opacity:0}
 .cb .pc.pop{animation:pcpop .28s cubic-bezier(.34,1.56,.64,1)}
 @keyframes pcpop{from{transform:scale(.5)}to{transform:scale(1)}}
-.cb .pc span{position:absolute;font-size:11cqw;line-height:1;
+.cb .pc span{position:absolute;font-size:12.4cqw;line-height:1;
   font-family:'DejaVu Sans','Segoe UI Symbol','Noto Sans Symbols 2',sans-serif}
-.cb .pc .f{color:#fff} .cb .pc .o{color:#111C17}
-.cb .pc.blk .f{color:#16211B} .cb .pc.blk .o{color:var(--marfil)}
+/* Piezas de dos tonos: cuerpo (.f) + contorno (.o). Los colores son "puros"
+   (blanco real / negro real) y cada uno lleva el contorno del color contrario,
+   más una sombra sutil, para que NUNCA se camuflen con la casilla, sea clara
+   u oscura. */
+.cb .pc .f{color:#FCFAF4;text-shadow:0 0 2px rgba(10,14,12,.55)}
+.cb .pc .o{color:#0C120F}
+.cb .pc.blk .f{color:#111111;text-shadow:0 0 2px rgba(245,240,228,.45)}
+.cb .pc.blk .o{color:#F4EEDF}
 .cb .coord{position:absolute;font-family:var(--mono);font-size:2.4cqw;
   color:var(--marfil);opacity:.7;pointer-events:none;z-index:3}
 .cb.flip .grid8{transform:rotate(180deg)}
@@ -148,7 +154,7 @@ strong{color:var(--marfil);font-weight:800}
 .status.win{color:var(--selva-cl)} .status.lose{color:var(--fuego)} .status.check{color:var(--ambar)}
 
 /* ---------- PANEL LATERAL DE JUEGO ---------- */
-.game{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(220px,.7fr);
+.game{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(210px,.62fr);
   gap:clamp(14px,2vw,26px);align-items:start}
 @media(max-width:820px){.game{grid-template-columns:1fr}}
 .moves{font-family:var(--mono);font-size:13px;background:var(--tinta);border:1px solid #2E3F36;
