@@ -137,14 +137,14 @@ strong{color:var(--marfil);font-weight:800}
 @keyframes pcpop{from{transform:scale(.5)}to{transform:scale(1)}}
 .cb .pc span{position:absolute;font-size:12.4cqw;line-height:1;
   font-family:'DejaVu Sans','Segoe UI Symbol','Noto Sans Symbols 2',sans-serif}
-/* Piezas de dos tonos: cuerpo (.f) + contorno (.o). Los colores son "puros"
-   (blanco real / negro real) y cada uno lleva el contorno del color contrario,
-   más una sombra sutil, para que NUNCA se camuflen con la casilla, sea clara
-   u oscura. */
-.cb .pc .f{color:#FCFAF4;text-shadow:0 0 2px rgba(10,14,12,.55)}
+/* Piezas: las BLANCAS son blancas con un contorno oscuro (para verse sobre las
+   casillas claras); las NEGRAS son una silueta TOTALMENTE NEGRA (sin contorno
+   claro, para que no se confundan en las casillas oscuras). Una sombra oscura
+   sutil da un borde de definición sin aclarar la pieza. */
+.cb .pc .f{color:#FCFAF4;text-shadow:0 0 2px rgba(10,14,12,.6)}
 .cb .pc .o{color:#0C120F}
-.cb .pc.blk .f{color:#111111;text-shadow:0 0 2px rgba(245,240,228,.45)}
-.cb .pc.blk .o{color:#F4EEDF}
+.cb .pc.blk .f{color:#080808;text-shadow:none}
+.cb .pc.blk .o{color:#080808}
 .cb .coord{position:absolute;font-family:var(--mono);font-size:2.4cqw;
   color:var(--marfil);opacity:.7;pointer-events:none;z-index:3}
 .cb.flip .grid8{transform:rotate(180deg)}
