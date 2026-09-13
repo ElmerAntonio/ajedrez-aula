@@ -34,8 +34,8 @@ strong{color:var(--marfil);font-weight:800}
 @media(min-width:1400px){ .wrap{max-width:1280px} p,li{font-size:19px} }
 
 /* ---------- ANIMACIÓN DE CONTENIDO (scroll reveal) ---------- */
-.reveal{opacity:0;transform:translateY(18px)}
-.reveal.in{opacity:1;transform:none;transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+.reveal{opacity:0;transform:translateY(22px) scale(.985)}
+.reveal.in{opacity:1;transform:none;transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
 @media (prefers-reduced-motion:reduce){ .reveal{opacity:1;transform:none} .reveal.in{transition:none} }
 
 /* ---------- BARRA DE NAVEGACIÓN ---------- */
@@ -68,7 +68,10 @@ strong{color:var(--marfil);font-weight:800}
 
 /* ---------- TARJETAS ---------- */
 .card{background:var(--tinta2);border-radius:14px;padding:clamp(14px,1.8vw,22px);
-  border:1px solid #2E3F36}
+  border:1px solid #2E3F36;transition:border-color .18s,box-shadow .25s,transform .18s}
+a.card{text-decoration:none}
+a.card:hover{border-color:var(--selva-cl);box-shadow:0 12px 34px rgba(0,0,0,.28);text-decoration:none}
+a.card:active{transform:scale(.99)}
 .card.warm{background:#2A2119;border-color:#4A3A24}
 .card.hot{background:#2E1E1A;border-color:#5A3229}
 .card.cool{background:#1A2730;border-color:#2E4553}
@@ -96,6 +99,7 @@ strong{color:var(--marfil);font-weight:800}
   border:0;border-radius:999px;padding:9px 20px;font-family:var(--body);font-weight:800;
   font-size:clamp(13px,1.1vw,15px);cursor:pointer;transition:transform .15s,filter .15s;text-decoration:none}
 .btn:hover{transform:translateY(-2px);filter:brightness(1.08);text-decoration:none}
+.btn:active{transform:translateY(0) scale(.96);filter:brightness(1)}
 .btn:focus-visible{outline:3px solid var(--cielo);outline-offset:3px}
 .btn.ghost{background:var(--tinta2);color:var(--marfil);border:1px solid #33473C}
 .btn.ghost:hover{background:var(--selva);color:#fff}
@@ -124,15 +128,22 @@ strong{color:var(--marfil);font-weight:800}
 .cb .sq::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .18s;pointer-events:none}
 .cb .sq.sel::after{background:var(--ambar);opacity:.55}
 .cb .sq.last::after{background:var(--ambar);opacity:.28}
-.cb .sq.chk::after{background:var(--fuego);opacity:.55}
+.cb .sq.chk::after{background:var(--fuego);opacity:.55;animation:chkPulse 1.1s ease-in-out infinite}
+@keyframes chkPulse{0%,100%{opacity:.42}50%{opacity:.7}}
 .cb .sq.hint::before{content:'';position:absolute;left:50%;top:50%;width:30%;height:30%;
-  transform:translate(-50%,-50%);background:rgba(60,44,14,.5);border-radius:50%;pointer-events:none;z-index:2}
+  transform:translate(-50%,-50%);background:rgba(60,44,14,.5);border-radius:50%;pointer-events:none;z-index:2;
+  animation:hintPop .2s cubic-bezier(.34,1.56,.64,1) both}
 .cb .sq.hint.cap::before{width:82%;height:82%;background:transparent;
-  border:5px solid rgba(200,80,60,.6);border-radius:50%}
+  border:5px solid rgba(200,80,60,.6);border-radius:50%;animation:hintRing .2s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes hintPop{from{transform:translate(-50%,-50%) scale(0)}to{transform:translate(-50%,-50%) scale(1)}}
+@keyframes hintRing{from{transform:translate(-50%,-50%) scale(.55);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
 .cb .pc{position:absolute;width:12.5%;height:12.5%;display:grid;place-items:center;
   z-index:4;transition:left .19s cubic-bezier(.4,0,.2,1),top .19s cubic-bezier(.4,0,.2,1),opacity .18s;
   pointer-events:none}
-.cb .pc.capd{opacity:0}
+.cb .pc.capd{animation:captureOut .22s ease-in forwards;z-index:3}
+@keyframes captureOut{to{opacity:0;transform:scale(.4)}}
+.cb.flip .pc.capd{animation:captureOutFlip .22s ease-in forwards}
+@keyframes captureOutFlip{to{opacity:0;transform:rotate(180deg) scale(.4)}}
 .cb .pc.pop{animation:pcpop .28s cubic-bezier(.34,1.56,.64,1)}
 @keyframes pcpop{from{transform:scale(.5)}to{transform:scale(1)}}
 .cb .pc span{position:absolute;font-size:12.4cqw;line-height:1;
@@ -267,9 +278,37 @@ select{background:var(--tinta);color:var(--marfil);border:1px solid #33473C;bord
 @keyframes statusPop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
 .status.win,.status.lose{animation:statusPop .45s ease}
 
+/* ---------- MICROINTERACCIONES (respuestas, botones, navegación) ---------- */
+/* opciones de los cuestionarios: sacudida al fallar, brillo al acertar */
+@keyframes shakeX{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}
+  30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+@keyframes okGlow{0%{box-shadow:0 0 0 0 rgba(111,163,124,.55)}100%{box-shadow:0 0 0 10px rgba(111,163,124,0)}}
+.opt.correct,.answers button.ok,.notaOpts .ok{animation:okGlow .7s ease-out}
+.opt.wrong,.answers button.no{animation:shakeX .5s cubic-bezier(.36,.07,.19,.97)}
+/* segmentos y opciones: pulsación */
+.seg button{transition:background .15s,transform .12s,border-color .15s}
+.seg button:active{transform:scale(.95)}
+.opt{transition:background .15s,border-color .15s,transform .12s}
+.opt:not(:disabled):active{transform:scale(.995)}
+/* enlaces de navegación: subrayado animado */
+.nav a.lnk{position:relative}
+.nav a.lnk::after{content:'';position:absolute;left:12px;right:12px;bottom:4px;height:2px;
+  background:var(--ambar);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .22s cubic-bezier(.22,1,.36,1)}
+.nav a.lnk:hover::after,.nav a.lnk.on::after{transform:scaleX(1)}
+@media(max-width:820px){.nav a.lnk::after{display:none}}
+/* medalla nueva: entrada con rebote */
+.badge-toast.on{animation:toastIn .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes toastIn{0%{transform:translateY(24px) scale(.9)}60%{transform:translateY(-4px) scale(1.02)}100%{transform:translateY(0) scale(1)}}
+/* medalla desbloqueada en el muro: destello al obtenerla */
+.badge.got{animation:badgeGot .6s ease-out}
+@keyframes badgeGot{0%{transform:scale(1)}30%{transform:scale(1.12)}100%{transform:scale(1)}}
+
 /* Accesibilidad: reduce animaciones */
 @media (prefers-reduced-motion:reduce){
   .cb .pc{transition:none}
+  .cb .sq.hint::before,.cb .sq.hint.cap::before,.cb .sq.chk::after,.cb .pc.capd{animation:none}
   .anim-in,.section-cards a.card,.section-cards .card,.status.win,.status.lose{animation:none}
+  .opt.correct,.opt.wrong,.answers button.ok,.answers button.no,.badge-toast.on,.badge.got{animation:none}
+  .nav a.lnk::after{transition:none}
   .confetti-pc{display:none}
 }

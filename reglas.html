@@ -45,10 +45,16 @@
   <h1 data-en="All the rules,<br>in one place">Todas las reglas,<br>en un solo lugar</h1>
   <p class="lead" style="margin:.6em 0 0">Una referencia rápida para consultar cualquier regla en clase o en un torneo. Está basada en las Leyes del Ajedrez de la FIDE, explicada en lenguaje sencillo.</p>
 
+  <div class="card warm" style="margin-top:16px">
+    <h3>🎯 El objetivo del juego</h3>
+    <p>El ajedrez lo juegan dos personas, una con las piezas <strong>blancas</strong> y otra con las <strong>negras</strong>. Mueven por turnos, siempre una jugada cada una, empezando las blancas. La meta <strong>no</strong> es comer muchas piezas: es <strong>dar jaque mate</strong>, es decir, atrapar al rey rival de modo que no pueda escapar. Quien lo consigue, gana en ese instante.</p>
+  </div>
+
   <div class="toc">
-    <a href="#tablero">Tablero</a><a href="#piezas">Piezas</a><a href="#enroque">Enroque</a>
+    <a href="#tablero">Tablero</a><a href="#piezas">Piezas</a><a href="#valor">Valor</a><a href="#enroque">Enroque</a>
     <a href="#alpaso">Al paso</a><a href="#coronacion">Coronación</a><a href="#jaque">Jaque y mate</a>
-    <a href="#tablas">Tablas</a><a href="#competencia">Competencia</a><a href="#notacion">Notación</a>
+    <a href="#tablas">Tablas</a><a href="#final">Fin de partida</a><a href="#competencia">Competencia</a>
+    <a href="#notacion">Notación</a><a href="#dudas">Dudas frecuentes</a>
   </div>
 
   <div class="rule" id="tablero">
@@ -62,8 +68,22 @@
     <div class="move-mini" id="moveMini"></div>
   </div>
 
+  <div class="rule" id="valor">
+    <h2>3 · El valor de las piezas</h2>
+    <p>El valor <strong>no es una regla</strong> del juego: es una guía para decidir cuándo conviene un cambio de piezas. Se mide en «puntos», tomando el peón como unidad.</p>
+    <div class="grid g3" style="margin-top:.6em">
+      <div class="card"><h3>♙ Peón — 1 punto</h3><p>El más humilde. Pero si llega al final del tablero, corona y puede volverse una dama.</p></div>
+      <div class="card"><h3>♘ Caballo — 3 puntos</h3><p>El único que salta. Vale más cuando el tablero está cerrado, con muchos peones.</p></div>
+      <div class="card"><h3>♗ Alfil — 3 puntos</h3><p>Vale un poco más que el caballo con el tablero abierto. Los dos alfiles juntos son muy fuertes.</p></div>
+      <div class="card"><h3>♖ Torre — 5 puntos</h3><p>Domina columnas y filas abiertas. Se activa sobre todo al final de la partida.</p></div>
+      <div class="card"><h3>♕ Dama — 9 puntos</h3><p>Torre y alfil en una sola pieza: la más poderosa. No la saques demasiado pronto.</p></div>
+      <div class="card hot"><h3>♔ Rey — no tiene valor</h3><p>No se cambia ni se captura: <strong>vale la partida entera</strong>. En el final, además, es una pieza fuerte para atacar.</p></div>
+    </div>
+    <p class="note" style="margin-top:.6em"><strong>Regla práctica:</strong> conviene cambiar una pieza tuya por otra rival de igual o mayor valor. Ganar «calidad» es cambiar un alfil o caballo (3) por una torre (5).</p>
+  </div>
+
   <div class="rule" id="enroque">
-    <h2>3 · El enroque</h2>
+    <h2>4 · El enroque</h2>
     <p>Única jugada que mueve <strong>dos piezas a la vez</strong> (rey y torre). Pone al rey a salvo. Condiciones:</p>
     <ol style="counter-reset:n;margin-top:.4em">
       <li>El rey no se ha movido nunca en la partida.</li>
@@ -76,24 +96,24 @@
   </div>
 
   <div class="rule" id="alpaso">
-    <h2>4 · Captura al paso <span class="mono" style="font-size:.6em;color:#9DAFA2">(en passant)</span></h2>
+    <h2>5 · Captura al paso <span class="mono" style="font-size:.6em;color:#9DAFA2">(en passant)</span></h2>
     <p>Si un peón enemigo avanza <strong>dos casillas de golpe</strong> y queda al lado del tuyo, tu peón puede capturarlo <strong>como si solo hubiera avanzado una</strong>. Solo un peón captura a otro peón, y debe hacerse <strong>de inmediato</strong>, en la jugada siguiente, o se pierde el derecho.</p>
   </div>
 
   <div class="rule" id="coronacion">
-    <h2>5 · Coronación</h2>
+    <h2>6 · Coronación</h2>
     <p>Cuando un peón llega a la <strong>última fila</strong>, se convierte en <strong>dama, torre, alfil o caballo</strong> de su color (no puede quedar como peón ni volverse rey). Casi siempre se elige dama. La pieza nueva actúa de inmediato. Puedes tener varias damas.</p>
   </div>
 
   <div class="rule" id="jaque">
-    <h2>6 · Jaque, jaque mate y rey ahogado</h2>
+    <h2>7 · Jaque, jaque mate y rey ahogado</h2>
     <p><strong>Jaque:</strong> el rey está amenazado. Hay que resolverlo de inmediato de una de tres formas: mover el rey, capturar la pieza que ataca, o tapar el camino. No se puede ignorar ni dejar al rey en jaque.</p>
     <p style="margin-top:.5em"><strong>Jaque mate:</strong> el rey está en jaque y ninguna de las tres salidas funciona. La partida termina y gana quien da el mate. Se anota con <span class="mono">#</span>.</p>
     <p style="margin-top:.5em"><strong>Rey ahogado:</strong> el jugador de turno <strong>no está en jaque</strong> pero no tiene ninguna jugada legal. Es <strong>tablas</strong> (empate), aunque tenga menos piezas.</p>
   </div>
 
   <div class="rule" id="tablas">
-    <h2>7 · Las tablas (empate)</h2>
+    <h2>8 · Las tablas (empate)</h2>
     <p>Medio punto para cada jugador (<span class="mono">½–½</span>). Ocurren por:</p>
     <div class="grid g3" style="margin-top:.5em">
       <div class="card"><h3>Rey ahogado</h3><p>Sin jaque y sin jugada legal.</p></div>
@@ -105,8 +125,28 @@
     </div>
   </div>
 
+  <div class="rule" id="final">
+    <h2>8 · Cómo termina una partida</h2>
+    <p>Una partida puede terminar de varias maneras. Vale la pena tenerlas claras:</p>
+    <div class="grid g2" style="margin-top:.5em">
+      <div class="card cool"><h3>Gana un jugador</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.4em;margin-top:.3em">
+          <li>♟ <strong>Jaque mate:</strong> atrapa al rey rival. Es la forma normal de ganar.</li>
+          <li>🏳 <strong>Rendición:</strong> un jugador abandona (suele tumbar su rey o dar la mano) cuando ve que va a perder.</li>
+          <li>⏱ <strong>Tiempo:</strong> al rival se le acaba el reloj (si tú tienes material para dar mate).</li>
+        </ul></div>
+      <div class="card warm"><h3>Terminan en tablas (empate)</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.4em;margin-top:.3em">
+          <li>🤝 <strong>Rey ahogado</strong>, acuerdo mutuo, triple repetición, 50 jugadas o material insuficiente (ver arriba).</li>
+          <li>Cada jugador se lleva <strong>medio punto</strong>.</li>
+        </ul></div>
+    </div>
+    <div class="card" style="margin-top:.6em"><h3>Cómo se ofrece rendición o tablas</h3>
+      <p><strong>Rendirse:</strong> puedes abandonar en cualquier momento. <strong>Ofrecer tablas:</strong> haz tu jugada, propón el empate <em>y luego</em> aprieta el reloj; el rival acepta o sigue jugando. No se debe ofrecer tablas una y otra vez para molestar.</p></div>
+  </div>
+
   <div class="rule" id="competencia">
-    <h2>8 · Reglas de competencia (torneo)</h2>
+    <h2>10 · Reglas de competencia (torneo)</h2>
     <div class="grid g2" style="margin-top:.5em">
       <div class="card hot"><h3>Pieza tocada, pieza jugada</h3>
         <p>Si tocas una pieza tuya, debes moverla (si es legal). Si tocas una del rival, debes capturarla. Para acomodar sin jugar, avisa antes: «compongo» (<span class="mono">j'adoube</span>).</p></div>
@@ -121,7 +161,7 @@
   </div>
 
   <div class="rule" id="notacion">
-    <h2>9 · Notación algebraica</h2>
+    <h2>11 · Notación algebraica</h2>
     <p>Se escribe la <strong>inicial de la pieza</strong> (en español: R rey, D dama, T torre, A alfil, C caballo; el peón no lleva inicial) seguida de la <strong>casilla de destino</strong>.</p>
     <div class="grid g2" style="margin-top:.5em">
       <div class="card"><h3>Símbolos</h3>
@@ -129,6 +169,20 @@
       <div class="card warm"><h3>Ejemplos</h3>
         <p class="mono" style="color:var(--ambar);line-height:2">e4 · Cf3 · Axc6 · Dh5+<br>Te8# · b8=D · 0-0</p>
         <p class="note">Practícala en la sección de <a href="practicas.html">Prácticas</a> → modo Notación.</p></div>
+    </div>
+  </div>
+
+  <div class="rule" id="dudas">
+    <h2>12 · Dudas frecuentes</h2>
+    <div class="grid g2" style="margin-top:.5em">
+      <div class="card"><h3>¿Se puede comer al rey?</h3><p><strong>No.</strong> El rey nunca se captura. Cuando queda atrapado sin salida, es jaque mate y la partida termina justo antes.</p></div>
+      <div class="card"><h3>¿El peón come de frente?</h3><p>No. El peón <strong>avanza recto</strong> pero <strong>captura en diagonal</strong>, una casilla hacia adelante. Si tiene una pieza justo enfrente, queda bloqueado.</p></div>
+      <div class="card"><h3>¿Puedo enrocar para salir de un jaque?</h3><p>No. No se puede enrocar estando en jaque, ni pasando el rey por una casilla atacada. Sí se puede aunque la torre esté atacada.</p></div>
+      <div class="card"><h3>¿El caballo salta de verdad?</h3><p>Sí. Es la <strong>única</strong> pieza que salta por encima de otras. Solo importa la casilla donde cae (en forma de L).</p></div>
+      <div class="card"><h3>¿Puedo tener dos damas?</h3><p>Sí. Al coronar un peón puedes elegir dama aunque ya tengas una. Puedes llegar a tener varias.</p></div>
+      <div class="card"><h3>¿Es obligatorio decir «jaque»?</h3><p>En clase ayuda mucho decirlo, pero en un <strong>torneo oficial no es obligatorio</strong>. Lo obligatorio es <strong>resolver</strong> el jaque en tu jugada.</p></div>
+      <div class="card"><h3>¿Gana quien come más piezas?</h3><p>No necesariamente. Gana quien da <strong>jaque mate</strong>. Puedes tener menos piezas y ganar igual.</p></div>
+      <div class="card"><h3>¿Qué pasa si toco una pieza sin querer?</h3><p>En torneo, «pieza tocada, pieza jugada»: debes moverla si es legal. Para acomodar sin jugar, avisa antes diciendo «compongo».</p></div>
     </div>
   </div>
 
@@ -187,7 +241,7 @@ window.PAGE_I18N={
   '2 · Cómo se mueve cada pieza':'2 · How each piece moves',
   'Todas las piezas capturan igual que se mueven, salvo el peón. Ninguna puede saltar sobre otras, excepto el caballo.':
     'Every piece captures the same way it moves, except the pawn. None may jump over others, except the knight.',
-  '3 · El enroque':'3 · Castling',
+  '4 · El enroque':'4 · Castling',
   'Única jugada que mueve dos piezas a la vez (rey y torre). Pone al rey a salvo. Condiciones:':
     'The only move that shifts <strong>two pieces at once</strong> (king and rook). It brings the king to safety. Conditions:',
   'El rey no se ha movido nunca en la partida.':'The king has never moved in the game.',
@@ -197,20 +251,20 @@ window.PAGE_I18N={
   'El rey no pasa por ni llega a una casilla atacada.':'The king does not pass through or land on an attacked square.',
   'Se permite enrocar aunque la torre esté atacada. Se anota 0-0 (corto) o 0-0-0 (largo).':
     'Castling is allowed even if the rook is attacked. It is written <span class="mono">0-0</span> (kingside) or <span class="mono">0-0-0</span> (queenside).',
-  '4 · Captura al paso (en passant)':'4 · En passant capture <span class="mono" style="font-size:.6em;color:#9DAFA2">(en passant)</span>',
+  '5 · Captura al paso (en passant)':'5 · En passant capture <span class="mono" style="font-size:.6em;color:#9DAFA2">(en passant)</span>',
   'Si un peón enemigo avanza dos casillas de golpe y queda al lado del tuyo, tu peón puede capturarlo como si solo hubiera avanzado una. Solo un peón captura a otro peón, y debe hacerse de inmediato, en la jugada siguiente, o se pierde el derecho.':
     'If an enemy pawn advances <strong>two squares at once</strong> and lands beside yours, your pawn may capture it <strong>as if it had moved only one</strong>. Only a pawn captures another pawn this way, and it must be done <strong>immediately</strong>, on the very next move, or the right is lost.',
-  '5 · Coronación':'5 · Promotion',
+  '6 · Coronación':'6 · Promotion',
   'Cuando un peón llega a la última fila, se convierte en dama, torre, alfil o caballo de su color (no puede quedar como peón ni volverse rey). Casi siempre se elige dama. La pieza nueva actúa de inmediato. Puedes tener varias damas.':
     'When a pawn reaches the <strong>last rank</strong>, it becomes a <strong>queen, rook, bishop or knight</strong> of its color (it cannot stay a pawn or become a king). A queen is almost always chosen. The new piece acts immediately. You can have several queens.',
-  '6 · Jaque, jaque mate y rey ahogado':'6 · Check, checkmate and stalemate',
+  '7 · Jaque, jaque mate y rey ahogado':'7 · Check, checkmate and stalemate',
   'Jaque: el rey está amenazado. Hay que resolverlo de inmediato de una de tres formas: mover el rey, capturar la pieza que ataca, o tapar el camino. No se puede ignorar ni dejar al rey en jaque.':
     '<strong>Check:</strong> the king is threatened. It must be dealt with at once in one of three ways: move the king, capture the attacking piece, or block the line. You cannot ignore it or leave the king in check.',
   'Jaque mate: el rey está en jaque y ninguna de las tres salidas funciona. La partida termina y gana quien da el mate. Se anota con #.':
     '<strong>Checkmate:</strong> the king is in check and none of the three escapes works. The game ends and the player giving mate wins. It is written <span class="mono">#</span>.',
   'Rey ahogado: el jugador de turno no está en jaque pero no tiene ninguna jugada legal. Es tablas (empate), aunque tenga menos piezas.':
     '<strong>Stalemate:</strong> the player to move <strong>is not in check</strong> but has no legal move at all. It is a <strong>draw</strong>, even with fewer pieces.',
-  '7 · Las tablas (empate)':'7 · Draws',
+  '8 · Las tablas (empate)':'8 · Draws',
   'Medio punto para cada jugador (½–½). Ocurren por:':'Half a point for each player (<span class="mono">½–½</span>). They happen by:',
   'Rey ahogado':'Stalemate','Sin jaque y sin jugada legal.':'No check and no legal move.',
   'Acuerdo':'Agreement','Los dos jugadores lo aceptan.':'Both players accept it.',
@@ -218,7 +272,7 @@ window.PAGE_I18N={
   '50 jugadas':'50 moves','50 jugadas sin mover peón ni capturar. Se reclama.':'50 moves with no pawn move or capture. Claimed.',
   'Material insuficiente':'Insufficient material','Ningún bando puede dar mate (por ejemplo, rey solo contra rey).':'Neither side can give mate (for example, lone king vs king).',
   'Automáticas':'Automatic','A las 75 jugadas o quíntuple repetición, el árbitro declara tablas solo.':'At 75 moves or fivefold repetition, the referee declares the draw automatically.',
-  '8 · Reglas de competencia (torneo)':'8 · Competition rules (tournament)',
+  '10 · Reglas de competencia (torneo)':'10 · Competition rules (tournament)',
   'Pieza tocada, pieza jugada':'Touch-move',
   'Si tocas una pieza tuya, debes moverla (si es legal). Si tocas una del rival, debes capturarla. Para acomodar sin jugar, avisa antes: «compongo» (j\'adoube).':
     'If you touch one of your pieces, you must move it (if legal). If you touch an opponent\'s piece, you must capture it. To adjust without moving, say first: «I adjust» (<span class="mono">j\'adoube</span>).',
@@ -233,7 +287,7 @@ window.PAGE_I18N={
     'No help, notes or devices are allowed, and no disturbing the opponent. Phones that ring can cost the game. The referee upholds the rules and settles disputes.',
   'Adaptación escolar: en primaria puedes suavizar «pieza tocada» y no exigir planilla — pero anúncialo antes del torneo. Desde 5.° grado, aplica el reglamento completo.':
     '<em class="k" style="font-style:normal;color:var(--ambar);font-weight:800">School adaptation:</em> in lower grades you may soften «touch-move» and not require scoresheets — but announce it <strong>before</strong> the tournament. From 5th grade on, apply the full rulebook.',
-  '9 · Notación algebraica':'9 · Algebraic notation',
+  '11 · Notación algebraica':'11 · Algebraic notation',
   'Se escribe la inicial de la pieza (en español: R rey, D dama, T torre, A alfil, C caballo; el peón no lleva inicial) seguida de la casilla de destino.':
     'You write the <strong>piece initial</strong> (in English: K king, Q queen, R rook, B bishop, N knight; the pawn has no initial) followed by the <strong>destination square</strong>.',
   'Símbolos':'Symbols',
@@ -251,7 +305,48 @@ window.PAGE_I18N={
   'En línea recta.':'In a straight line.',
   'Solo en diagonal.':'Diagonally only.',
   'En forma de L; salta.':'In an L shape; it jumps.',
-  'Avanza recto, come en diagonal.':'Moves straight, captures diagonally.'
+  'Avanza recto, come en diagonal.':'Moves straight, captures diagonally.',
+  // toc nuevos
+  'Valor':'Value','Fin de partida':'End of game','Dudas frecuentes':'FAQ',
+  // objetivo
+  '🎯 El objetivo del juego':'🎯 The goal of the game',
+  'El ajedrez lo juegan dos personas, una con las piezas blancas y otra con las negras. Mueven por turnos, siempre una jugada cada una, empezando las blancas. La meta no es comer muchas piezas: es dar jaque mate, es decir, atrapar al rey rival de modo que no pueda escapar. Quien lo consigue, gana en ese instante.':
+    'Chess is played by two people, one with the <strong>white</strong> pieces and one with the <strong>black</strong>. They move in turns, one move each, White first. The goal is <strong>not</strong> to capture many pieces: it is to <strong>give checkmate</strong>, that is, to trap the enemy king so it cannot escape. Whoever does it wins that instant.',
+  // valor de las piezas
+  '3 · El valor de las piezas':'3 · The value of the pieces',
+  'El valor no es una regla del juego: es una guía para decidir cuándo conviene un cambio de piezas. Se mide en «puntos», tomando el peón como unidad.':
+    'Value is <strong>not a rule</strong> of the game: it is a guide for deciding when a trade of pieces is worth it. It is measured in «points», taking the pawn as the unit.',
+  '♙ Peón — 1 punto':'♙ Pawn — 1 point','El más humilde. Pero si llega al final del tablero, corona y puede volverse una dama.':'The humblest. But if it reaches the end of the board, it promotes and can become a queen.',
+  '♘ Caballo — 3 puntos':'♘ Knight — 3 points','El único que salta. Vale más cuando el tablero está cerrado, con muchos peones.':'The only one that jumps. It is worth more when the board is closed, with many pawns.',
+  '♗ Alfil — 3 puntos':'♗ Bishop — 3 points','Vale un poco más que el caballo con el tablero abierto. Los dos alfiles juntos son muy fuertes.':'Worth a bit more than the knight with an open board. The two bishops together are very strong.',
+  '♖ Torre — 5 puntos':'♖ Rook — 5 points','Domina columnas y filas abiertas. Se activa sobre todo al final de la partida.':'It dominates open files and ranks. It comes alive mostly at the end of the game.',
+  '♕ Dama — 9 puntos':'♕ Queen — 9 points','Torre y alfil en una sola pieza: la más poderosa. No la saques demasiado pronto.':'Rook and bishop in one piece: the most powerful. Don\'t bring it out too soon.',
+  '♔ Rey — no tiene valor':'♔ King — no value','No se cambia ni se captura: vale la partida entera. En el final, además, es una pieza fuerte para atacar.':'It is never traded or captured: <strong>it is worth the whole game</strong>. In the endgame it is also a strong attacking piece.',
+  'Regla práctica: conviene cambiar una pieza tuya por otra rival de igual o mayor valor. Ganar «calidad» es cambiar un alfil o caballo (3) por una torre (5).':
+    '<strong>Practical rule:</strong> it\'s good to trade one of your pieces for an enemy one of equal or greater value. Winning «the exchange» is trading a bishop or knight (3) for a rook (5).',
+  // fin de partida
+  '8 · Cómo termina una partida':'9 · How a game ends',
+  'Una partida puede terminar de varias maneras. Vale la pena tenerlas claras:':'A game can end in several ways. It\'s worth being clear about them:',
+  'Gana un jugador':'A player wins',
+  '♟ Jaque mate: atrapa al rey rival. Es la forma normal de ganar.':'♟ <strong>Checkmate:</strong> you trap the enemy king. The normal way to win.',
+  '🏳 Rendición: un jugador abandona (suele tumbar su rey o dar la mano) cuando ve que va a perder.':'🏳 <strong>Resignation:</strong> a player gives up (usually tipping their king or shaking hands) when they see they\'re losing.',
+  '⏱ Tiempo: al rival se le acaba el reloj (si tú tienes material para dar mate).':'⏱ <strong>Time:</strong> the opponent runs out of clock (if you have material to give mate).',
+  'Terminan en tablas (empate)':'They end in a draw',
+  '🤝 Rey ahogado, acuerdo mutuo, triple repetición, 50 jugadas o material insuficiente (ver arriba).':'🤝 <strong>Stalemate</strong>, mutual agreement, threefold repetition, 50 moves or insufficient material (see above).',
+  'Cada jugador se lleva medio punto.':'Each player gets <strong>half a point</strong>.',
+  'Cómo se ofrece rendición o tablas':'How to resign or offer a draw',
+  'Rendirse: puedes abandonar en cualquier momento. Ofrecer tablas: haz tu jugada, propón el empate y luego aprieta el reloj; el rival acepta o sigue jugando. No se debe ofrecer tablas una y otra vez para molestar.':
+    '<strong>Resigning:</strong> you may give up at any time. <strong>Offering a draw:</strong> make your move, offer the draw <em>and then</em> press the clock; the opponent accepts or keeps playing. You shouldn\'t offer a draw over and over to annoy.',
+  // dudas frecuentes
+  '12 · Dudas frecuentes':'12 · Frequently asked questions',
+  '¿Se puede comer al rey?':'Can you capture the king?','No. El rey nunca se captura. Cuando queda atrapado sin salida, es jaque mate y la partida termina justo antes.':'<strong>No.</strong> The king is never captured. When it is trapped with no escape, it is checkmate and the game ends just before.',
+  '¿El peón come de frente?':'Does the pawn capture straight ahead?','No. El peón avanza recto pero captura en diagonal, una casilla hacia adelante. Si tiene una pieza justo enfrente, queda bloqueado.':'No. The pawn <strong>moves straight</strong> but <strong>captures diagonally</strong>, one square forward. If a piece is right in front, it\'s blocked.',
+  '¿Puedo enrocar para salir de un jaque?':'Can I castle to get out of check?','No. No se puede enrocar estando en jaque, ni pasando el rey por una casilla atacada. Sí se puede aunque la torre esté atacada.':'No. You can\'t castle while in check, or with the king passing an attacked square. You can, though, even if the rook is attacked.',
+  '¿El caballo salta de verdad?':'Does the knight really jump?','Sí. Es la única pieza que salta por encima de otras. Solo importa la casilla donde cae (en forma de L).':'Yes. It\'s the <strong>only</strong> piece that jumps over others. Only the square where it lands matters (in an L shape).',
+  '¿Puedo tener dos damas?':'Can I have two queens?','Sí. Al coronar un peón puedes elegir dama aunque ya tengas una. Puedes llegar a tener varias.':'Yes. When promoting a pawn you can choose a queen even if you already have one. You can end up with several.',
+  '¿Es obligatorio decir «jaque»?':'Is saying «check» required?','En clase ayuda mucho decirlo, pero en un torneo oficial no es obligatorio. Lo obligatorio es resolver el jaque en tu jugada.':'In class it helps a lot to say it, but in an <strong>official tournament it\'s not required</strong>. What is required is to <strong>resolve</strong> the check on your move.',
+  '¿Gana quien come más piezas?':'Does whoever captures more pieces win?','No necesariamente. Gana quien da jaque mate. Puedes tener menos piezas y ganar igual.':'Not necessarily. Whoever gives <strong>checkmate</strong> wins. You can have fewer pieces and still win.',
+  '¿Qué pasa si toco una pieza sin querer?':'What if I touch a piece by accident?','En torneo, «pieza tocada, pieza jugada»: debes moverla si es legal. Para acomodar sin jugar, avisa antes diciendo «compongo».':'In a tournament, «touch-move»: you must move it if it\'s legal. To adjust without playing, say «I adjust» beforehand.'
 };
 </script>
 <script src="assets/app.js"></script>
