@@ -249,6 +249,19 @@ select{background:var(--tinta);color:var(--marfil);border:1px solid #33473C;bord
 .badge-toast .bt-ic{font-size:30px}
 .badge-toast b{color:var(--ambar)}
 
+/* aviso "listo para usar sin internet" */
+.offline-toast{position:fixed;left:16px;bottom:16px;z-index:9998;background:var(--tinta2);
+  border:1px solid var(--selva-cl);border-left:4px solid var(--selva-cl);border-radius:14px;
+  padding:12px 16px;display:flex;gap:12px;align-items:center;max-width:320px;cursor:pointer;
+  box-shadow:0 8px 30px rgba(0,0,0,.4);transform:translateY(24px);opacity:0;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s}
+.offline-toast.on{transform:none;opacity:1}
+.offline-toast .ot-ic{font-size:26px;line-height:1;color:var(--selva-cl);flex:none}
+.offline-toast b{color:var(--marfil);font-size:14.5px}
+.offline-toast small{color:#9DAFA2;font-size:12.5px;line-height:1.4;display:block;margin-top:2px}
+@media(max-width:520px){.offline-toast{left:12px;right:12px;max-width:none}}
+@media (prefers-reduced-motion:reduce){.offline-toast{transition:opacity .3s}}
+
 /* ---------- FOCO ACCESIBLE EN EL TABLERO (WCAG 2.4.7) ---------- */
 .cb .sq:focus-visible{outline:3px solid var(--cielo);outline-offset:-3px;z-index:8}
 .skip-link{position:absolute;left:-9999px;top:0;background:var(--ambar);color:var(--tinta);

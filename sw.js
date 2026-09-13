@@ -17,7 +17,7 @@
    Al cambiar el sitio, sube el número de VERSION para renovar el caché.
    ============================================================ */
 'use strict';
-var VERSION = 'aa-cache-v2';
+var VERSION = 'aa-cache-v3';
 var FONTS   = 'aa-fonts-v1';
 
 // rutas relativas (funciona tanto en la raíz como en un subdirectorio de GitHub Pages)

@@ -283,7 +283,26 @@ function injectBranding(){
 function registerSW(){
   if(!('serviceWorker' in navigator)) return;
   if(location.protocol==='file:') return;   // los SW no funcionan con file://
-  try{ navigator.serviceWorker.register('sw.js'); }catch(e){}
+  try{
+    navigator.serviceWorker.register('sw.js');
+    // cuando ya hay un Service Worker activo, todo está guardado: avisa una vez
+    navigator.serviceWorker.ready.then(function(){ offlineReadyNotice(); }).catch(function(){});
+  }catch(e){}
+}
+/* Aviso «listo para usar sin internet» (una sola vez por dispositivo) */
+function offlineReadyNotice(){
+  if(lsGet('aa_offline_shown')) return;
+  lsSet('aa_offline_shown','1');
+  var box=document.createElement('div');
+  box.className='offline-toast'; box.setAttribute('role','status');
+  box.innerHTML='<span class="ot-ic" aria-hidden="true">✓</span>'+
+    '<div><b>'+t('Listo para usar sin internet')+'</b>'+
+    '<small>'+t('Ya puedes desconectarte: la página seguirá funcionando.')+'</small></div>';
+  document.body.appendChild(box);
+  requestAnimationFrame(function(){ box.classList.add('on'); });
+  var hide=function(){ box.classList.remove('on'); setTimeout(function(){ if(box.parentNode) box.remove(); },450); };
+  box.addEventListener('click', hide);
+  setTimeout(hide, 6500);
 }
 
 /* ---------- ANIMACIÓN DE CONTENIDO (scroll reveal) ---------- */
@@ -308,6 +327,8 @@ var DICT={
   'Estrategias':'Strategies','Jugar':'Play','Ruta':'Path','Árbitro':'Referee','Imprimibles':'Printables','Nivel':'Level',
   'Saltar al contenido':'Skip to content','Elegir rol':'Choose role','Ahora no':'Not now',
   'Aviso legal':'Legal notice',
+  'Listo para usar sin internet':'Ready to use offline',
+  'Ya puedes desconectarte: la página seguirá funcionando.':'You can disconnect now: the page will keep working.',
   '¿Quién eres?':'Who are you?','Maestro':'Teacher','Estudiante':'Student','Niño pequeño':'Young child',
   'Guía, reglamento e imprimibles':'Guide, rules and printables','Practica, juega y sube de nivel':'Practice, play and level up',
   'Aprende jugando desde cero':'Learn by playing from scratch',
