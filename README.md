@@ -27,7 +27,7 @@ celular.
 | **`aprende.html`** | Para los más pequeños que aún no saben jugar: conocer las piezas, ver cómo se mueven, juegos de adivinar la ficha, de memoria (cartas) y **El caballo glotón** (capturar todos los peones). Colorido y con celebraciones. | Niños pequeños |
 | **`guia.html`** | Guía docente: presentación de 40 láminas con el tablero, las piezas, las reglas, las Leyes FIDE y cómo explicarlo. Incluye tableros animados, plan de 12 clases y evaluación sin exámenes. | Maestros |
 | **`pedagogia.html`** | **Once** maneras de enseñar (pasos, cuento, mini-juegos, ajedrez humano, descubrimiento, entre pares, gamificación, inteligencias múltiples, dificultad deseable, análisis de la partida, metacognición) con guion paso a paso, estilos de aprendizaje, **adaptaciones por contexto**, formación del maestro y un **planificador de clase** con plan imprimible. | Maestros |
-| **`reglas.html`** | Referencia completa de todas las reglas en un solo lugar, con diagramas: tablero, movimientos, enroque, al paso, coronación, jaque, mate, tablas y reglas de competencia. | Todos |
+| **`reglas.html`** | Referencia **completa y explicada** de todas las reglas, con diagramas: el objetivo del juego, el tablero, cómo se mueve cada pieza, **el valor de las piezas**, enroque, al paso, coronación, jaque, mate, tablas, **cómo termina una partida**, reglas de competencia, notación y una sección de **dudas frecuentes**. | Todos |
 | **`practicas.html`** | **36 ejercicios** en 3 niveles reales (fácil, medio, difícil) tomados de un banco verificado y **barajados** para que no se repitan, **más un modo de notación**. Con pistas, solución y verificación automática, y un **Modo Foco Socrático**. | Alumnos |
 | **`estrategias.html`** | **Ocho tácticas** (con **clips animados** del movimiento), **nociones de final** (oposición, peón pasado), **escuelas históricas** (romántica, clásica, hipermoderna, moderna) y planes de medio juego, más una **prueba interactiva con selector de dificultad**, clips y **Modo Foco Socrático**. | Alumnos y maestros |
 | **`jugar.html`** | **Juega contra una IA** en tres niveles reales **o en modo 2 jugadores**. Con pistas, deshacer, lista de jugadas, capturas y **reloj**. | Todos |
@@ -99,6 +99,7 @@ ajedrez-aula/
 ├── arbitraje.html      Prácticas de árbitro
 ├── imprimibles.html    Materiales para imprimir
 ├── nivel.html          Test de nivel
+├── aviso-legal.html    Aviso legal · términos · licencia · privacidad
 ├── assets/
 │   ├── theme.css       Tema visual compartido + animaciones
 │   ├── chess.js        Motor de ajedrez + IA (sin dependencias)
@@ -108,6 +109,7 @@ ajedrez-aula/
 │   ├── i18n-puzzles.js Traducción EN del banco de ejercicios (compartida)
 │   ├── guia-i18n.js    Traducción EN de las 40 láminas de la guía
 │   └── app.js          Rol, medallas, navegación, idioma y accesibilidad
+├── LICENSE             Licencia CC BY-NC-SA 4.0 + avisos legales
 └── README.md
 ```
 
@@ -156,9 +158,13 @@ HTML, CSS y JavaScript que se abren directamente.
   defecto y la preferencia se recuerda.
 - **Logo propio** (caballo en un escudo verde) como favicon del navegador y
   marca en la barra.
-- **Animación de contenido** que aparece suavemente al desplazarse, y **clips
-  animados** en Estrategias que muestran cómo se mueve la pieza de cada táctica
-  (siempre hacia adelante, partiendo de la casilla de origen).
+- **Animaciones cuidadas** en todo el sitio (respetando la preferencia de
+  «reducir animaciones»): aparición suave del contenido al desplazarse; en el
+  tablero, las piezas se deslizan, las capturas se desvanecen, las pistas
+  aparecen con un pequeño rebote y el rey en jaque late; botones, tarjetas y
+  navegación con microinteracciones; y **clips animados** en Estrategias que
+  muestran cómo se mueve la pieza de cada táctica (siempre hacia adelante,
+  partiendo de la casilla de origen).
 - **Tarjetas que giran**: en «Aprende» las piezas se voltean para mostrar su
   nombre y valor; en «Pedagogía» las tarjetas de método **se viran** y muestran
   el guion paso a paso completo con letra legible.
@@ -197,6 +203,25 @@ Aplicando las pautas **WCAG 2.2**:
 
 ## 🧑‍🏫 Créditos y licencia
 
-Creado como recurso educativo libre para escuelas. Puedes usarlo, adaptarlo y
-compartirlo con fines educativos. **Recuerda: es material de enseñanza, no
-acredita ni certifica nada.**
+Creado como recurso educativo libre para escuelas. Se publica bajo la licencia
+**Creative Commons Atribución-NoComercial-CompartirIgual 4.0 (CC BY-NC-SA 4.0)**:
+puedes **compartirlo y adaptarlo** dando crédito, **sin fines comerciales** y
+compartiendo tus cambios bajo la misma licencia. El texto completo está en el
+archivo [`LICENSE`](LICENSE).
+
+El **aviso legal, los términos de uso, la privacidad y la limitación de
+responsabilidad** están en [`aviso-legal.html`](aviso-legal.html) (enlazado
+desde el pie de cada página). En resumen:
+
+- **No acredita nada.** Es material de enseñanza y práctica; no otorga
+  certificados, títulos ni acreditación, y no equivale a un Elo oficial.
+- **Sin garantías.** El contenido se ofrece «tal cual», basado en las Leyes de
+  la FIDE explicadas de forma divulgativa; en competencia oficial prevalece el
+  reglamento vigente.
+- **Privacidad.** No recopila datos ni requiere cuenta; todo se guarda solo en
+  tu navegador.
+- **Marcas.** «FIDE» y «GitHub» pertenecen a sus titulares; se mencionan de
+  forma nominativa. El proyecto no está afiliado ni respaldado por ellos.
+
+**Recuerda: es material de enseñanza, no acredita ni certifica nada.**
+

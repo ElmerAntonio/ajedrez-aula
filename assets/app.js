@@ -288,6 +288,7 @@ var DICT={
   'Aprende':'Learn','Guía':'Guide','Pedagogía':'Pedagogy','Reglas':'Rules','Prácticas':'Practice',
   'Estrategias':'Strategies','Jugar':'Play','Ruta':'Path','Árbitro':'Referee','Imprimibles':'Printables','Nivel':'Level',
   'Saltar al contenido':'Skip to content','Elegir rol':'Choose role','Ahora no':'Not now',
+  'Aviso legal':'Legal notice',
   '¿Quién eres?':'Who are you?','Maestro':'Teacher','Estudiante':'Student','Niño pequeño':'Young child',
   'Guía, reglamento e imprimibles':'Guide, rules and printables','Practica, juega y sube de nivel':'Practice, play and level up',
   'Aprende jugando desde cero':'Learn by playing from scratch',
@@ -372,12 +373,29 @@ function ensureLangChip(navIn){
   chip.setAttribute('aria-label', getLang()==='en'?'Cambiar a español':'Switch to English');
 }
 
+/* ---------- ENLACE LEGAL EN EL PIE ---------- */
+function injectFooterLegal(){
+  if(base(location.pathname)==='aviso-legal') return;   // no enlazar la página a sí misma
+  Array.prototype.slice.call(document.querySelectorAll('.foot')).forEach(function(f){
+    if(f.querySelector('.legal-link')) return;
+    f.appendChild(document.createTextNode(' · '));
+    var a=document.createElement('a'); a.className='legal-link'; a.href='aviso-legal.html';
+    a.textContent=t('Aviso legal');
+    f.appendChild(a);
+    f.appendChild(document.createTextNode(' · '));
+    var cc=document.createElement('a'); cc.className='legal-link'; cc.rel='license';
+    cc.href='https://creativecommons.org/licenses/by-nc-sa/4.0/'; cc.textContent='CC BY-NC-SA 4.0';
+    f.appendChild(cc);
+  });
+}
+
 /* ---------- arranque ---------- */
 function init(){
   injectBranding();
   injectSkipLink();
   applyRole();
   applyLang();
+  injectFooterLegal();
   setupReveal();
   // primera visita al inicio: pregunta el rol
   var isHome=!!document.querySelector('.section-cards');
