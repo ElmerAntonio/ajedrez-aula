@@ -109,12 +109,36 @@ ajedrez-aula/
 │   ├── i18n-puzzles.js Traducción EN del banco de ejercicios (compartida)
 │   ├── guia-i18n.js    Traducción EN de las 40 láminas de la guía
 │   └── app.js          Rol, medallas, navegación, idioma y accesibilidad
+├── sw.js               Service Worker (funcionamiento sin conexión)
+├── manifest.webmanifest  App instalable (PWA)
+├── icon.svg            Icono de la app
 ├── LICENSE             Licencia CC BY-NC-SA 4.0 + avisos legales
 └── README.md
 ```
 
 No hay dependencias, ni paso de compilación, ni instalación. Son archivos
 HTML, CSS y JavaScript que se abren directamente.
+
+---
+
+## 📴 Funciona sin conexión (app instalable / PWA)
+
+La **primera vez** que abres el sitio con internet, un **Service Worker**
+(`sw.js`) guarda **todas las páginas y recursos** en el navegador. A partir de
+ahí:
+
+- Puedes **navegar por todas las secciones y jugar sin internet**, aunque se
+  caiga la conexión — **incluso recargando la página**.
+- El sitio es **instalable** (PWA): en el celular o la computadora puedes
+  «Agregar a la pantalla de inicio» y usarlo como una app, a pantalla completa.
+- Cuando vuelve el internet, el contenido se **actualiza solo** en segundo plano
+  (estrategia *stale-while-revalidate*). Al publicar cambios grandes, se sube el
+  número de versión del caché en `sw.js` para renovarlo del todo.
+- Requiere abrirse por **HTTPS** (como en GitHub Pages) o en `localhost`; con
+  `file://` el navegador no permite el modo sin conexión.
+
+Ideal para el aula rural: se carga una vez donde haya señal y luego funciona en
+clase sin internet.
 
 ---
 

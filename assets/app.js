@@ -265,6 +265,25 @@ function injectBranding(){
     var logo=document.createElement('span'); logo.className='logo'; logo.innerHTML=LOGO_SVG;
     brand.insertBefore(logo, brand.firstChild);
   }
+  // PWA: manifiesto, color de tema e icono para instalar/usar sin conexión
+  if(!document.querySelector('link[rel="manifest"]')){
+    var mf=document.createElement('link'); mf.rel='manifest'; mf.href='manifest.webmanifest'; document.head.appendChild(mf);
+  }
+  if(!document.querySelector('meta[name="theme-color"]')){
+    var tc=document.createElement('meta'); tc.name='theme-color'; tc.content='#131C18'; document.head.appendChild(tc);
+  }
+  if(!document.querySelector('link[rel="apple-touch-icon"]')){
+    var at=document.createElement('link'); at.rel='apple-touch-icon'; at.href='icon.svg'; document.head.appendChild(at);
+  }
+}
+
+/* ---------- MODO SIN CONEXIÓN (Service Worker) ----------
+   Guarda todo el sitio la primera vez que se abre con internet, para poder
+   navegar y jugar sin conexión después, incluso al recargar. */
+function registerSW(){
+  if(!('serviceWorker' in navigator)) return;
+  if(location.protocol==='file:') return;   // los SW no funcionan con file://
+  try{ navigator.serviceWorker.register('sw.js'); }catch(e){}
 }
 
 /* ---------- ANIMACIÓN DE CONTENIDO (scroll reveal) ---------- */
@@ -397,6 +416,7 @@ function init(){
   applyLang();
   injectFooterLegal();
   setupReveal();
+  registerSW();
   // primera visita al inicio: pregunta el rol
   var isHome=!!document.querySelector('.section-cards');
   if(isHome && !getRole()){ setTimeout(function(){ openRoleModal(true); }, 350); }

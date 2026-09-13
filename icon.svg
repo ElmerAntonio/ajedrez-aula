@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Ajedrez en el Aula">
+  <rect width="512" height="512" fill="#4C7A58"/>
+  <rect x="40" y="40" width="432" height="432" rx="70" fill="none" stroke="#6FA37C" stroke-width="10" opacity=".55"/>
+  <text x="256" y="372" font-size="340" text-anchor="middle" fill="#F0E7D2"
+        font-family="'DejaVu Sans','Segoe UI Symbol','Noto Sans Symbols 2',sans-serif">&#9822;</text>
+</svg>
